@@ -1,4 +1,4 @@
-package api.blockchain;
+package api.blockchain.model;
 
 import io.quarkus.kafka.client.serialization.JsonbDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;

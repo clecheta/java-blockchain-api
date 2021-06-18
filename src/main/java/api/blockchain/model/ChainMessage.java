@@ -1,4 +1,4 @@
-package api.blockchain;
+package api.blockchain.model;
 
 import com.R07r35cInc.Block;
 

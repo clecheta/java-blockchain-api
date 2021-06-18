@@ -1,5 +1,6 @@
 package api.blockchain;
 
+import api.blockchain.model.ChainMessage;
 import com.R07r35cInc.NetChain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.microprofile.reactive.messaging.Channel;
@@ -11,8 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 @Path("Ch41N")
 public class ChainResource {

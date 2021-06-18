@@ -1,11 +1,12 @@
 package api.blockchain;
 
+import api.blockchain.model.ChainMessage;
 import com.R07r35cInc.NetChain;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 
-@Singleton //https://quarkus.io/guides/cdi#what-scopes-can-i-actually-use-in-my-quarkus-application
+@ApplicationScoped //https://quarkus.io/guides/cdi#what-scopes-can-i-actually-use-in-my-quarkus-application
 public class PubSubService {
 
     public NetChain blockchain;
