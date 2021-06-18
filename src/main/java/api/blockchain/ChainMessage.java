@@ -1,24 +1,26 @@
 package api.blockchain;
 
+import com.R07r35cInc.Block;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChainMessage {
 
-    private List<String> blockList = new ArrayList<String>();
+    private List<Block> blockList = new ArrayList<Block>();
 
     public ChainMessage() {
     }
 
-    public ChainMessage(List<String> blockList) {
+    public ChainMessage(List<Block> blockList) {
         this.blockList = blockList;
     }
 
-    public List<String> getBlockList() {
+    public List<Block> getBlockList() {
         return blockList;
     }
 
-    public void setBlockList(List<String> blockList) {
+    public void setBlockList(List<Block> blockList) {
         this.blockList = blockList;
     }
 

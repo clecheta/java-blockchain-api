@@ -17,8 +17,8 @@ public class PubSubService {
     @Incoming("blockchain-in")
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceChain(ChainMessage message) {
-        System.out.println(message.getBlockList().get(1));
-        //this.blockchain.replaceChain(message.blockList);
+        System.out.println("message.getBlockList().get(1)");
+        this.blockchain.replaceChain(message.getBlockList());
     }
 
 }
