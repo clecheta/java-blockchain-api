@@ -1,13 +1,11 @@
 package api.blockchain;
 
-import com.R07r35cInc.Block;
 import com.R07r35cInc.NetChain;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
-import javax.enterprise.context.ApplicationScoped;
-import java.util.List;
+import javax.inject.Singleton;
 
-@ApplicationScoped
+@Singleton //https://quarkus.io/guides/cdi#what-scopes-can-i-actually-use-in-my-quarkus-application
 public class PubSubService {
 
     public NetChain blockchain;
@@ -18,10 +16,9 @@ public class PubSubService {
 
     @Incoming("blockchain-in")
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceChain(List<Block> newChain) {
-        if (newChain != null) {
-            this.blockchain.replaceChain(newChain);
-        }
+    public void replaceChain(ChainMessage message) {
+        System.out.println(message.getBlockList().get(1));
+        //this.blockchain.replaceChain(message.blockList);
     }
 
 }

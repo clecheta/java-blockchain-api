@@ -1,6 +1,7 @@
 package api.blockchain;
 
-import com.mongodb.Block;
+import com.R07r35cInc.NetChain;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
@@ -10,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("Ch41N")
@@ -17,25 +19,31 @@ public class ChainResource {
 
     @Inject
     @Channel("blockchain-to-kafka")
-    Emitter<List<Block>> blockchainEmitter;
+    Emitter<ChainMessage> blockchainEmitter;
 
-    @Inject
-    PubSubService pubSubService;
+    NetChain blockchain = new NetChain();
 
     @GET
     @Produces("application/json")
     @Path("blocks")
     public Response blocks() {
-        return Response.ok(pubSubService.blockchain.getChain()).build();
+        return Response.ok(this.blockchain.getChain()).build();
     }
 
     @POST
     @Produces("application/json")
     @Path("mine")
-    public Response mine(Object data) {
-        pubSubService.blockchain.addBlock(data);
-        blockchainEmitter.send(pubSubService.blockchain.getChain());
-        return Response.ok(pubSubService.blockchain.getChain()).build();
+    public Response mine(Object data) throws JsonProcessingException {
+        this.blockchain.addBlock(data);
+
+        List<String> stringList = new ArrayList<String>();
+        stringList.add("nome1");
+        stringList.add("nome2");
+        stringList.add("nome3");
+        ChainMessage message = new ChainMessage(stringList);
+        blockchainEmitter.send(message);
+
+        return Response.ok(this.blockchain.getChain()).build();
     }
 
 }
