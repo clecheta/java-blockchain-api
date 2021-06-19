@@ -1,5 +1,6 @@
 stages:
   - test
+  - visualize
   - build
 
 include:
@@ -22,14 +23,14 @@ secret_detection:
   tags:
     - dind
 
-#test: no integration/automate tests yet
-  #stage: test
-  #image: openjdk:11
+test:
+  stage: test
+  image: openjdk:11
   #services:
     #- name: git.okaut.com:5050/dev/infra/ci/mongo:oktdb
       #alias: oktdb
-  #script:
-    #- ./mvnw test -B -s ci_settings.xml -Dquarkus.mongodb.connection-string=mongodb://oktdb:27017
+  script:
+    - ./mvnw test -B -s ci_settings.xml #-Dquarkus.mongodb.connection-string=mongodb://oktdb:27017
 
 test-build:
   stage: build

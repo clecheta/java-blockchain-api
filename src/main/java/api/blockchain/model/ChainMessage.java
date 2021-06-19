@@ -13,11 +13,4 @@ public class ChainMessage {
     public String from;
     public List<Block> chain;
 
-    public Boolean isValid(String node) {
-        if (from != null && chain != null) {
-            return !from.equals(node);
-        }
-        return false;
-    }
-
 }
