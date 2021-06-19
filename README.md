@@ -10,9 +10,10 @@ You can run your application in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
-to start a second node use
+to start a second node: create a native executable and run it
 ```shell script
-mvn -Dquarkus-profile=node compile quarkus:dev
+cd target
+./api.blockchain-1.0.0-SNAPSHOT-runner -Dquarkus-profile=node
 ```
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
@@ -32,9 +33,7 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./mvnw package -Pnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
+You can then execute your native executable with: `./target/api.blockchain-1.0.0-SNAPSHOT-runner`
 
 ## Health Checks
 
@@ -44,11 +43,3 @@ Define a health check in Dockerfile that tests the SmallRye Health generated pat
 - http://localhost:8080/q/health/ready
 
 For human-readable check purpose you can go to: http://localhost:8080/q/health-ui/
-
-## Provided examples
-
-### RESTEasy JAX-RS example
-
-REST is easy peasy with this Hello World RESTEasy resource.
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
