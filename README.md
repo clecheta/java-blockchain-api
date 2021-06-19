@@ -6,16 +6,14 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+You can run master node in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
-to start a second node: create a native executable and run it
+to start the second node: create a native executable and run it with:
 ```shell script
-cd target
-./api.blockchain-1.0.0-SNAPSHOT-runner -Dquarkus-profile=node
+./target/api.blockchain-1.0.0-SNAPSHOT-runner -Dquarkus-profile=node
 ```
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
 ## Kafka cluster
 

@@ -16,12 +16,12 @@ public class ChainMessageTest {
         Field[] fields = ChainMessage.class.getDeclaredFields();
         assertTrue(fields.length == 2, "class fields violated");
         for (Field f : fields) {
-            if (f.getName().equals("node")) {
-                assertEquals(0, f.toGenericString().indexOf("private"));
+            if (f.getName().equals("from")) {
+                assertEquals(0, f.toGenericString().indexOf("public"));
                 assertEquals(true, f.toGenericString().contains("String"));
                 break;
-            } else if (f.getName().equals("blockList")) {
-                assertEquals(0, f.toGenericString().indexOf("private"));
+            } else if (f.getName().equals("chain")) {
+                assertEquals(0, f.toGenericString().indexOf("public"));
                 assertEquals(true, f.toGenericString().contains("List<Block>"));
             }
         }
@@ -30,8 +30,8 @@ public class ChainMessageTest {
     @Test
     public void testDefaultConstructor() {
         ChainMessage message = new ChainMessage();
-        assertEquals(message.getNode(), null);
-        assertEquals(message.getBlockList(), null);
+        assertEquals(message.from, null);
+        assertEquals(message.chain, null);
     }
 
 }

@@ -1,39 +1,23 @@
 package api.blockchain.model;
 
-import api.blockchain.util.NetUtil;
 import com.R07r35cInc.Block;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/* Parsed objects must have all attributes made public or having getters and setters */
+/* Parsed objects through network channels must have all attributes made public
+   or they must have the getters and setters */
+@RegisterForReflection
 public class ChainMessage {
 
-    private String node;
-    private List<Block> blockList;
+    public String from;
+    public List<Block> chain;
 
-    /* Classes that will be parsed/serialized must have an empty default construct,*/
-    public ChainMessage() { }
-
-    public ChainMessage(List<Block> blockList) {
-        this.node = NetUtil.getHostName();
-        this.blockList = blockList;
-    }
-
-    public List<Block> getBlockList() {
-        return blockList;
-    }
-
-    public void setBlockList(List<Block> blockList) {
-        this.blockList = blockList;
-    }
-
-    public String getNode() {
-        return node;
-    }
-
-    public void setNode(String node) {
-        this.node = node;
+    public Boolean isValid(String node) {
+        if (from != null && chain != null) {
+            return !from.equals(node);
+        }
+        return false;
     }
 
 }
