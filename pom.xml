@@ -79,14 +79,12 @@
       <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
     </dependency>
   </dependencies>
-
   <repositories>
     <repository>
       <id>gitlab-maven</id>
       <url>https://git.okaut.com/api/v4/projects/17/packages/maven</url>
     </repository>
   </repositories>
-
   <build>
     <plugins>
       <plugin>
