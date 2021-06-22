@@ -7,7 +7,7 @@
                 <httpHeaders>
                     <property>
                         <name>Private-Token</name>
-                        <value>xFrZbBd1yZQAy96MJTBJ</value>
+                        <value>${JBlock}</value>
                     </property>
                 </httpHeaders>
             </configuration>
