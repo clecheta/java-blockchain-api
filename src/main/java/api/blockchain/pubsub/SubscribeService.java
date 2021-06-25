@@ -3,6 +3,7 @@ package api.blockchain.pubsub;
 import api.blockchain.SharedService;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
+import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,11 +16,20 @@ public class SubscribeService {
     SharedService sharedService;
 
     @Incoming("blockchain-in")
+    @Blocking
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceChain(ChainMessage message) {
-        sharedService.blockchain.replaceChain(message.chain);
+        System.out.println("new message come from _" + message.from);
+        if (isValidMessage(message)) {
+            try {
+                sharedService.blockchain.replaceChain(message.chain);
+            } catch (RuntimeException re) {
+                System.out.println(re.getMessage());
+            }
+        }
     }
 
+    /** Avoid redundant interactions on replace chain */
     public Boolean isValidMessage(ChainMessage message) {
         String currentHost = NetUtil.getHostName();
         Boolean isValid = false;

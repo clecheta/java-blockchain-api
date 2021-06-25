@@ -1,5 +1,6 @@
 package api.blockchain;
 
+import api.blockchain.util.NetUtil;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 //import org.jboss.logging.Logger;
@@ -16,12 +17,12 @@ public class ApplicationLifeCycle {
 
     void onStart(@Observes StartupEvent ev) {
         //LOGGER.info("Blockchain network node starting...");
-        System.out.println("\nBlockchain network node starting...\n");
+        System.out.println("\nBlockchain network node _" + NetUtil.getHostName() + " starting...\n");
     }
 
     void onStop(@Observes ShutdownEvent ev) {
         //LOGGER.info("Blockchain network node stopping...\n");
-        System.out.println("\nBlockchain network node stopping...\n");
+        System.out.println("\nBlockchain network node _" + NetUtil.getHostName() + " stopping...\n");
     }
 
 }

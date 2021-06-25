@@ -3,6 +3,7 @@ package api.blockchain.pubsub;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
 import com.R07r35cInc.Block;
+import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class PublishService {
 
     @Inject
+    @Broadcast
     @Channel("blockchain-to-kafka")
     Emitter<ChainMessage> blockchainEmitter;
 
