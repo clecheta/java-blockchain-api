@@ -12,7 +12,7 @@ You can run master node in dev mode that enables live coding using:
 ```
 to start the second node: 
 ```shell script
-mvn quarkus:dev -Dquarkus-profile=node
+mvn quarkus:dev -Dquarkus-profile=node -Ddebug=5006 
 ```
 
 ## Kafka cluster
