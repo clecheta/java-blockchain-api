@@ -10,9 +10,9 @@ You can run master node in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
-to start the second node: create a native executable and run it with:
+to start the second node: 
 ```shell script
-./target/api.blockchain-1.0.0-SNAPSHOT-runner -Dquarkus-profile=node
+mvn quarkus:dev -Dquarkus-profile=node
 ```
 
 ## Kafka cluster
