@@ -35,9 +35,9 @@ public class Wallet {
      * verify the signature of other wallets: we don't want to accept any transactions
      * unless the actual underling wallet gave a proper signature with its private key.
      */
-    public String sign(String data) {
+    public String sign(Object data) {
         String serializedData = new GsonBuilder().create().toJson(data);
-        String signature = ec.sign(data);
+        String signature = ec.sign(serializedData);
         return signature;
     }
 

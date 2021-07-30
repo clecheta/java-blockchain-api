@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @QuarkusTest
 public class WalletTest {
 
-    private static final Logger LOGGER = Logger.getLogger("WalletTest");
     private static final int BASE64_LENGHT = 120;
 
     Wallet wallet;
@@ -46,21 +45,18 @@ public class WalletTest {
     @Test
     void verifySignature() {
         String signature = wallet.sign(data); //serialize data
-        LOGGER.info("publicKey: " + wallet.publicKey);
-        LOGGER.info("signature: " + signature);
-
         EcUtil ec = new EcUtil();
         /* we must serialize data before call ec.verifySignature as sign() method on Wallet does serialize the data
-        * before call the ec.sign() */
+        * before call the ec.sign() ang generate signature */
         String serializedData = new GsonBuilder().create().toJson(data);
-        assertTrue(ec.verifySignature(wallet.publicKey, data, serializedData));
+        assertTrue(ec.verifySignature(wallet.publicKey, serializedData, signature));
     }
 
     @Test
     void doesNotVerifyInvalidSignature() {
         EcUtil ec = new EcUtil();
         String serializedData = new GsonBuilder().create().toJson(data);
-        assertFalse(ec.verifySignature(wallet.publicKey, data, new Wallet().sign(serializedData)));
+        assertFalse(ec.verifySignature(wallet.publicKey, serializedData, new Wallet().sign(serializedData)));
     }
 
 }

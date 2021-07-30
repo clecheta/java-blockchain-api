@@ -74,7 +74,7 @@ public class EcUtil {
         byte[] signature = null;
         try {
             ecdsaSign.initSign(this.keyPair.getPrivate()); //publicKey
-            //ecdsaSign.update(data.getBytes(StandardCharsets.UTF_8)); //data
+            ecdsaSign.update(data.getBytes(StandardCharsets.UTF_8)); //data
             signature = ecdsaSign.sign(); //signature
         } catch (InvalidKeyException | SignatureException e) {
             LOGGER.error(e.getMessage());
@@ -92,15 +92,15 @@ public class EcUtil {
             EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
             KeyFactory keyFactory = KeyFactory.getInstance("EC");
             PublicKey publicKeyObject = keyFactory.generatePublic(publicKeySpec);
-            String dataHash = CryptoHash.generateHash(data);
             ecdsaSign.initVerify(publicKeyObject);
-            //ecdsaSign.update(data.getBytes("UTF-8"));
+            ecdsaSign.update(data.getBytes("UTF-8"));
             isValid = ecdsaSign.verify(Base64.getDecoder().decode(signature));
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException
-                 | SignatureException e) {
+                 | SignatureException | UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage());
         }
         return isValid;
     }
+
 
 }
