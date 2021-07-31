@@ -17,7 +17,7 @@ code_quality:
   artifacts:
     paths: [gl-code-quality-report.json]
 
-test:
+integration:
   stage: test
   image: openjdk:11
   #services:
@@ -44,7 +44,7 @@ cobertura: # Must be in a stage later than test's stage.
   only:
     - master
 
-test-build:
+graalvm.native:
   stage: build
   image: ghcr.io/graalvm/graalvm-ce:20.3.1.2
   before_script:
@@ -52,8 +52,5 @@ test-build:
   script:
     - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
   artifacts:
-    expire_in: 1 day
     paths:
     - target/*-runner
-  only:
-    - master
