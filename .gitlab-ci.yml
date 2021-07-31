@@ -1,9 +1,9 @@
 stages:
   - test
+  - visualize
   - build
 
 include:
-  - template: Security/Secret-Detection.gitlab-ci.yml
   - template: Code-Quality.gitlab-ci.yml
 
 before_script:
@@ -17,11 +17,6 @@ code_quality:
   artifacts:
     paths: [gl-code-quality-report.json]
 
-secret_detection:
-  image: docker:dind
-  tags:
-    - dind
-
 test:
   stage: test
   image: openjdk:11
@@ -30,6 +25,24 @@ test:
       #alias: oktdb
   script:
     - ./mvnw test -B -s ci_settings.xml #-Dquarkus.mongodb.connection-string=mongodb://oktdb:27017
+  artifacts:
+    paths:
+      - target/jacoco-report/*
+
+cobertura: # Must be in a stage later than test's stage.
+  stage: visualize
+  image: registry.gitlab.com/haynes/jacoco2cobertura:1.0.7
+  script:
+    # convert report from jacoco to cobertura, using relative project path
+    - python /opt/cover2cover.py target/jacoco-report/jacoco.xml $CI_PROJECT_DIR/src/main/java/ > target/cobertura.xml
+  needs: ["integration"]
+  dependencies:
+    - integration
+  artifacts:
+    reports:
+      cobertura: target/cobertura.xml
+  only:
+    - master
 
 test-build:
   stage: build

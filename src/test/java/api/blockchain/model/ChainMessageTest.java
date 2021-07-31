@@ -38,7 +38,7 @@ public class ChainMessageTest {
     @Test
     void testMethods() {
         Method[] methods = ChainMessage.class.getDeclaredMethods();
-        assertTrue(methods.length == 0, "this class should not have any method");
+        assertTrue(methods.length == 1, "this class should not have any method");
     }
 
 }
