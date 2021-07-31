@@ -1,16 +1,19 @@
 package cryptocurrency;
 
+import api.blockchain.util.EcUtil;
+import com.google.gson.GsonBuilder;
+import org.jboss.logging.Logger;
+
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
 public class Transaction {
+
+    private static final Logger LOGGER = Logger.getLogger("Transaction");
 
     private UUID id;
     private Map<String, BigDecimal> outputMap;
@@ -38,6 +41,35 @@ public class Transaction {
                 senderWallet.balance,
                 senderWallet.publicKey,
                 senderWallet.sign(outputMap));
+    }
+
+    /** Validate if the input amount is equal to the total values contained in the outputMap */
+    public static boolean isValidTransaction(Transaction transaction) {
+        String address = transaction.getInput().address;
+        BigDecimal amount = transaction.getInput().amount;
+        String signature = transaction.getInput().signature;
+        Map<String, BigDecimal> outputMap = transaction.outputMap;
+
+        BigDecimal outputTotal = BigDecimal.ZERO;
+        Iterator<Map.Entry<String, BigDecimal>> iterator = outputMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, BigDecimal> entry = iterator.next();
+            outputTotal = outputTotal.add(entry.getValue());
+        }
+
+        if (amount.compareTo(outputTotal) != 0) {
+            LOGGER.error("Invalid transaction from address: " + address);
+            return false;
+        }
+
+        EcUtil ec = new EcUtil();
+        String serializedData = new GsonBuilder().create().toJson(outputMap);
+        if (!ec.verifySignature(address, serializedData, signature)) {
+            LOGGER.error("Invalid signature from address: " + address);
+            return false;
+        }
+
+        return true;
     }
 
     public UUID getId() {
