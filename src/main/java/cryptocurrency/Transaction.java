@@ -1,8 +1,7 @@
 package cryptocurrency;
 
-import org.apache.kafka.common.protocol.types.Field;
-
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,14 +12,16 @@ import java.util.UUID;
  */
 public class Transaction {
 
-    public UUID id;
-    public Map<String, BigDecimal> outputMap;
+    private UUID id;
+    private Map<String, BigDecimal> outputMap;
+    private Input input;
 
     /** Only wallets should be able to create transactions */
     public Transaction(Wallet senderWallet, String recipient, BigDecimal amount) {
         this.id = UUID.randomUUID();
         //use outputMap so that we can have more than one recipient in the transaction
         this.outputMap = createOutputMap(senderWallet, recipient, amount);
+        this.input = createInput(senderWallet, this.outputMap);
     }
 
     private Map createOutputMap(Wallet senderWallet, String recipient, BigDecimal amount) {
@@ -32,4 +33,22 @@ public class Transaction {
         return outputMap;
     }
 
+    private Input createInput(Wallet senderWallet, Map<String, BigDecimal>outputMap) {
+        return new Input(new Date(),
+                senderWallet.balance,
+                senderWallet.publicKey,
+                senderWallet.sign(outputMap));
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Map<String, BigDecimal> getOutputMap() {
+        return outputMap;
+    }
+
+    public Input getInput() {
+        return this.input;
+    }
 }

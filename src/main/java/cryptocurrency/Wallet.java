@@ -1,27 +1,23 @@
 package cryptocurrency;
 
 import api.blockchain.util.EcUtil;
-import com.R07r35cInc.CryptoHash;
 import com.google.gson.GsonBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.math.BigDecimal;
 import java.security.KeyPair;
-import java.security.Signature;
 
 /**
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
 public class Wallet {
-    private EcUtil ec; //utility class to work with ECDSA algorithms
-
+    public BigDecimal balance;
+    public String publicKey;
+    private final EcUtil ec; //utility class to work with ECDSA algorithms
     @ConfigProperty(name = "starting.balance")
     private int STARTING_BALANCE;
-    public BigDecimal balance;
-
-    private KeyPair keyPair;
-    public String publicKey;
+    private final KeyPair keyPair;
 
     Wallet() {
         ec = new EcUtil();

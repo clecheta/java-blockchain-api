@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * https://encontreijesus.com
  */
 @QuarkusTest
-public class TransactionTest {
+public class TransactionOutputMapTest {
 
     private static final String publicKey = "recipient-public-key";
     private static final int UUID_LENGHT = 36;
@@ -36,9 +36,9 @@ public class TransactionTest {
 
     @Test
     void hasId() {
-        assertTrue(transaction.id != null, "has an id");
-        assertTrue(transaction.id instanceof UUID, "id is UUID");
-        assertTrue(transaction.id.toString().length() == UUID_LENGHT, "id is correctly formed");
+        assertTrue(transaction.getId() != null, "has an id");
+        assertTrue(transaction.getId() instanceof UUID, "id is UUID");
+        assertTrue(transaction.getId().toString().length() == UUID_LENGHT, "id is correctly formed");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class TransactionTest {
 
     @Test
     void outputsAmoutToRecipient() {
-        BigDecimal expectAmount = transaction.outputMap.get(senderWallet.publicKey);
+        BigDecimal expectAmount = transaction.getOutputMap().get(senderWallet.publicKey);
         BigDecimal actualAmount = senderWallet.balance.subtract(amount);
         assertEquals(expectAmount, actualAmount, "outputs the remaining balance for the senderWallet");
     }
