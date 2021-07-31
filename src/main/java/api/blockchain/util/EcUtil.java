@@ -1,6 +1,5 @@
 package api.blockchain.util;
 
-import com.R07r35cInc.CryptoHash;
 import org.jboss.logging.Logger;
 
 import java.io.UnsupportedEncodingException;

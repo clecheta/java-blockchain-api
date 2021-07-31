@@ -3,7 +3,6 @@ package cryptocurrency;
 import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;
 import io.quarkus.test.junit.QuarkusTest;
-import org.jboss.logging.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
