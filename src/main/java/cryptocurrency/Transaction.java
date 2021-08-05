@@ -72,6 +72,19 @@ public class Transaction {
         return true;
     }
 
+    public void update(Wallet senderWallet, String recipient, BigDecimal amount) {
+        BigDecimal senderBalance = this.outputMap.get(senderWallet.publicKey);
+        if (amount.compareTo(senderBalance)==1) {
+            throw new RuntimeException("Amount exceeds balance");
+        }
+        this.outputMap.put(recipient, amount);
+
+        BigDecimal newAmount = this.outputMap.get(senderWallet.publicKey).subtract(amount);
+        this.outputMap.put(senderWallet.publicKey, newAmount);
+
+        this.input = this.createInput(senderWallet, this.outputMap);
+    }
+
     public UUID getId() {
         return id;
     }
