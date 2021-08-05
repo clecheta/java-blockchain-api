@@ -4,7 +4,6 @@ import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.eclipse.microprofile.config.ConfigProvider;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.math.BigDecimal;
 import java.security.KeyPair;
@@ -14,12 +13,11 @@ import java.security.KeyPair;
  * https://encontreijesus.com
  */
 public class Wallet {
-    public BigDecimal balance;
-    public String publicKey;
+    public static final String profile = ProfileManager.getActiveProfile();
     private final EcUtil ec; //utility class to work with ECDSA algorithms
     private final KeyPair keyPair;
-
-    public static final String profile = ProfileManager.getActiveProfile();
+    public BigDecimal balance;
+    public String publicKey;
 
     Wallet() {
         ec = new EcUtil();
@@ -42,6 +40,14 @@ public class Wallet {
         String serializedData = new GsonBuilder().create().toJson(data);
         String signature = ec.sign(serializedData);
         return signature;
+    }
+
+    public Transaction createTransaction(String recipient, BigDecimal amount) {
+        if (amount.compareTo(this.balance) == 1) { //greater than val
+            throw new RuntimeException("Amount exceeds balance");
+        }
+
+        return new Transaction(this, recipient, amount);
     }
 
 }
