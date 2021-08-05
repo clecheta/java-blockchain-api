@@ -1,13 +1,12 @@
 package cryptocurrency;
 
+import api.blockchain.util.MathUtil;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,26 +20,23 @@ public class UpdateTransactionTest {
     private static final String publicKey = "recipient-foo-public-key";
     BigDecimal tooHighAmount = new BigDecimal(999999);
 
-    static Transaction transaction;
-    static Wallet senderWallet;
-    static String recipient;
-    static BigDecimal amount;
+    Transaction transaction;
+    Wallet senderWallet;
+    String recipient;
+    BigDecimal amount;
 
     String originalSignature;
     BigDecimal originalSenderOutput;
     String nextRecipient;
     BigDecimal nextAmount;
 
-    @BeforeAll
-    static void init() {
+    @BeforeEach
+    void setup() {
         senderWallet = new Wallet();
         recipient = publicKey;
         amount = BigDecimal.TEN;
         transaction = new Transaction(senderWallet, recipient, amount);
-    }
 
-    @BeforeEach
-    void setup() {
         originalSignature = transaction.getInput().signature;
         originalSenderOutput = transaction.getOutputMap().get(senderWallet.publicKey);
         nextRecipient = "next-recipient";
@@ -79,12 +75,7 @@ public class UpdateTransactionTest {
 
     @Test
     void isValidMaintainsTotalOutputThatMatchesInputAmount() {
-        BigDecimal outputTotal = BigDecimal.ZERO;
-        Iterator<Map.Entry<String, BigDecimal>> iterator = transaction.getOutputMap().entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, BigDecimal> entry = iterator.next();
-            outputTotal = outputTotal.add(entry.getValue());
-        }
+        BigDecimal outputTotal = MathUtil.calculateMapTotal(transaction.getOutputMap());
         assertEquals(transaction.getInput().amount, outputTotal,
                 "maintains a total output that matches the input amount");
     }

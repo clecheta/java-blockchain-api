@@ -1,6 +1,7 @@
 package cryptocurrency;
 
 import api.blockchain.util.EcUtil;
+import api.blockchain.util.MathUtil;
 import com.google.gson.GsonBuilder;
 import org.jboss.logging.Logger;
 
@@ -50,13 +51,7 @@ public class Transaction {
         String signature = transaction.getInput().signature;
         Map<String, BigDecimal> outputMap = transaction.outputMap;
 
-        BigDecimal outputTotal = BigDecimal.ZERO;
-        Iterator<Map.Entry<String, BigDecimal>> iterator = outputMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, BigDecimal> entry = iterator.next();
-            outputTotal = outputTotal.add(entry.getValue());
-        }
-
+        BigDecimal outputTotal = MathUtil.calculateMapTotal(outputMap);
         if (amount.compareTo(outputTotal) != 0) {
             LOGGER.error("Invalid transaction from address: " + address);
             return false;
@@ -77,7 +72,14 @@ public class Transaction {
         if (amount.compareTo(senderBalance)==1) {
             throw new RuntimeException("Amount exceeds balance");
         }
-        this.outputMap.put(recipient, amount);
+
+        if (this.outputMap.get(recipient) == null) { //if the recipient does not exist in the outputMap
+            this.outputMap.put(recipient, amount);
+        } else { //the recipient already exists
+            BigDecimal currentAmount = this.outputMap.get(recipient);
+            BigDecimal newAmount = currentAmount.add(amount);
+            this.outputMap.put(recipient, newAmount);
+        }
 
         BigDecimal newAmount = this.outputMap.get(senderWallet.publicKey).subtract(amount);
         this.outputMap.put(senderWallet.publicKey, newAmount);
