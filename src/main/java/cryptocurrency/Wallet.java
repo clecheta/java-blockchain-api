@@ -2,6 +2,8 @@ package cryptocurrency;
 
 import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;
+import io.quarkus.runtime.configuration.ProfileManager;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.math.BigDecimal;
@@ -15,15 +17,20 @@ public class Wallet {
     public BigDecimal balance;
     public String publicKey;
     private final EcUtil ec; //utility class to work with ECDSA algorithms
-    @ConfigProperty(name = "starting.balance")
-    private int STARTING_BALANCE;
     private final KeyPair keyPair;
+
+    public static final String profile = ProfileManager.getActiveProfile();
 
     Wallet() {
         ec = new EcUtil();
-        this.balance = new BigDecimal(STARTING_BALANCE);
         this.keyPair = ec.genKeyPair();
         this.publicKey = ec.getPublic();
+
+        if (profile.startsWith("prod")) {
+            this.balance = BigDecimal.ZERO;
+        } else {
+            this.balance = ConfigProvider.getConfig().getValue("starting.balance", BigDecimal.class);
+        }
     }
 
     /**

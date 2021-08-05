@@ -3,6 +3,7 @@ package cryptocurrency;
 import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;
 import io.quarkus.test.junit.QuarkusTest;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,9 @@ public class WalletTest {
     Wallet wallet;
     String data = "Jiu-jitsu";
 
+    @ConfigProperty(name = "starting.balance")
+    private int STARTING_BALANCE;
+
     @BeforeEach
     void init() {
         wallet = new Wallet();
@@ -32,6 +36,14 @@ public class WalletTest {
         assertTrue(wallet.balance != null);
         assertTrue(wallet.balance instanceof BigDecimal);
         assertTrue(wallet.balance.compareTo(BigDecimal.ZERO) >= 0);
+    }
+
+    @Test
+    void balanceHasRightValue() {
+        BigDecimal startBalance = new BigDecimal(this.STARTING_BALANCE);
+        assertTrue(startBalance.compareTo(new BigDecimal(100))==0,
+                "wallet balance must have the initial configured starting balance value");
+        assertEquals(startBalance, wallet.balance);
     }
 
     @Test
