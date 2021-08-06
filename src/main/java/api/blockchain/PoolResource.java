@@ -8,6 +8,7 @@ import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -54,6 +55,13 @@ public class PoolResource {
             return Response.status(HttpStatus.SC_BAD_REQUEST,
                     re.getMessage()).build(); //FIXME
         }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("7r4n54C7ioNM4p")
+    public Response transactionMap() {
+        return Response.ok(sharedService.transactionPool.getTransactionMap()).build();
     }
 
 }

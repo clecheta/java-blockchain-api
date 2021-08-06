@@ -13,12 +13,11 @@ import javax.inject.Singleton;
 @Singleton //https://quarkus.io/guides/cdi#what-scopes-can-i-actually-use-in-my-quarkus-application
 public class SharedService {
 
-    /* TODO: maybe it should have two instances the node local in the resource and the replaced one in the subscriber
-       by the end of the api we have to check what is the expected result in a sync chain for each block mined in each
-       node
+    /** Maintain a unique instance of the blockchain in the node
+     * TODO: maybe it should have two instances the node local in the resource and the replaced one in the subscriber
+     *        by the end of the api we have to check what is the expected result in a sync chain for each block mined in each
+     *        node
      */
-
-    /** Maintain a unique instance of the blockchain in the node */
     public NetChain blockchain = new NetChain();
 
     /** Main transaction pool for the application */
