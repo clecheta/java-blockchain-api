@@ -1,8 +1,7 @@
 package cryptocurrency;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Cleber Lecheta
@@ -26,6 +25,18 @@ public class TransactionPool {
 
     public void setMap(Map<UUID, Transaction> transactionMap) {
         this.transactionMap = transactionMap;
+    }
+
+    public Transaction existingTransaction(String inputAddress) {
+        List<Transaction> transactions = transactionMap.values().stream()
+                .filter(transaction -> transactionMap.values().stream()
+                        .anyMatch(t -> t.getInput().address.equals(inputAddress)))
+                .collect(Collectors.toList());
+
+        if (transactions.size()>0) {
+            return transactions.get(0);
+        }
+        return null;
     }
 
     public Map<UUID, Transaction> getTransactionMap() {

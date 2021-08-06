@@ -39,4 +39,11 @@ public class TransactionPoolTest {
         assertEquals(expected, transaction, "added a transaction");
     }
 
+    @Test
+    void existingTransaction() {
+        transactionPool.setTransaction(transaction);
+        Transaction expected = transactionPool.existingTransaction(senderWallet.publicKey);
+        assertEquals(expected, transaction, "returns an existing transaction given an input address");
+    }
+
 }

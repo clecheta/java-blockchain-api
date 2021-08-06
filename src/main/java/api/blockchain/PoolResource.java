@@ -1,9 +1,10 @@
 package api.blockchain;
 
 import api.blockchain.model.TransactCommand;
-import api.blockchain.pubsub.PublishService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.GsonBuilder;
 import cryptocurrency.Transaction;
+import io.quarkus.runtime.configuration.ProfileManager;
+import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
@@ -19,13 +20,10 @@ import javax.ws.rs.core.Response;
 @Path("p00L")
 public class PoolResource {
 
+    public static final String profile = ProfileManager.getActiveProfile();
     private static final Logger LOGGER = Logger.getLogger("PoolResource");
-
     @Inject
     SharedService sharedService;
-
-    @Inject
-    PublishService publisher;
 
     @POST
     @Produces("application/json")
@@ -33,14 +31,28 @@ public class PoolResource {
     /** creates a new transaction and add it to the transaction pool */
     public Response transact(TransactCommand cmd) {
         try {
-            Transaction transaction = sharedService.wallet.createTransaction(cmd.recipient, cmd.amount);
+            Transaction transaction = sharedService.transactionPool.existingTransaction(sharedService.wallet.publicKey);
+
+            if (transaction != null) {
+                //when the transaction already exists in the pool, call update instead of create a new transaction
+                transaction.update(sharedService.wallet, cmd.recipient, cmd.amount);
+            } else {
+                //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
+                transaction = sharedService.wallet.createTransaction(cmd.recipient, cmd.amount);
+            }
+
             sharedService.transactionPool.setTransaction(transaction);
 
-            LOGGER.info(sharedService.transactionPool);
+            if (!profile.startsWith("prod")) {
+                String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
+                        .create().toJson(sharedService.transactionPool);
+                LOGGER.info(serializedTransactionPool);
+            }
             return Response.ok(transaction).build();
         } catch (RuntimeException re) {
             LOGGER.error(re.getMessage());
-            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), re.getMessage()).build(); //FIXME
+            return Response.status(HttpStatus.SC_BAD_REQUEST,
+                    re.getMessage()).build(); //FIXME
         }
     }
 
