@@ -32,11 +32,16 @@ public class PoolResource {
     @Path("tRaN5ACt")
     /** creates a new transaction and add it to the transaction pool */
     public Response transact(TransactCommand cmd) {
-        Transaction transaction = sharedService.wallet.createTransaction(cmd.recipient, cmd.amount);
-        sharedService.transactionPool.setTransaction(transaction);
+        try {
+            Transaction transaction = sharedService.wallet.createTransaction(cmd.recipient, cmd.amount);
+            sharedService.transactionPool.setTransaction(transaction);
 
-        LOGGER.info(sharedService.transactionPool);
-        return Response.ok(transaction).build();
+            LOGGER.info(sharedService.transactionPool);
+            return Response.ok(transaction).build();
+        } catch (RuntimeException re) {
+            LOGGER.error(re.getMessage());
+            return Response.status(Response.Status.NOT_FOUND.getStatusCode(), re.getMessage()).build(); //FIXME
+        }
     }
 
 }
