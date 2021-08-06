@@ -19,7 +19,7 @@ public class Wallet {
     public BigDecimal balance;
     public String publicKey;
 
-    Wallet() {
+    public Wallet() {
         ec = new EcUtil();
         this.keyPair = ec.genKeyPair();
         this.publicKey = ec.getPublic();

@@ -21,6 +21,10 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @ApplicationScoped
 public class ApplicationLifeCycle {
 
