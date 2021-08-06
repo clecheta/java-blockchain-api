@@ -3,6 +3,7 @@ package api.blockchain.pubsub;
 import api.blockchain.SharedService;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
+import cryptocurrency.Transaction;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
@@ -40,6 +41,15 @@ public class SubscribeService {
             isValid = !message.from.equals(currentHost);
         }
         return isValid;
+    }
+
+    @Incoming("transaction-in")
+    @Blocking
+    /** Set the transaction within the local transaction pool */
+    public void setTransaction(Transaction transaction) {
+        if (transaction!=null) {
+            sharedService.transactionPool.setTransaction(transaction);
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package api.blockchain;
 
 import api.blockchain.model.TransactCommand;
+import api.blockchain.pubsub.PublishService;
 import com.google.gson.GsonBuilder;
 import cryptocurrency.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
@@ -23,8 +24,12 @@ public class PoolResource {
 
     public static final String profile = ProfileManager.getActiveProfile();
     private static final Logger LOGGER = Logger.getLogger("PoolResource");
+
     @Inject
     SharedService sharedService;
+
+    @Inject
+    PublishService publisher;
 
     @POST
     @Produces("application/json")
@@ -43,6 +48,7 @@ public class PoolResource {
             }
 
             sharedService.transactionPool.setTransaction(transaction);
+            publisher.broadcastTransaction(transaction);
 
             if (!profile.startsWith("prod")) {
                 String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()

@@ -63,4 +63,12 @@ public class PoolResourceTest {
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
+    @Test
+    void getTransactionMap() {
+        given()
+          .when().get("/p00L/7r4n54C7ioNM4p")
+          .then()
+             .statusCode(200);
+    }
+
 }
