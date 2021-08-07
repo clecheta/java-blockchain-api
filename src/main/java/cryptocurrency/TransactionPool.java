@@ -20,7 +20,7 @@ public class TransactionPool {
     }
 
     public void setTransaction(Transaction transaction) {
-        this.transactionMap.put(transaction.getId(), transaction);
+        this.transactionMap.put(transaction.id, transaction);
     }
 
     public void setMap(Map<UUID, Transaction> transactionMap) {
@@ -30,7 +30,7 @@ public class TransactionPool {
     public Transaction existingTransaction(String inputAddress) {
         List<Transaction> transactions = transactionMap.values().stream()
                 .filter(transaction -> transactionMap.values().stream()
-                        .anyMatch(t -> t.getInput().address.equals(inputAddress)))
+                        .anyMatch(t -> t.input.address.equals(inputAddress)))
                 .collect(Collectors.toList());
 
         if (transactions.size()>0) {

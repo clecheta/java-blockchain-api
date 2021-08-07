@@ -51,7 +51,7 @@ public class TransactionInputTest {
 
     @Test
     void setsAmount() {
-        BigDecimal expectAmount = transaction.getInput().amount;
+        BigDecimal expectAmount = transaction.input.amount;
         BigDecimal actualAmount = senderWallet.balance;
         //ensure that the amount matches the balance that is contained in the sender wallet
         assertEquals(expectAmount, actualAmount, "sets the amount to the senderWallet balance");
@@ -59,7 +59,7 @@ public class TransactionInputTest {
 
     @Test
     void setsAddress() {
-        String expectedAddress = transaction.getInput().address;
+        String expectedAddress = transaction.input.address;
         String actualAddress = senderWallet.publicKey;
         assertEquals(expectedAddress, actualAddress, "sets the address to the senderWallet publicKey");
     }
@@ -67,8 +67,8 @@ public class TransactionInputTest {
     @Test
     void signInput() {
         EcUtil ec = new EcUtil();
-        String serializedData = new GsonBuilder().create().toJson(transaction.getOutputMap());
-        assertTrue(ec.verifySignature(senderWallet.publicKey, serializedData, transaction.getInput().signature),
+        String serializedData = new GsonBuilder().create().toJson(transaction.outputMap);
+        assertTrue(ec.verifySignature(senderWallet.publicKey, serializedData, transaction.input.signature),
                 "signs the input");
     }
 

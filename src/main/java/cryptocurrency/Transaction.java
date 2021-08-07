@@ -14,11 +14,13 @@ import java.util.*;
  */
 public class Transaction {
 
-    private static final Logger LOGGER = Logger.getLogger("Transaction");
+    static final Logger LOGGER = Logger.getLogger("Transaction");
 
-    private UUID id;
-    private Map<String, BigDecimal> outputMap;
-    private Input input;
+    public UUID id;
+    public Map<String, BigDecimal> outputMap;
+    public Input input;
+
+    public Transaction() { }
 
     /** Only wallets should be able to create transactions */
     public Transaction(Wallet senderWallet, String recipient, BigDecimal amount) {
@@ -46,9 +48,9 @@ public class Transaction {
 
     /** Validate if the input amount is equal to the total values contained in the outputMap */
     public static boolean isValidTransaction(Transaction transaction) {
-        String address = transaction.getInput().address;
-        BigDecimal amount = transaction.getInput().amount;
-        String signature = transaction.getInput().signature;
+        String address = transaction.input.address;
+        BigDecimal amount = transaction.input.amount;
+        String signature = transaction.input.signature;
         Map<String, BigDecimal> outputMap = transaction.outputMap;
 
         BigDecimal outputTotal = MathUtil.calculateMapTotal(outputMap);
@@ -85,17 +87,5 @@ public class Transaction {
         this.outputMap.put(senderWallet.publicKey, newAmount);
 
         this.input = this.createInput(senderWallet, this.outputMap);
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public Map<String, BigDecimal> getOutputMap() {
-        return outputMap;
-    }
-
-    public Input getInput() {
-        return this.input;
     }
 }

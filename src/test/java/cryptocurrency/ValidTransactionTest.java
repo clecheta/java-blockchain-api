@@ -39,16 +39,16 @@ public class ValidTransactionTest {
 
     @Test
     void invalidOutputMap() {
-        BigDecimal rightBalanceAmount = transaction.getOutputMap().get(senderWallet.publicKey);
+        BigDecimal rightBalanceAmount = transaction.outputMap.get(senderWallet.publicKey);
         assertEquals(new BigDecimal(90), rightBalanceAmount);
 
-        transaction.getOutputMap().put("senderWallet.publicKey", new BigDecimal(100).negate());
+        transaction.outputMap.put("senderWallet.publicKey", new BigDecimal(100).negate());
         assertFalse(Transaction.isValidTransaction(transaction), "transaction outputMap value is invalid");
     }
 
     @Test
     void invalidSignature() {
-        transaction.getInput().signature = new Wallet().sign("fakeData");
+        transaction.input.signature = new Wallet().sign("fakeData");
         assertFalse(Transaction.isValidTransaction(transaction), "transaction input signature is invalid");
     }
 }

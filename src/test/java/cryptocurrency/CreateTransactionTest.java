@@ -50,13 +50,13 @@ public class CreateTransactionTest {
     @Test
     void matchesTransactionInput() {
         String expectedValue = wallet.publicKey;
-        String actualValue = transaction.getInput().address;
+        String actualValue = transaction.input.address;
         assertEquals(expectedValue, actualValue, "matches the transaction input with the wallet");
     }
 
     @Test
     void outputAmount() {
-        BigDecimal actualAmount = transaction.getOutputMap().get(recipient);
+        BigDecimal actualAmount = transaction.outputMap.get(recipient);
         assertEquals(amount, actualAmount, "outputs the amount the recipient");
 
     }

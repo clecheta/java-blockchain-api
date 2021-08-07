@@ -33,7 +33,9 @@ public class SubscribeService {
         }
     }
 
-    /** Avoid redundant interactions on replace chain */
+    /**
+     * Avoid redundant interactions on replace chain
+     */
     public Boolean isValidMessage(ChainMessage message) {
         String currentHost = NetUtil.getHostName();
         Boolean isValid = false;
@@ -47,7 +49,7 @@ public class SubscribeService {
     @Blocking
     /** Set the transaction within the local transaction pool */
     public void setTransaction(Transaction transaction) {
-        if (transaction!=null) {
+        if (transaction != null) {
             sharedService.transactionPool.setTransaction(transaction);
         }
     }

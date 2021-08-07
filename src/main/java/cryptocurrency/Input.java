@@ -13,6 +13,8 @@ public class Input {
     public String address;
     public String signature;
 
+    public Input() {}
+
     public Input(Date date, BigDecimal amount, String address, String signature) {
         this.date = date;
         this.amount = amount;
