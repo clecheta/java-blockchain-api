@@ -3,7 +3,9 @@ package api.blockchain.pubsub;
 import api.blockchain.SharedService;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
+import com.google.gson.GsonBuilder;
 import cryptocurrency.Transaction;
+import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
@@ -14,6 +16,7 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class SubscribeService {
 
+    public static final String profile = ProfileManager.getActiveProfile();
     private static final Logger LOGGER = Logger.getLogger("SubscribeService");
 
     @Inject
@@ -51,6 +54,11 @@ public class SubscribeService {
     public void setTransaction(Transaction transaction) {
         if (transaction != null) {
             sharedService.transactionPool.setTransaction(transaction);
+            if (!profile.startsWith("prod")) {
+                String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
+                        .create().toJson(sharedService.transactionPool);
+                LOGGER.info(serializedTransactionPool);
+            }
         }
     }
 

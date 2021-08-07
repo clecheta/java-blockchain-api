@@ -9,21 +9,21 @@ import java.util.stream.Collectors;
  */
 public class TransactionPool {
 
-    private Map<UUID, Transaction> transactionMap;
+    private Map<String, Transaction> transactionMap;
 
     public TransactionPool() {
-        this.transactionMap = new HashMap<UUID, Transaction>();
+        this.transactionMap = new HashMap<String, Transaction>();
     }
 
     public void clear() {
-        this.transactionMap = new HashMap<UUID, Transaction>();
+        this.transactionMap = new HashMap<String, Transaction>();
     }
 
     public void setTransaction(Transaction transaction) {
-        this.transactionMap.put(transaction.id, transaction);
+        this.transactionMap.put(transaction.id.toString(), transaction);
     }
 
-    public void setMap(Map<UUID, Transaction> transactionMap) {
+    public void setMap(Map<String, Transaction> transactionMap) {
         this.transactionMap = transactionMap;
     }
 
@@ -39,7 +39,7 @@ public class TransactionPool {
         return null;
     }
 
-    public Map<UUID, Transaction> getTransactionMap() {
+    public Map<String, Transaction> getTransactionMap() {
         return transactionMap;
     }
 }
