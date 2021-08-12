@@ -1,5 +1,6 @@
 package cryptocurrency.wallet;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,5 +42,14 @@ public class TransactionPool {
 
     public Map<String, Transaction> getTransactionMap() {
         return transactionMap;
+    }
+
+    /** Filter transactions in the poll in order to get only valid transactions
+     * based on the static method Transaction.isValidTransaction()  */
+    public List<Transaction> validTransactions() {
+        List<Transaction> transactions = transactionMap.values().stream()
+                .filter(transaction -> Transaction.isValidTransaction(transaction))
+                .collect(Collectors.toList());
+       return transactions;
     }
 }

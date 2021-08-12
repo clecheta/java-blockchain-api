@@ -89,4 +89,22 @@ public class Transaction {
 
         this.input = this.createInput(senderWallet, this.outputMap);
     }
+
+    //TODO: Make test for equals() and hasCode() comparison implementation
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Transaction)) return false;
+        Transaction that = (Transaction) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(outputMap, that.outputMap) &&
+                Objects.equals(input, that.input);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, outputMap, input);
+    }
+
 }

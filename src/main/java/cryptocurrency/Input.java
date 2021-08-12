@@ -2,6 +2,7 @@ package cryptocurrency;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Cleber Lecheta
@@ -20,5 +21,20 @@ public class Input {
         this.amount = amount;
         this.address = address;
         this.signature = signature;
+    }
+
+    //TODO: Make test for equals() and hasCode() comparison implementation
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Input)) return false;
+        Input input = (Input) o;
+        return Objects.equals(date, input.date) && Objects.equals(amount, input.amount) && Objects.equals(address, input.address) && Objects.equals(signature, input.signature);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, amount, address, signature);
     }
 }
