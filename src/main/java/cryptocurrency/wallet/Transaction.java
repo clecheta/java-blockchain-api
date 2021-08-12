@@ -4,6 +4,8 @@ import api.blockchain.util.EcUtil;
 import api.blockchain.util.MathUtil;
 import com.google.gson.GsonBuilder;
 import cryptocurrency.Input;
+import io.quarkus.runtime.configuration.ProfileManager;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.logging.Logger;
 
 import java.math.BigDecimal;
@@ -16,19 +18,29 @@ import java.util.*;
 public class Transaction {
 
     static final Logger LOGGER = Logger.getLogger("Transaction");
+    public static final String profile = ProfileManager.getActiveProfile();
 
     public UUID id;
     public Map<String, BigDecimal> outputMap;
     public Input input;
 
-    public Transaction() { }
+    public Transaction() {
+        this.id = UUID.randomUUID();
+    }
 
     /** Only wallets should be able to create transactions */
     public Transaction(Wallet senderWallet, String recipient, BigDecimal amount) {
-        this.id = UUID.randomUUID();
+        this();
         //use outputMap so that we can have more than one recipient in the transaction
         this.outputMap = createOutputMap(senderWallet, recipient, amount);
         this.input = createInput(senderWallet, this.outputMap);
+    }
+
+    /** Override constructor to work with mining transactions */
+    public Transaction(Map<String, BigDecimal> outputMap, Input input) {
+        this();
+        this.outputMap = outputMap;
+        this.input = input;
     }
 
     private Map createOutputMap(Wallet senderWallet, String recipient, BigDecimal amount) {
@@ -45,6 +57,13 @@ public class Transaction {
                 senderWallet.balance,
                 senderWallet.publicKey,
                 senderWallet.sign(outputMap));
+    }
+
+    public static Input createRewardInput(String inputAddress) {
+        return new Input(new Date(),
+                BigDecimal.ZERO,
+                inputAddress,
+                "");
     }
 
     /** Validate if the input amount is equal to the total values contained in the outputMap */
@@ -88,6 +107,19 @@ public class Transaction {
         this.outputMap.put(senderWallet.publicKey, newAmount);
 
         this.input = this.createInput(senderWallet, this.outputMap);
+    }
+
+    public static Transaction rewardTransaction(Wallet minerWallet) {
+        String REWARD_INPUT = ConfigProvider.getConfig().getValue("reward.input", String.class);
+        BigDecimal MINER_REWARD = BigDecimal.ZERO;
+        if (!profile.startsWith("prod")) {
+            MINER_REWARD = ConfigProvider.getConfig().getValue("mining.reward", BigDecimal.class);
+        }
+        Map<String, BigDecimal> outputMap = new HashMap<String, BigDecimal>();
+        outputMap.put(minerWallet.publicKey, MINER_REWARD);
+        Input input = createRewardInput(REWARD_INPUT);
+
+        return new Transaction(outputMap, input);
     }
 
     //TODO: Make test for equals() and hasCode() comparison implementation

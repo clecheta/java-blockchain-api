@@ -4,6 +4,7 @@ import cryptocurrency.wallet.Transaction;
 import cryptocurrency.wallet.TransactionPool;
 import cryptocurrency.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,14 +24,14 @@ public class ValidTransactionsTest {
     private static final String anyRecipient = "any-recipient-public-key";
     BigDecimal tooHighAmount = new BigDecimal(999999);
 
-    TransactionPool transactionPool;
-    Transaction transaction;
-    Wallet senderWallet;
+    static TransactionPool transactionPool;
+    static Transaction transaction;
+    static Wallet senderWallet;
 
     List<Transaction> validTransactions;
 
-    @BeforeEach
-    void init() {
+    @BeforeAll
+    static void init() {
         transactionPool = new TransactionPool();
         senderWallet = new Wallet();
         transaction = new Transaction(
@@ -38,8 +39,10 @@ public class ValidTransactionsTest {
                 anyRecipient,
                 new BigDecimal(15)
         );
+    }
 
-        //
+    @BeforeEach
+    void setup() {
         validTransactions = new ArrayList<Transaction>();
 
         // mock valid and invalid transactions
