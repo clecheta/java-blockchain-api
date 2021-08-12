@@ -1,4 +1,4 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import java.util.*;
 import java.util.stream.Collectors;

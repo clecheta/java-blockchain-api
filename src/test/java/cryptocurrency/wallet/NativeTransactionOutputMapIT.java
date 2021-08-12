@@ -1,4 +1,4 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import io.quarkus.test.junit.NativeImageTest;
 

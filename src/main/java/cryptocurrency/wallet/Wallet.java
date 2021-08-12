@@ -1,4 +1,4 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;

@@ -3,7 +3,7 @@ package api.blockchain;
 import api.blockchain.model.TransactCommand;
 import api.blockchain.pubsub.PublishService;
 import com.google.gson.GsonBuilder;
-import cryptocurrency.Transaction;
+import cryptocurrency.wallet.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;

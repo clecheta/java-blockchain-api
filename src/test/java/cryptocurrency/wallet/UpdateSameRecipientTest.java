@@ -1,6 +1,8 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import api.blockchain.util.MathUtil;
+import cryptocurrency.wallet.Transaction;
+import cryptocurrency.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeAll;

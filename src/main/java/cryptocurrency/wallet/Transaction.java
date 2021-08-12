@@ -1,8 +1,9 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import api.blockchain.util.EcUtil;
 import api.blockchain.util.MathUtil;
 import com.google.gson.GsonBuilder;
+import cryptocurrency.Input;
 import org.jboss.logging.Logger;
 
 import java.math.BigDecimal;

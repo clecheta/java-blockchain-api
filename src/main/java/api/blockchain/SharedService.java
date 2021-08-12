@@ -1,8 +1,8 @@
 package api.blockchain;
 
 import com.R07r35cInc.NetChain;
-import cryptocurrency.TransactionPool;
-import cryptocurrency.Wallet;
+import cryptocurrency.wallet.TransactionPool;
+import cryptocurrency.wallet.Wallet;
 
 import javax.inject.Singleton;
 

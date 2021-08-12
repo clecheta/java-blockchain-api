@@ -1,6 +1,6 @@
 package api.blockchain.model;
 
-import cryptocurrency.Transaction;
+import cryptocurrency.wallet.Transaction;
 import io.quarkus.kafka.client.serialization.JsonbDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

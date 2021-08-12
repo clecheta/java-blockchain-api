@@ -1,8 +1,9 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import api.blockchain.util.MathUtil;
+import cryptocurrency.wallet.Transaction;
+import cryptocurrency.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

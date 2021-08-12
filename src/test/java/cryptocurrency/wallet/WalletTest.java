@@ -1,7 +1,8 @@
-package cryptocurrency;
+package cryptocurrency.wallet;
 
 import api.blockchain.util.EcUtil;
 import com.google.gson.GsonBuilder;
+import cryptocurrency.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;

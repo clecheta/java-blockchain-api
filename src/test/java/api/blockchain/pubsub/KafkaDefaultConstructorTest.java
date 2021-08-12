@@ -2,7 +2,7 @@ package api.blockchain.pubsub;
 
 import com.R07r35cInc.Block;
 import cryptocurrency.Input;
-import cryptocurrency.Transaction;
+import cryptocurrency.wallet.Transaction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +26,7 @@ public class KafkaDefaultConstructorTest {
     void transactionHasDefaultConstructor() {
         Transaction transaction = new Transaction();
         assertNotNull(transaction);
-        assertTrue(transaction instanceof cryptocurrency.Transaction);
+        assertTrue(transaction instanceof Transaction);
     }
 
     @Test

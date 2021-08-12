@@ -4,7 +4,7 @@ import api.blockchain.SharedService;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
 import com.google.gson.GsonBuilder;
-import cryptocurrency.Transaction;
+import cryptocurrency.wallet.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
