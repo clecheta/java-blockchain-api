@@ -1,5 +1,7 @@
 package cryptocurrency.wallet;
 
+import com.R07r35cInc.Block;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,5 +53,23 @@ public class TransactionPool {
                 .filter(transaction -> Transaction.isValidTransaction(transaction))
                 .collect(Collectors.toList());
        return transactions;
+    }
+
+    public void clearBlockchainTransactions(List<Block> chainBlockList) {
+        for (int i=0; i<chainBlockList.size(); i++) {
+            Block block = chainBlockList.get(i);
+            try {
+                List<Transaction> transactionList = (List<Transaction>) block.getData();
+                for (Transaction transaction: transactionList) {
+                    if (this.transactionMap.containsKey(transaction.id.toString())) {
+                        this.transactionMap.remove(transaction.id.toString());
+                    }
+                }
+            } catch (ClassCastException cce) {
+                if (block.getData()!=Block.genesis().getData()) {
+                    throw new RuntimeException("error cleaning blockchain transactions from the pool");
+                }
+            }
+        }
     }
 }
