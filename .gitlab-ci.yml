@@ -2,9 +2,19 @@ stages:
   - test
   - build
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 before_script:
   - echo "before script"
   - echo $CI_COMMIT_BRANCH
+
+code_quality:
+  services: # Shut off Docker-in-Docker
+  tags:
+    - cq-sans-dind # Set this job to only run on our specialized runner
+  artifacts:
+    paths: [gl-code-quality-report.json]
 
 integration:
   stage: test
