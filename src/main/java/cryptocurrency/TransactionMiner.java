@@ -1,17 +1,27 @@
 package cryptocurrency;
 
-import api.blockchain.SharedService;
+import api.blockchain.Blockchain;
+import cryptocurrency.wallet.TransactionPool;
+import cryptocurrency.wallet.Wallet;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 /**
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
+@ApplicationScoped
 public class TransactionMiner {
 
+    /** Main transaction pool for the application */
+    public TransactionPool transactionPool = new TransactionPool();
+
+    /** Wallet instance for the overall application */
+    public Wallet wallet = new Wallet();
+
     @Inject
-    SharedService sharedService;
+    Blockchain blockchain;
 
     /** All necessary functionality to add a block of transaction poll data to the blockchain */
     void mineTransaction() {

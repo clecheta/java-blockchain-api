@@ -1,9 +1,10 @@
 package api.blockchain.pubsub;
 
-import api.blockchain.SharedService;
+import api.blockchain.Blockchain;
 import api.blockchain.model.ChainMessage;
 import api.blockchain.util.NetUtil;
 import com.google.gson.GsonBuilder;
+import cryptocurrency.TransactionMiner;
 import cryptocurrency.wallet.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
@@ -20,7 +21,10 @@ public class SubscribeService {
     private static final Logger LOGGER = Logger.getLogger("SubscribeService");
 
     @Inject
-    SharedService sharedService;
+    Blockchain blockchain;
+
+    @Inject
+    TransactionMiner miner;
 
     @Incoming("blockchain-in")
     @Blocking
@@ -29,7 +33,7 @@ public class SubscribeService {
         LOGGER.infof("new message come from _%s", message.from);
         if (isValidMessage(message)) {
             try {
-                sharedService.blockchain.replaceChain(message.chain);
+                blockchain.chain.replaceChain(message.chain);
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }
@@ -53,10 +57,10 @@ public class SubscribeService {
     /** Set the transaction within the local transaction pool */
     public void setTransaction(Transaction transaction) {
         if (transaction != null) {
-            sharedService.transactionPool.setTransaction(transaction);
+            miner.transactionPool.setTransaction(transaction);
             if (!profile.startsWith("prod")) {
                 String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
-                        .create().toJson(sharedService.transactionPool);
+                        .create().toJson(miner.transactionPool);
                 LOGGER.info(serializedTransactionPool);
             }
         }

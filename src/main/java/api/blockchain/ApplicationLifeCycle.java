@@ -5,6 +5,7 @@ import com.R07r35cInc.Block;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import cryptocurrency.TransactionMiner;
 import cryptocurrency.wallet.Transaction;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -40,7 +41,9 @@ public class ApplicationLifeCycle {
             .connectTimeout(Duration.ofSeconds(60))
             .build();
     @Inject
-    SharedService sharedService;
+    Blockchain blockchain;
+    @Inject
+    TransactionMiner miner;
     @ConfigProperty(name = "root.node.address")
     private String ROOT_NODE_ADDRESS;
 
@@ -64,7 +67,7 @@ public class ApplicationLifeCycle {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 Block[] blocks = gson.fromJson(response.body().toString(), Block[].class);
                 List<Block> blockList = Arrays.asList(blocks);
-                sharedService.blockchain.replaceChain(blockList);
+                blockchain.chain.replaceChain(blockList);
 
                 if (!profile.startsWith("prod")) {
                     LOGGER.warn("replace chain on a sync with ROOT");
@@ -87,7 +90,7 @@ public class ApplicationLifeCycle {
                 Gson gson = new GsonBuilder().create();
                 Type type = new TypeToken<Map<String, Transaction>>(){}.getType();
                 Map<String, Transaction> rootTransactionPoolMap = gson.fromJson(response.body().toString(), type);
-                sharedService.transactionPool.setMap(rootTransactionPoolMap);
+                miner.transactionPool.setMap(rootTransactionPoolMap);
 
                 if (!profile.startsWith("prod")) {
                     LOGGER.warn("replace transaction pool map on a sync with ROOT");

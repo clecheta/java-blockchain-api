@@ -48,7 +48,7 @@ public class ClearTransactionPoolTest {
 
     @Test
     void clearBlockchainTransactionsOnly() {
-        NetChain<List<Transaction>> blockchain = new NetChain<List<Transaction>>();
+        NetChain blockchain = new NetChain();
         Map<String, Transaction> expectedTransactionMap = new HashMap<String, Transaction>();
         for (int i=0; i<6; i++) {
             Transaction transaction = new Wallet().createTransaction("foo", new BigDecimal(20));

@@ -1,5 +1,6 @@
-package api.blockchain;
+package cryptocurrency;
 
+import api.blockchain.Blockchain;
 import api.blockchain.model.TransactCommand;
 import api.blockchain.pubsub.PublishService;
 import com.google.gson.GsonBuilder;
@@ -26,7 +27,10 @@ public class PoolResource {
     private static final Logger LOGGER = Logger.getLogger("PoolResource");
 
     @Inject
-    SharedService sharedService;
+    Blockchain blockchain;
+
+    @Inject
+    TransactionMiner miner;
 
     @Inject
     PublishService publisher;
@@ -37,22 +41,22 @@ public class PoolResource {
     /** creates a new transaction and add it to the transaction pool */
     public Response transact(TransactCommand cmd) {
         try {
-            Transaction transaction = sharedService.transactionPool.existingTransaction(sharedService.wallet.publicKey);
+            Transaction transaction = miner.transactionPool.existingTransaction(miner.wallet.publicKey);
 
             if (transaction != null) {
                 //when the transaction already exists in the pool, call update instead of create a new transaction
-                transaction.update(sharedService.wallet, cmd.recipient, cmd.amount);
+                transaction.update(miner.wallet, cmd.recipient, cmd.amount);
             } else {
                 //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
-                transaction = sharedService.wallet.createTransaction(cmd.recipient, cmd.amount);
+                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount);
             }
 
-            sharedService.transactionPool.setTransaction(transaction);
+            miner.transactionPool.setTransaction(transaction);
             publisher.broadcastTransaction(transaction);
 
             if (!profile.startsWith("prod")) {
                 String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
-                        .create().toJson(sharedService.transactionPool);
+                        .create().toJson(miner.transactionPool);
                 LOGGER.info(serializedTransactionPool);
             }
             return Response.ok(transaction).build();
@@ -67,7 +71,7 @@ public class PoolResource {
     @Produces("application/json")
     @Path("7r4n54C7ioNM4p")
     public Response transactionMap() {
-        return Response.ok(sharedService.transactionPool.getTransactionMap()).build();
+        return Response.ok(miner.transactionPool.getTransactionMap()).build();
     }
 
 }

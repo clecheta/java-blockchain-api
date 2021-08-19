@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 public class ChainResource {
 
     @Inject
-    SharedService sharedService;
+    Blockchain blockchain;
 
     @Inject
     PublishService publisher;
@@ -27,16 +27,16 @@ public class ChainResource {
     @Produces("application/json")
     @Path("8l0cx")
     public Response blocks() {
-        return Response.ok(sharedService.blockchain.getChain()).build();
+        return Response.ok(blockchain.chain.getChain()).build();
     }
 
     @POST
     @Produces("application/json")
     @Path("M1n3")
     public Response mine(Object data) throws JsonProcessingException {
-        sharedService.blockchain.addBlock(data);
-        publisher.broadcastChain(sharedService.blockchain.getChain());
-        return Response.ok(sharedService.blockchain.getChain()).build();
+        blockchain.chain.addBlock(data);
+        publisher.broadcastChain(blockchain.chain.getChain());
+        return Response.ok(blockchain.chain.getChain()).build();
     }
 
 }

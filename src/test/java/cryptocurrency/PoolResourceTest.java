@@ -1,4 +1,4 @@
-package api.blockchain;
+package cryptocurrency;
 
 import api.blockchain.model.TransactCommand;
 import io.quarkus.test.junit.QuarkusTest;

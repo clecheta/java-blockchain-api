@@ -1,5 +1,6 @@
 package api.blockchain;
 
+import cryptocurrency.PoolResourceTest;
 import io.quarkus.test.junit.NativeImageTest;
 
 @NativeImageTest
