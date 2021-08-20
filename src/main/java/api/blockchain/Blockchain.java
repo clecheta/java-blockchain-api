@@ -1,6 +1,6 @@
 package api.blockchain;
 
-import com.R07r35cInc.NetChain;
+import com.R07r35cInc.blockchain.NetChain;
 
 import javax.inject.Singleton;
 

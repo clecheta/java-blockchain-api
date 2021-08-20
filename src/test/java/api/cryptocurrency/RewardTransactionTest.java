@@ -1,7 +1,8 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
-import cryptocurrency.wallet.Transaction;
-import cryptocurrency.wallet.Wallet;
+import com.R07r35cInc.wallet.Input;
+import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Cleber Lecheta
@@ -18,14 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @QuarkusTest
 public class RewardTransactionTest {
 
-    @ConfigProperty(name = "reward.input")
-    private String REWARD_INPUT;
-
-    @ConfigProperty(name = "mining.reward")
-    private BigDecimal MINING_REWARD;
-
     static Wallet minerWallet;
     static Transaction rewardTransaction;
+    @ConfigProperty(name = "reward.input")
+    private String REWARD_INPUT;
+    @ConfigProperty(name = "mining.reward")
+    private BigDecimal MINING_REWARD;
 
     @BeforeEach
     void init() {

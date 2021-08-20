@@ -6,6 +6,10 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @QuarkusTest
 public class ChainResourceTest {
 

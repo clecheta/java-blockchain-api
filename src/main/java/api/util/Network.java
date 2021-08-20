@@ -1,11 +1,15 @@
-package api.blockchain.util;
+package api.util;
 
 import io.quarkus.runtime.configuration.ProfileManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class NetUtil {
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
+public class Network {
 
     public static final String profile = ProfileManager.getActiveProfile();
 

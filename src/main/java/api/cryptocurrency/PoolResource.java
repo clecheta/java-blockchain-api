@@ -1,10 +1,10 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
 import api.blockchain.Blockchain;
 import api.blockchain.model.TransactCommand;
 import api.blockchain.pubsub.PublishService;
-import com.google.gson.GsonBuilder;
-import cryptocurrency.wallet.Transaction;
+import com.R07r35cInc.util.Parse;
+import com.R07r35cInc.wallet.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
@@ -55,8 +55,7 @@ public class PoolResource {
             publisher.broadcastTransaction(transaction);
 
             if (!profile.startsWith("prod")) {
-                String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
-                        .create().toJson(miner.transactionPool);
+                String serializedTransactionPool = new Parse().toJson(miner.transactionPool);
                 LOGGER.info(serializedTransactionPool);
             }
             return Response.ok(transaction).build();

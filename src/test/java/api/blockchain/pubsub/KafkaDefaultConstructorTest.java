@@ -1,11 +1,12 @@
 package api.blockchain.pubsub;
 
-import com.R07r35cInc.Block;
-import cryptocurrency.Input;
-import cryptocurrency.wallet.Transaction;
+import com.R07r35cInc.blockchain.Block;
+import com.R07r35cInc.wallet.Input;
+import com.R07r35cInc.wallet.Transaction;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * In order to broadcast an object in a kafka channel it must have a public constructor
@@ -17,9 +18,9 @@ public class KafkaDefaultConstructorTest {
 
     @Test
     void blockHasDefaultConstructor() {
-        Block block = new Block();
+        Object block = new Block();
         assertNotNull(block);
-        assertTrue(block instanceof com.R07r35cInc.Block);
+        assertTrue(block instanceof com.R07r35cInc.blockchain.Block);
     }
 
     @Test
@@ -31,9 +32,9 @@ public class KafkaDefaultConstructorTest {
 
     @Test
     void inputHasDefaultConstructor() {
-        Input input = new Input();
+        Object input = new Input();
         assertNotNull(input);
-        assertTrue(input instanceof cryptocurrency.Input);
+        assertTrue(input instanceof com.R07r35cInc.wallet.Input);
     }
 
 }

@@ -1,4 +1,4 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
 import api.blockchain.model.TransactCommand;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,6 +14,10 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @QuarkusTest
 public class PoolResourceTest {
 

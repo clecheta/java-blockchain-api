@@ -1,10 +1,10 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
 import api.blockchain.Blockchain;
 import api.blockchain.pubsub.PublishService;
-import cryptocurrency.wallet.Transaction;
-import cryptocurrency.wallet.TransactionPool;
-import cryptocurrency.wallet.Wallet;
+import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.wallet.TransactionPool;
+import com.R07r35cInc.wallet.Wallet;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,10 +17,14 @@ import java.util.List;
 @Singleton
 public class TransactionMiner {
 
-    /** Main transaction pool for the application */
+    /**
+     * Main transaction pool for the application
+     */
     public TransactionPool transactionPool = new TransactionPool();
 
-    /** Wallet instance for the overall application */
+    /**
+     * Wallet instance for the overall application
+     */
     public Wallet wallet = new Wallet();
 
     @Inject
@@ -29,11 +33,13 @@ public class TransactionMiner {
     @Inject
     PublishService publisher;
 
-    /** All necessary functionality to add a block of transaction poll data to the blockchain */
+    /**
+     * All necessary functionality to add a block of transaction poll data to the blockchain
+     */
     void mineTransactions() {
         //1. get the transaction pool's valid transactions @See ValidTransactionsTest
         List<Transaction> validTransactions = this.transactionPool.validTransactions();
-        if (validTransactions.size()==0) {
+        if (validTransactions.size() == 0) {
             throw new RuntimeException("no valid transactions found, do not mine");
         }
 

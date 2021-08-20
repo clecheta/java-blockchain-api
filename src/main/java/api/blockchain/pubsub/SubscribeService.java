@@ -2,10 +2,10 @@ package api.blockchain.pubsub;
 
 import api.blockchain.Blockchain;
 import api.blockchain.model.ChainMessage;
-import api.blockchain.util.NetUtil;
-import com.google.gson.GsonBuilder;
-import cryptocurrency.TransactionMiner;
-import cryptocurrency.wallet.Transaction;
+import api.util.Network;
+import com.R07r35cInc.util.Parse;
+import com.R07r35cInc.wallet.Transaction;
+import api.cryptocurrency.TransactionMiner;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -14,6 +14,10 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @ApplicationScoped
 public class SubscribeService {
 
@@ -44,7 +48,7 @@ public class SubscribeService {
      * Avoid redundant interactions on replace chain
      */
     public Boolean isValidMessage(ChainMessage message) {
-        String currentHost = NetUtil.getHostName();
+        String currentHost = Network.getHostName();
         Boolean isValid = false;
         if (message != null && message.from != null && message.chain != null) {
             isValid = !message.from.equals(currentHost);
@@ -59,8 +63,7 @@ public class SubscribeService {
         if (transaction != null) {
             miner.transactionPool.setTransaction(transaction);
             if (!profile.startsWith("prod")) {
-                String serializedTransactionPool = new GsonBuilder().setPrettyPrinting()
-                        .create().toJson(miner.transactionPool);
+                String serializedTransactionPool = new Parse().toJson(miner.transactionPool);
                 LOGGER.info(serializedTransactionPool);
             }
         }

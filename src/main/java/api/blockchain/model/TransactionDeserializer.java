@@ -1,9 +1,13 @@
 package api.blockchain.model;
 
-import cryptocurrency.wallet.Transaction;
+import com.R07r35cInc.wallet.Transaction;
 import io.quarkus.kafka.client.serialization.JsonbDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @RegisterForReflection
 public class TransactionDeserializer extends JsonbDeserializer<Transaction> {
 

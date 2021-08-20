@@ -1,4 +1,4 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
 import api.blockchain.Blockchain;
 

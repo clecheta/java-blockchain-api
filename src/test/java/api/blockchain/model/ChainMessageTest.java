@@ -9,6 +9,10 @@ import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @QuarkusTest
 public class ChainMessageTest {
 

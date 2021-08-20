@@ -1,8 +1,8 @@
 package api.blockchain.pubsub;
 
 import api.blockchain.model.ChainMessage;
-import api.blockchain.util.NetUtil;
-import com.R07r35cInc.Block;
+import api.util.Network;
+import com.R07r35cInc.blockchain.Block;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
 @QuarkusTest
 public class SubscribeServiceTest {
 
@@ -20,7 +24,7 @@ public class SubscribeServiceTest {
 
     @Test
     void isValidMessage() {
-        String master = NetUtil.getHostName();
+        String master = Network.getHostName();
         String node = "node";
 
         ChainMessage message = new ChainMessage();

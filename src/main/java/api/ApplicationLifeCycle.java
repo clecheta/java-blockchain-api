@@ -1,12 +1,11 @@
-package api.blockchain;
+package api;
 
-import api.blockchain.util.NetUtil;
-import com.R07r35cInc.Block;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import cryptocurrency.TransactionMiner;
-import cryptocurrency.wallet.Transaction;
+import api.blockchain.Blockchain;
+import api.util.Network;
+import api.cryptocurrency.TransactionMiner;
+import com.R07r35cInc.blockchain.Block;
+import com.R07r35cInc.util.Parse;
+import com.R07r35cInc.wallet.Transaction;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.runtime.configuration.ProfileManager;
@@ -25,7 +24,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.lang.reflect.Type;
 
 /**
  * @author Cleber Lecheta
@@ -34,8 +32,8 @@ import java.lang.reflect.Type;
 @ApplicationScoped
 public class ApplicationLifeCycle {
 
-    private static final Logger LOGGER = Logger.getLogger("ApplicationLifeCycle");
     public static final String profile = ProfileManager.getActiveProfile();
+    private static final Logger LOGGER = Logger.getLogger("ApplicationLifeCycle");
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(60))
@@ -48,14 +46,14 @@ public class ApplicationLifeCycle {
     private String ROOT_NODE_ADDRESS;
 
     void onStart(@Observes StartupEvent ev) {
-        LOGGER.info("Blockchain network node _" + NetUtil.getHostName() + " is starting...");
+        LOGGER.info("Blockchain network node _" + Network.getHostName() + " is starting...");
         //syncing with root state
         syncChains();
         syncTransactionPollMap();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
-        LOGGER.info("Blockchain network node _" + NetUtil.getHostName() + " stopped.");
+        LOGGER.info("Blockchain network node _" + Network.getHostName() + " stopped.");
     }
 
     private void syncChains() {
@@ -64,8 +62,8 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                Block[] blocks = gson.fromJson(response.body().toString(), Block[].class);
+                Parse<Block[]> parse = new Parse(Block[].class);
+                Block[] blocks = parse.fromJson(response.body().toString());
                 List<Block> blockList = Arrays.asList(blocks);
                 blockchain.chain.replaceChain(blockList);
 
@@ -87,9 +85,9 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Gson gson = new GsonBuilder().create();
-                Type type = new TypeToken<Map<String, Transaction>>(){}.getType();
-                Map<String, Transaction> rootTransactionPoolMap = gson.fromJson(response.body().toString(), type);
+                Map<String, Transaction> rootTransactionPoolMap = null;
+                Parse<Map<String, Transaction>> parse = new Parse(rootTransactionPoolMap.getClass());
+                rootTransactionPoolMap = parse.fromJson(response.body().toString());
                 miner.transactionPool.setMap(rootTransactionPoolMap);
 
                 if (!profile.startsWith("prod")) {

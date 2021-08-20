@@ -1,9 +1,9 @@
-package cryptocurrency;
+package api.cryptocurrency;
 
-import com.R07r35cInc.NetChain;
-import cryptocurrency.wallet.Transaction;
-import cryptocurrency.wallet.TransactionPool;
-import cryptocurrency.wallet.Wallet;
+import com.R07r35cInc.blockchain.NetChain;
+import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.wallet.TransactionPool;
+import com.R07r35cInc.wallet.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Cleber Lecheta
@@ -43,17 +44,17 @@ public class ClearTransactionPoolTest {
     @Test
     void clearAllTransactions() {
         transactionPool.clear();
-        assertTrue(transactionPool.getTransactionMap().size()==0, "clears the transactions");
+        assertTrue(transactionPool.getTransactionMap().size() == 0, "clears the transactions");
     }
 
     @Test
     void clearBlockchainTransactionsOnly() {
         NetChain blockchain = new NetChain();
         Map<String, Transaction> expectedTransactionMap = new HashMap<String, Transaction>();
-        for (int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             Transaction transaction = new Wallet().createTransaction("foo", new BigDecimal(20));
             transactionPool.setTransaction(transaction);
-            if (i%2==0) { //even
+            if (i % 2 == 0) { //even
                 List<Transaction> transactionList = new ArrayList<Transaction>();
                 transactionList.add(transaction);
                 blockchain.addBlock(transactionList);
@@ -65,7 +66,7 @@ public class ClearTransactionPoolTest {
         transactionPool.clearBlockchainTransactions(blockchain.getChain());
         assertEquals(expectedTransactionMap, transactionPool.getTransactionMap(),
                 "clears the pool of any existing blockchain transactions");
-        assertTrue(expectedTransactionMap.size()==transactionPool.getTransactionMap().size(),
+        assertTrue(expectedTransactionMap.size() == transactionPool.getTransactionMap().size(),
                 "transaction pool map size must match");
     }
 
