@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,17 +20,8 @@ public class BlockchainMessageTest {
     @Test
     void testFields() {
         Field[] fields = BlockchainMessage.class.getDeclaredFields();
-        assertTrue(fields.length == 2, "class fields violated");
-        for (Field f : fields) {
-            if (f.getName().equals("from")) {
-                assertEquals(0, f.toGenericString().indexOf("public"));
-                assertEquals(true, f.toGenericString().contains("String"));
-                break;
-            } else if (f.getName().equals("chain")) {
-                assertEquals(0, f.toGenericString().indexOf("public"));
-                assertEquals(true, f.toGenericString().contains("List<Block>"));
-            }
-        }
+        assertTrue(fields.length == 1, "class fields violated");
+        assertEquals(true, Arrays.stream(fields).anyMatch(f -> f.getName().equals("chain")));
     }
 
     @Test
@@ -42,7 +34,7 @@ public class BlockchainMessageTest {
     @Test
     void testMethods() {
         Method[] methods = BlockchainMessage.class.getDeclaredMethods();
-        assertTrue(methods.length == 1, "this class should not have any method");
+        assertTrue(methods.length == 2, "this class should implement getChain()");
     }
 
 }

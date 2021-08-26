@@ -13,7 +13,11 @@ import java.util.List;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class BlockchainMessage<T> {
-    public String from;
+public class BlockchainMessage<T> extends ChainMessage<Block<T>> {
     public List<Block<T>> chain;
+
+    @Override
+    public List<Block<T>> getChain() {
+        return this.chain;
+    }
 }

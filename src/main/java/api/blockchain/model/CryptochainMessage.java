@@ -14,12 +14,11 @@ import java.util.List;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class CryptochainMessage {
-    public String from;
+public class CryptochainMessage extends ChainMessage<Block<List<Transaction>>> {
     public List<Block<List<Transaction>>> chain;
 
-    /*
-    Unable to deserialize property 'chain' because of: Unable to deserialize property 'data'
-     because of: Error deserialize JSON value into type: java.util.List<com.R07r35cInc.wallet.Transaction>
-     */
+    @Override
+    public List<Block<List<Transaction>>> getChain() {
+        return this.chain;
+    }
 }

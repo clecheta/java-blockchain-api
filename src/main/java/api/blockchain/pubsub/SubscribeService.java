@@ -2,11 +2,11 @@ package api.blockchain.pubsub;
 
 import api.blockchain.Blockchain;
 import api.blockchain.model.BlockchainMessage;
+import api.blockchain.model.ChainMessage;
 import api.blockchain.model.CryptochainMessage;
-import api.util.Network;
+import api.cryptocurrency.TransactionMiner;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.wallet.Transaction;
-import api.cryptocurrency.TransactionMiner;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -34,27 +34,8 @@ public class SubscribeService {
     @Incoming("blockchain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceChain(BlockchainMessage message) {
-        LOGGER.infof("new message come from _%s", message.from);
-        if (isValidMessage(message)) {
-            try {
-                blockchain.chain.replaceChain(message.chain);
-            } catch (RuntimeException re) {
-                LOGGER.error(re.getMessage());
-            }
-        }
-    }
-
-    /**
-     * Avoid redundant interactions on replace chain
-     */
-    public Boolean isValidMessage(BlockchainMessage message) {
-        String currentHost = Network.getHostName();
-        Boolean isValid = false;
-        if (message != null && message.from != null && message.chain != null) {
-            isValid = !message.from.equals(currentHost);
-        }
-        return isValid;
+    public void replaceBlockchain(BlockchainMessage message) {
+        replaceChain(message);
     }
 
     @Incoming("transaction-in")
@@ -72,12 +53,18 @@ public class SubscribeService {
     @Incoming("cryptochain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceChain(CryptochainMessage message) {
-        LOGGER.infof("new crypto come from _%s", message.from);
-        try {
-            blockchain.chain.replaceChain(message.chain);
-        } catch (RuntimeException re) {
-            LOGGER.error(re.getMessage());
+    public void replaceCryptochain(CryptochainMessage message) {
+        replaceChain(message);
+    }
+
+    private void replaceChain(ChainMessage message) {
+        if (message.isValid()) {
+            LOGGER.infof("new message come from _%s", message.from);
+            try {
+                blockchain.chain.replaceChain(message.getChain());
+            } catch (RuntimeException re) {
+                LOGGER.error(re.getMessage());
+            }
         }
     }
 
