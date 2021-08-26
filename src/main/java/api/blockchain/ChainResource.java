@@ -1,6 +1,7 @@
 package api.blockchain;
 
 import api.blockchain.pubsub.PublishService;
+import com.R07r35cInc.util.Parse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.inject.Inject;
@@ -27,7 +28,8 @@ public class ChainResource {
     @Produces("application/json")
     @Path("8l0cx")
     public Response blocks() {
-        return Response.ok(blockchain.chain.getChain()).build();
+        String jsonChain = Parse.toJson(blockchain.chain.getChain());
+        return Response.ok(jsonChain).build();
     }
 
     @POST

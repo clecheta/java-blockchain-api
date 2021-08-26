@@ -70,7 +70,8 @@ public class PoolResource {
     @Produces("application/json")
     @Path("7r4n54C7ioNM4p")
     public Response transactionMap() {
-        return Response.ok(miner.transactionPool.getTransactionMap()).build();
+        String jsonTransactionMap = Parse.toJson(miner.transactionPool.getTransactionMap());
+        return Response.ok(jsonTransactionMap).build();
     }
 
 }

@@ -1,14 +1,14 @@
 package api;
 
 import api.blockchain.Blockchain;
-import api.util.Network;
 import api.cryptocurrency.TransactionMiner;
+import api.util.Network;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.wallet.Transaction;
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
-import io.quarkus.runtime.configuration.ProfileManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
@@ -21,7 +21,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +31,6 @@ import java.util.Map;
 @ApplicationScoped
 public class ApplicationLifeCycle {
 
-    public static final String profile = ProfileManager.getActiveProfile();
     private static final Logger LOGGER = Logger.getLogger("ApplicationLifeCycle");
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -62,20 +60,17 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Parse<Block[]> parse = new Parse(Block[].class);
-                Block[] blocks = parse.fromJson(response.body().toString());
-                List<Block> blockList = Arrays.asList(blocks);
-                blockchain.chain.replaceChain(blockList);
+                Parse<List<Block>> parse = new Parse();
+                List<Block> blockList = parse.fromJson(response.body().toString(),
+                        new TypeReference<List<Block>>() {});
 
-                if (!profile.startsWith("prod")) {
-                    LOGGER.warn("replace chain on a sync with ROOT");
-                    LOGGER.warn(blocks);
-                }
+                LOGGER.info("Sync chain with ROOT");
+                blockchain.chain.replaceChain(blockList);
             }
         } catch (ConnectException ce) {
             //do nothing we probably are in the ROOT node
         } catch (Exception e) {
-            LOGGER.error("Sync Chain on Connect FAILED: " + e.getMessage());
+            LOGGER.error("Sync chain on connect FAILED: " + e.getMessage());
         }
     }
 
@@ -85,14 +80,12 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Map<String, Transaction> rootTransactionPoolMap = null;
-                Parse<Map<String, Transaction>> parse = new Parse(rootTransactionPoolMap.getClass());
-                rootTransactionPoolMap = parse.fromJson(response.body().toString());
-                miner.transactionPool.setMap(rootTransactionPoolMap);
+                Parse<Map<String, Transaction>> parse = new Parse();
+                Map<String, Transaction> rootTransactionPoolMap = parse.fromJson(response.body().toString(),
+                        new TypeReference<Map<String, Transaction>>() {});
 
-                if (!profile.startsWith("prod")) {
-                    LOGGER.warn("replace transaction pool map on a sync with ROOT");
-                }
+                LOGGER.info("Sync transaction pool with ROOT");
+                miner.transactionPool.setMap(rootTransactionPoolMap);
             }
         } catch (ConnectException ce) {
             //do nothing we probably are in the ROOT node
