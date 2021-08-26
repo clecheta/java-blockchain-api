@@ -1,6 +1,6 @@
 package api.blockchain.pubsub;
 
-import api.blockchain.model.ChainMessage;
+import api.blockchain.model.BlockchainMessage;
 import api.util.Network;
 import com.R07r35cInc.blockchain.Block;
 import io.quarkus.test.junit.QuarkusTest;
@@ -27,7 +27,7 @@ public class SubscribeServiceTest {
         String master = Network.getHostName();
         String node = "node";
 
-        ChainMessage message = new ChainMessage();
+        BlockchainMessage message = new BlockchainMessage();
         assertFalse(subscriber.isValidMessage(message), "missing required fields");
         message.from = master;
         assertFalse(subscriber.isValidMessage(message), "missing chain");

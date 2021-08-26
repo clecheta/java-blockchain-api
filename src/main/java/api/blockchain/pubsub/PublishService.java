@@ -1,6 +1,7 @@
 package api.blockchain.pubsub;
 
-import api.blockchain.model.ChainMessage;
+import api.blockchain.model.BlockchainMessage;
+import api.blockchain.model.CryptochainMessage;
 import api.util.Network;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.wallet.Transaction;
@@ -22,15 +23,20 @@ public class PublishService {
     @Inject
     @Broadcast
     @Channel("blockchain-to-kafka")
-    Emitter<ChainMessage> blockchainEmitter;
+    Emitter<BlockchainMessage> blockchainEmitter;
 
     @Inject
     @Broadcast
     @Channel("transaction-to-kafka")
     Emitter<Transaction> transactionEmitter;
 
+    @Inject
+    @Broadcast
+    @Channel("cryptochain-to-kafka")
+    Emitter<CryptochainMessage> cryptochainEmitter;
+
     public void broadcastChain(List<Block> nodeBlocks) {
-        ChainMessage message = new ChainMessage();
+        BlockchainMessage message = new BlockchainMessage();
         message.from = Network.getHostName();
         message.chain = nodeBlocks;
         blockchainEmitter.send(message);
@@ -38,6 +44,14 @@ public class PublishService {
 
     public void broadcastTransaction(Transaction transaction) {
         transactionEmitter.send(transaction);
+    }
+
+
+    public void broadcastCryptochain(List<Block<List<Transaction>>> nodeBlocks) {
+        CryptochainMessage message = new CryptochainMessage();
+        message.from = Network.getHostName();
+        message.chain = nodeBlocks;
+        cryptochainEmitter.send(message);
     }
 
 }

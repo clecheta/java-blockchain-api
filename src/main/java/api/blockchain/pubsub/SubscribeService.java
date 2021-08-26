@@ -1,7 +1,8 @@
 package api.blockchain.pubsub;
 
 import api.blockchain.Blockchain;
-import api.blockchain.model.ChainMessage;
+import api.blockchain.model.BlockchainMessage;
+import api.blockchain.model.CryptochainMessage;
 import api.util.Network;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.wallet.Transaction;
@@ -33,7 +34,7 @@ public class SubscribeService {
     @Incoming("blockchain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceChain(ChainMessage message) {
+    public void replaceChain(BlockchainMessage message) {
         LOGGER.infof("new message come from _%s", message.from);
         if (isValidMessage(message)) {
             try {
@@ -47,7 +48,7 @@ public class SubscribeService {
     /**
      * Avoid redundant interactions on replace chain
      */
-    public Boolean isValidMessage(ChainMessage message) {
+    public Boolean isValidMessage(BlockchainMessage message) {
         String currentHost = Network.getHostName();
         Boolean isValid = false;
         if (message != null && message.from != null && message.chain != null) {
@@ -63,9 +64,21 @@ public class SubscribeService {
         if (transaction != null) {
             miner.transactionPool.setTransaction(transaction);
             if (!profile.startsWith("prod")) {
-                String serializedTransactionPool = new Parse().toJson(miner.transactionPool);
+                String serializedTransactionPool = Parse.toJson(miner.transactionPool);
                 LOGGER.info(serializedTransactionPool);
             }
+        }
+    }
+
+    @Incoming("cryptochain-in")
+    @Blocking
+    /** Replaces this chain if receive a valid blockchain message */
+    public void replaceChain(CryptochainMessage message) {
+        LOGGER.infof("new crypto come from _%s", message.from);
+        try {
+            blockchain.chain.replaceChain(message.chain);
+        } catch (RuntimeException re) {
+            LOGGER.error(re.getMessage());
         }
     }
 

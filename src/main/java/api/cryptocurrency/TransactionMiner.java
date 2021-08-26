@@ -49,8 +49,8 @@ public class TransactionMiner {
         //3. add a block consisting of these transactions to the blockchain
         this.blockchain.chain.addBlock(validTransactions);
 
-        //4. broadcast the updated blockchain
-        publisher.broadcastChain(this.blockchain.chain.getChain());
+        //4. broadcast the updated cryptochain
+        publisher.broadcastCryptochain(this.blockchain.chain.getChain());
 
         //5. clear the pool @See ClearTransactionPoolTest
         this.transactionPool.clear();

@@ -13,7 +13,7 @@ import java.util.List;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class ChainMessage {
+public class BlockchainMessage {
     public String from;
     public List<Block> chain;
 }

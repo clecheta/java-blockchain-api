@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * https://encontreijesus.com
  */
 @QuarkusTest
-public class ChainMessageTest {
+public class BlockchainMessageTest {
 
     @Test
     void testFields() {
-        Field[] fields = ChainMessage.class.getDeclaredFields();
+        Field[] fields = BlockchainMessage.class.getDeclaredFields();
         assertTrue(fields.length == 2, "class fields violated");
         for (Field f : fields) {
             if (f.getName().equals("from")) {
@@ -34,14 +34,14 @@ public class ChainMessageTest {
 
     @Test
     public void testDefaultConstructor() {
-        ChainMessage message = new ChainMessage();
+        BlockchainMessage message = new BlockchainMessage();
         assertEquals(message.from, null);
         assertEquals(message.chain, null);
     }
 
     @Test
     void testMethods() {
-        Method[] methods = ChainMessage.class.getDeclaredMethods();
+        Method[] methods = BlockchainMessage.class.getDeclaredMethods();
         assertTrue(methods.length == 1, "this class should not have any method");
     }
 

@@ -8,9 +8,9 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class BlockchainDeserializer extends ObjectMapperDeserializer<ChainMessage> {
+public class BlockchainDeserializer extends ObjectMapperDeserializer<BlockchainMessage> {
 
     public BlockchainDeserializer() {
-        super(ChainMessage.class);
+        super(BlockchainMessage.class);
     }
 }
