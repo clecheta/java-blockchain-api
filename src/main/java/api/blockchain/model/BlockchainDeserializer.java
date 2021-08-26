@@ -1,6 +1,6 @@
 package api.blockchain.model;
 
-import io.quarkus.kafka.client.serialization.JsonbDeserializer;
+import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
@@ -8,7 +8,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class BlockchainDeserializer extends JsonbDeserializer<ChainMessage> {
+public class BlockchainDeserializer extends ObjectMapperDeserializer<ChainMessage> {
 
     public BlockchainDeserializer() {
         super(ChainMessage.class);
