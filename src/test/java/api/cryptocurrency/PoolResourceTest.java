@@ -1,6 +1,6 @@
 package api.cryptocurrency;
 
-import api.blockchain.model.TransactCommand;
+import api.blockchain.model.TransactionCommand;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -22,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PoolResourceTest {
 
     private static final int UUID_LENGTH = 36;
-    TransactCommand cmd;
+    TransactionCommand cmd;
 
     @BeforeEach
     void init() {
-        this.cmd = new TransactCommand();
+        this.cmd = new TransactionCommand();
         cmd.recipient = "recipient-foo-public-key";
         cmd.amount = BigDecimal.TEN;
     }

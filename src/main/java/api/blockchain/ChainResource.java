@@ -35,7 +35,7 @@ public class ChainResource {
     @POST
     @Produces("application/json")
     @Path("M1n3")
-    public Response mine(Object data) throws JsonProcessingException {
+    public Response mine(Object data) {
         blockchain.chain.addBlock(data);
         publisher.broadcastChain(blockchain.chain.getChain());
         return Response.ok(blockchain.chain.getChain()).build();

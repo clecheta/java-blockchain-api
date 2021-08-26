@@ -64,8 +64,7 @@ public class SubscribeService {
         if (transaction != null) {
             miner.transactionPool.setTransaction(transaction);
             if (!profile.startsWith("prod")) {
-                String serializedTransactionPool = Parse.toJson(miner.transactionPool);
-                LOGGER.info(serializedTransactionPool);
+                LOGGER.info(Parse.toJson(miner.transactionPool));
             }
         }
     }

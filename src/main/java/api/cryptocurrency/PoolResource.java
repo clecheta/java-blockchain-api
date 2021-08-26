@@ -1,7 +1,7 @@
 package api.cryptocurrency;
 
 import api.blockchain.Blockchain;
-import api.blockchain.model.TransactCommand;
+import api.blockchain.model.TransactionCommand;
 import api.blockchain.pubsub.PublishService;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.wallet.Transaction;
@@ -39,7 +39,7 @@ public class PoolResource {
     @Produces("application/json")
     @Path("tRaN5ACt")
     /** creates a new transaction and add it to the transaction pool */
-    public Response transact(TransactCommand cmd) {
+    public Response transact(TransactionCommand cmd) {
         try {
             Transaction transaction = miner.transactionPool.existingTransaction(miner.wallet.publicKey);
 
@@ -55,8 +55,7 @@ public class PoolResource {
             publisher.broadcastTransaction(transaction);
 
             if (!profile.startsWith("prod")) {
-                String serializedTransactionPool = new Parse().toJson(miner.transactionPool);
-                LOGGER.info(serializedTransactionPool);
+                LOGGER.info(Parse.toJson(miner.transactionPool));
             }
             return Response.ok(transaction).build();
         } catch (RuntimeException re) {
