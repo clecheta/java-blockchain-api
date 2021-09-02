@@ -48,7 +48,7 @@ public class PoolResource {
                 transaction.update(miner.wallet, cmd.recipient, cmd.amount);
             } else {
                 //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
-                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount);
+                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount, blockchain.chain.getChain());
             }
 
             miner.transactionPool.setTransaction(transaction);
