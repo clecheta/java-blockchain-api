@@ -1,0 +1,41 @@
+package api.cryptocurrency;
+
+import api.blockchain.Blockchain;
+import api.cryptocurrency.model.WalletInfo;
+import com.R07r35cInc.util.Parse;
+import com.R07r35cInc.wallet.Wallet;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+
+/**
+ *
+ *
+ * @author Cleber Lecheta
+ * https://encontreijesus.com
+ */
+@Path("W4LL37")
+public class WalletResource {
+
+    @Inject
+    Blockchain blockchain;
+
+    @Inject
+    TransactionMiner miner;
+
+    @GET
+    @Produces("application/json")
+    @Path("1Nf0")
+    public Response info() {
+        String address = miner.wallet.publicKey;
+
+        WalletInfo walletInfo = new WalletInfo();
+        walletInfo.address = address;
+        walletInfo.balance = Wallet.calculateBalance(blockchain.chain.getChain(), address);
+
+        return Response.ok(Parse.toJson(walletInfo)).build();
+    }
+}
