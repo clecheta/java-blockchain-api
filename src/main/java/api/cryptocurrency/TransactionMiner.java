@@ -1,7 +1,7 @@
 package api.cryptocurrency;
 
-import api.blockchain.Blockchain;
 import api.blockchain.pubsub.PublishService;
+import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.wallet.Transaction;
 import com.R07r35cInc.wallet.TransactionPool;
 import com.R07r35cInc.wallet.Wallet;
@@ -11,24 +11,18 @@ import javax.inject.Singleton;
 import java.util.List;
 
 /**
+ * Main transaction pool, wallet instance and cryptochain
+ * for overall the application.
+ *
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
 @Singleton
 public class TransactionMiner {
 
-    /**
-     * Main transaction pool for the application
-     */
+    public CryptoChain cryptoChain = new CryptoChain();
     public TransactionPool transactionPool = new TransactionPool();
-
-    /**
-     * Wallet instance for the overall application
-     */
     public Wallet wallet = new Wallet();
-
-    @Inject
-    Blockchain blockchain;
 
     @Inject
     PublishService publisher;
@@ -47,10 +41,10 @@ public class TransactionMiner {
         validTransactions.add(Transaction.rewardTransaction(this.wallet));
 
         //3. add a block consisting of these transactions to the blockchain
-        this.blockchain.chain.addBlock(validTransactions);
+        this.cryptoChain.addBlock(validTransactions);
 
         //4. broadcast the updated cryptochain
-        publisher.broadcastCryptochain(this.blockchain.chain.getChain());
+        publisher.broadcastCryptochain(this.cryptoChain.getChain());
 
         //5. clear the pool @See ClearTransactionPoolTest
         this.transactionPool.clear();

@@ -27,9 +27,6 @@ public class PoolResource {
     private static final Logger LOGGER = Logger.getLogger("PoolResource");
 
     @Inject
-    Blockchain blockchain;
-
-    @Inject
     TransactionMiner miner;
 
     @Inject
@@ -48,7 +45,7 @@ public class PoolResource {
                 transaction.update(miner.wallet, cmd.recipient, cmd.amount);
             } else {
                 //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
-                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount, blockchain.chain.getChain());
+                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount, miner.cryptoChain.getChain());
             }
 
             miner.transactionPool.setTransaction(transaction);

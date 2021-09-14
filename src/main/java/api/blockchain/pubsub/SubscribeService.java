@@ -35,7 +35,14 @@ public class SubscribeService {
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceBlockchain(BlockchainMessage message) {
-        replaceChain(message, false);
+        if (message.isValid()) {
+            LOGGER.infof("BlockchainMessage come from _%s", message.from);
+            try {
+                blockchain.chain.replaceChain(message.getChain());
+            } catch (RuntimeException re) {
+                LOGGER.error(re.getMessage());
+            }
+        }
     }
 
     @Incoming("transaction-in")
@@ -54,21 +61,16 @@ public class SubscribeService {
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceCryptochain(CryptochainMessage message) {
-        if (replaceChain(message, true)) {
-            miner.transactionPool.clearBlockchainTransactions(message.getChain());
-        };
-    }
-
-    private Boolean replaceChain(ChainMessage message, Boolean validate) {
         if (message.isValid()) {
-            LOGGER.infof("new message come from _%s", message.from);
+            LOGGER.infof("CryptochainMessage come from _%s", message.from);
             try {
-                return blockchain.chain.replaceChain(message.getChain(), validate);
+                if (miner.cryptoChain.replaceChain(message.getChain())) {
+                    miner.transactionPool.clearBlockchainTransactions(message.getChain());
+                };
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }
         }
-        return false;
     }
 
 }

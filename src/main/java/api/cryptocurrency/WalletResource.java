@@ -12,16 +12,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 /**
- *
- *
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
 @Path("W4LL37")
 public class WalletResource {
-
-    @Inject
-    Blockchain blockchain;
 
     @Inject
     TransactionMiner miner;
@@ -34,7 +29,7 @@ public class WalletResource {
 
         WalletInfo walletInfo = new WalletInfo();
         walletInfo.address = address;
-        walletInfo.balance = Wallet.calculateBalance(blockchain.chain.getChain(), address);
+        walletInfo.balance = Wallet.calculateBalance(miner.cryptoChain.getChain(), address);
 
         return Response.ok(Parse.toJson(walletInfo)).build();
     }
