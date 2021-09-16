@@ -32,9 +32,9 @@ public class TransactionMiner {
      */
     void mineTransactions() {
         //1. get the transaction pool's valid transactions @See ValidTransactionsTest
-        List<Transaction> validTransactions = this.transactionPool.validTransactions();
+        List<Transaction> validTransactions = this.transactionPool.getValidTransactions();
         if (validTransactions.size() == 0) {
-            throw new RuntimeException("no valid transactions found, do not mine");
+            throw new RuntimeException("no valid transactions found"); //do not mine!
         }
 
         //2. generate the miner's reward @See RewardTransactionTest

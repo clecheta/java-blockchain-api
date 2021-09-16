@@ -1,6 +1,6 @@
 [
   {
-    "name" : "com.R07r35cInc.Block",
+    "name" : "com.R07r35cInc.blockchain.Block",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,
