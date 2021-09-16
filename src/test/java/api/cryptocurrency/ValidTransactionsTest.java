@@ -1,8 +1,8 @@
 package api.cryptocurrency;
 
-import com.R07r35cInc.wallet.Transaction;
-import com.R07r35cInc.wallet.TransactionPool;
-import com.R07r35cInc.wallet.Wallet;
+import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.TransactionPool;
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

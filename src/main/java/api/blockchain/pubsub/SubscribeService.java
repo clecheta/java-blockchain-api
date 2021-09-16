@@ -2,11 +2,10 @@ package api.blockchain.pubsub;
 
 import api.blockchain.Blockchain;
 import api.blockchain.model.BlockchainMessage;
-import api.blockchain.model.ChainMessage;
 import api.blockchain.model.CryptochainMessage;
 import api.cryptocurrency.TransactionMiner;
 import com.R07r35cInc.util.Parse;
-import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.cryptocurrency.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;

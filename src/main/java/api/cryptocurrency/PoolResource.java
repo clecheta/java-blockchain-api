@@ -1,10 +1,9 @@
 package api.cryptocurrency;
 
-import api.blockchain.Blockchain;
 import api.blockchain.model.TransactionCommand;
 import api.blockchain.pubsub.PublishService;
 import com.R07r35cInc.util.Parse;
-import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.cryptocurrency.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;

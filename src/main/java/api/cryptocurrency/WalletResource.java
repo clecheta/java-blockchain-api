@@ -1,9 +1,8 @@
 package api.cryptocurrency;
 
-import api.blockchain.Blockchain;
 import api.cryptocurrency.model.WalletInfo;
 import com.R07r35cInc.util.Parse;
-import com.R07r35cInc.wallet.Wallet;
+import com.R07r35cInc.cryptocurrency.Wallet;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
