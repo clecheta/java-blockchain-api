@@ -27,7 +27,7 @@ public class KafkaDefaultConstructorTest {
     void transactionHasDefaultConstructor() {
         Transaction transaction = new Transaction();
         assertNotNull(transaction);
-        assertTrue(transaction instanceof Transaction);
+        assertTrue(transaction instanceof com.R07r35cInc.cryptocurrency.Transaction);
     }
 
     @Test

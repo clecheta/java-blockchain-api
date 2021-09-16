@@ -1,5 +1,6 @@
 package api.cryptocurrency;
 
+import api.BaseTest;
 import api.blockchain.model.TransactionCommand;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * https://encontreijesus.com
  */
 @QuarkusTest
-public class PoolResourceTest {
+public class PoolResourceTest extends BaseTest {
 
     private static final int UUID_LENGTH = 36;
     TransactionCommand cmd;
@@ -27,7 +28,7 @@ public class PoolResourceTest {
     @BeforeEach
     void init() {
         this.cmd = new TransactionCommand();
-        cmd.recipient = "recipient-foo-public-key";
+        cmd.recipient = publicKey;
         cmd.amount = BigDecimal.TEN;
     }
 
@@ -59,7 +60,7 @@ public class PoolResourceTest {
 
     @Test
     public void transactFail() {
-        cmd.amount = new BigDecimal(999999);
+        cmd.amount = tooHighAmount;
         given().contentType(ContentType.JSON)
                 .body(cmd)
                 .when().post("/p00L/tRaN5ACt")
