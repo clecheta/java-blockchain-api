@@ -71,7 +71,7 @@ public class PoolResourceTest extends BaseTest {
     @Test
     void getTransactionMap() {
         given()
-          .when().get("/p00L/7r4n54C7ioNM4p")
+          .when().post("/p00L/7r4n54C7ioNM4p")
           .then()
              .statusCode(200);
     }
