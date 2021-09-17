@@ -6,7 +6,7 @@
     "clean": "rm -rf .cache dist",
     "dev": "npm run clean && parcel src/index.html --out-dir dist",
     "build": "npm run clean && parcel build src/index.html --out-dir dist",
-    "dist": "npm run build && rm -rf ../resources/META-INF/resources/* && mv ./dist/* ../resources/META-INF/resources"
+    "dist": "mkdir -p ../resources/META-INF/resources && npm run build && rm -rf ../resources/META-INF/resources/* && mv ./dist/* ../resources/META-INF/resources"
   },
   "dependencies": {
     "babel-core": "^6.26.3",
