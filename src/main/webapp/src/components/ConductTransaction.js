@@ -6,12 +6,6 @@ import history from '../history';
 class ConductTransaction extends Component {
     state = { recipient: '', amount: 0, knownAddresses: [] };
 
-    componentDidMount() {
-        fetch(`${document.location.origin}/api/known-addresses`)
-            .then(response => response.json())
-            .then(json => this.setState({ knownAddresses: json }));
-    }
-
     updateRecipient = event => {
         this.setState({ recipient: event.target.value });
     }
@@ -23,18 +17,20 @@ class ConductTransaction extends Component {
     conductTransaction = () => {
         const { recipient, amount } = this.state;
 
-        fetch(`${document.location.origin}/api/transact`, {
+        //fetch(`${document.location.origin}/p00L/tRaN5ACt`, {
+        fetch(`http://localhost:8018/p00L/tRaN5ACt`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recipient, amount })
         }).then(response => response.json())
             .then(json => {
-                alert(json.message || json.type);
+                alert('success');
                 history.push('/transaction-pool');
             });
     }
 
     render() {
+        // console.log('this.state', this.state);
         return (
             <div className='ConductTransaction'>
                 <Link to='/'>Home</Link>

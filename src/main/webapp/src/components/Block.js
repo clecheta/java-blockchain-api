@@ -11,12 +11,15 @@ class Block extends Component {
 
     get displayTransaction() {
         const {data} = this.props.block;
+        // console.log('data', data);
 
         const stringifiedData = JSON.stringify(data);
+        // console.log('stringifiedData', stringifiedData);
 
         const dataDisplay = stringifiedData.length > 35 ?
             `${stringifiedData.substring(0, 35)}...` :
             stringifiedData;
+        console.log('dataDisplay', dataDisplay);
 
         if (this.state.displayTransaction) {
             return (
@@ -41,33 +44,42 @@ class Block extends Component {
             )
         }
 
-        return (
-            <div>
-                <div>Data: {dataDisplay}</div>
-                <Button
-                    bsStyle="danger"
-                    bsSize="small"
-                    onClick={this.toggleTransaction}
-                >
-                    Show More
-                </Button>
-            </div>
-        );
+        if (data) {
+            return (
+                <div>
+                    <div>Data: {dataDisplay}</div>
+                    <Button
+                        bsStyle="danger"
+                        bsSize="small"
+                        onClick={this.toggleTransaction}
+                    >
+                        Show More
+                    </Button>
+                </div>
+            );
+        }
     }
 
     render() {
         // console.log('this.displayTransaction', this.displayTransaction);
-        const {timestamp, hash} = this.props.block;
-
-        const hashDisplay = `${hash.substring(0, 15)}...`;
-
-        return (
-            <div className='Block'>
-                <div>Hash: {hashDisplay}</div>
-                <div>Timestamp: {new Date(timestamp).toLocaleString()}</div>
-                {this.displayTransaction}
-            </div>
-        );
+        const {date, hash} = this.props.block;
+        if (this.props.block.data) {
+            const hashDisplay = `${hash.substring(0, 15)}...`;
+            return (
+                <div className='Block'>
+                    <div>Hash: {hashDisplay}</div>
+                    <div>Timestamp: {new Date(date).toLocaleString()}</div>
+                    {this.displayTransaction}
+                </div>
+            );
+        } else {
+            return (
+                <div className='Block'>
+                    <div>Hash: {hash}</div>
+                    <div>Timestamp: {new Date(date).toLocaleString()}</div>
+                </div>
+            );  
+        }
     }
 };
 

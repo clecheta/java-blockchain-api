@@ -1,16 +1,15 @@
 body {
-    background-color: #444;
-    color: #fff;
+    background-color: #fff;
+    color: #444;
     text-align: center;
     font-size: 20px;
     font-family: 'Quicksand';
-    padding-top: 5%;
     word-wrap: break-word;
 }
 
 .logo {
     width: 250px;
-    height: 250px;
+    height: 288px;
 }
 
 .App {
@@ -24,7 +23,7 @@ body {
 }
 
 .Block {
-    border: 1px solid #fff;
+    border: 1px solid #444;
     padding: 5%;
     margin: 2%;
 }
@@ -40,4 +39,11 @@ body {
 a, a:hover {
     color: #e66;
     text-decoration: underline;
+}
+
+.banner {
+    font-size: 2.7rem;
+    padding: 0.1rem 0rem;
+    background-color: #0d1c2c;
+    color: white;
 }
