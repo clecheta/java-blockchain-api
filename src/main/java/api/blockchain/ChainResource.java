@@ -4,7 +4,6 @@ import api.blockchain.pubsub.PublishService;
 import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -23,7 +22,7 @@ public class ChainResource {
     @Inject
     PublishService publisher;
 
-    @GET
+    @POST
     @Produces("application/json")
     @Path("8l0cx")
     public Response blocks() {

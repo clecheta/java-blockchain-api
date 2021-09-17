@@ -14,12 +14,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/q/health",
+							"raw": "http://localhost:8018/q/health",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8018",
 							"path": [
 								"q",
 								"health"
@@ -34,12 +34,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/q/health/ready",
+							"raw": "http://localhost:8018/q/health/ready",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8018",
 							"path": [
 								"q",
 								"health",
@@ -55,12 +55,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/q/health/live",
+							"raw": "http://localhost:8018/q/health/live",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "8018",
 							"path": [
 								"q",
 								"health",
@@ -107,7 +107,7 @@
 				{
 					"name": "transaction-pool()",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8018/p00L/7r4n54C7ioNM4p",
@@ -127,7 +127,7 @@
 				{
 					"name": "node-> transaction-pool()",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8081/p00L/7r4n54C7ioNM4p",
@@ -147,7 +147,7 @@
 				{
 					"name": "mine-transaction()",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8018/M1n3/7r4N54C710nZ",
@@ -167,7 +167,7 @@
 				{
 					"name": "wallet-info()",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8018/W4LL37/1Nf0",
@@ -187,7 +187,7 @@
 				{
 					"name": "cryptoBlocks()",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8018/CrYP70/Ch41N",
@@ -207,7 +207,7 @@
 				{
 					"name": "cryptoBlocks(node)",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "http://localhost:8081/CrYP70/Ch41N",
@@ -233,7 +233,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\"master-data\"",
+					"raw": "{\n   \"complexType\": \"complex\",\n   \"value\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -287,7 +287,7 @@
 		{
 			"name": "blocks()",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:8018/Ch41N/8l0cx",
@@ -307,7 +307,7 @@
 		{
 			"name": "blocks(node)",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:8081/Ch41N/8l0cx",

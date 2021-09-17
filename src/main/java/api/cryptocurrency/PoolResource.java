@@ -2,14 +2,13 @@ package api.cryptocurrency;
 
 import api.blockchain.model.TransactionCommand;
 import api.blockchain.pubsub.PublishService;
-import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -61,7 +60,7 @@ public class PoolResource {
         }
     }
 
-    @GET
+    @POST
     @Produces("application/json")
     @Path("7r4n54C7ioNM4p")
     public Response transactionMap() {
