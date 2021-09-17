@@ -1,12 +1,12 @@
 {
-  "name": "node-webapp",
+  "name": "com.R07r35cInc.webapp",
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf .cache dist",
     "dev": "npm run clean && parcel src/index.html --out-dir dist",
     "build": "npm run clean && parcel build src/index.html --out-dir dist",
-    "dist": "npm run build && rm -rf ../resources/META-INF/resources/* && mv dist/* ../resources/META-INF/resources"
+    "dist": "npm run build && rm -rf ../resources/META-INF/resources/* && mv ./dist/* ../resources/META-INF/resources"
   },
   "dependencies": {
     "babel-core": "^6.26.3",

@@ -10,15 +10,15 @@ class TransactionPool extends Component {
     state = {transactionPoolMap: {}};
 
     fetchTransactionPoolMap = () => {
-        //fetch(`${document.location.origin}/p00L/7r4n54C7ioNM4p`)
-        fetch(`http://localhost:8018/p00L/7r4n54C7ioNM4p`)
+        fetch(`${document.location.origin}/p00L/7r4n54C7ioNM4p`)
+        // fetch(`http://localhost:8018/p00L/7r4n54C7ioNM4p`)
             .then(response => response.json())
             .then(json => this.setState({transactionPoolMap: json}));
     }
 
     fetchMineTransactions = () => {
-        //fetch(`${document.location.origin}/M1n3/7r4N54C710nZ`)
-        fetch(`http://localhost:8018/M1n3/7r4N54C710nZ`)
+        fetch(`${document.location.origin}/M1n3/7r4N54C710nZ`)
+        // fetch(`http://localhost:8018/M1n3/7r4N54C710nZ`)
             .then(response => {
                 if (response.status === 200) {
                     alert('success');
