@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ohh no!</title>
+        <style>
+            h3 {
+                font-weight: 400;
+                line-height: 1.5;
+                font-size: 1.75rem
+            }
+
+            .lead {
+                font-weight: 300;
+                font-size: 2rem;
+            }
+
+            .banner {
+                font-size: 2.7rem;
+                padding: 2rem 1rem;
+                background-color: #0d1c2c;
+                color: white;
+            }
+
+            body {
+                margin: 0;
+                font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            }
+        </style>
+        <script type="text/javascript">
+            function loadDayPhrase() {
+                var frases_do_dia = [
+                    "Feliz é o homem que empresta com generosidade e que com honestidade conduz os seus negócios. (Salmos 112:5)",
+                    "As mãos preguiçosas empobrecem o homem, porém as mãos diligentes lhe trazem riqueza. (Provérbios 10:4)",
+                    "Tudo o que fizerem, façam de todo o coração, como para o Senhor, e não para os homens. (Colossenses 3:23)",
+                    "Na hora da luta, a sabedoria vale mais que a força bruta para conseguir a vitória. (Provérbios 21:22)",
+                    "Os planos bem elaborados levam a fartura; mas o apressado acaba na miséria (Provérbios 21:5)",
+                    "A riqueza que é fácil de ganhar é fácil de perder, quanto mais difícil for para ganhar, mais você terá (Provérbios 13:11)",
+                    "Vale mais ter um bom nome do que muitas riquezas; e o ser estimado é melhor do que a riqueza e o ouro. (Provérbios 22:1)",
+                    "Não ames o sono, para que não empobreças; abre os teus olhos, e te fartarás de pão. (Provérbios 20:13)",
+                    "Pela manhã semeia a tua semente, e à tarde não retires a tua mão, porque tu não sabes qual prosperará, se esta, se aquela, ou se ambas serão igualmente boas. (Eclesiastes 11:6)",
+                    "Estavam todos tentando intimidar-nos, pensando: “Eles serão enfraquecidos e não concluirão a obra”. Eu, porém, orei: Agora, fortalece as minhas mãos! (Neemias 6:9)",
+                    "O ingênuo acredita em tudo que ouve, o prudente examina seus passos com cuidado. O sábio é cauteloso e evita o mal, mas o tolo é impetuoso e irresponsável. (Provérbios 14:15,16)",
+                    "Sem conselhos os planos fracassam, mas com muitos conselheiros há sucesso. (Provérbios 15:22)",
+                    "O preguiçoso deseja e nada consegue, mas os desejos do diligente são amplamente satisfeitos. (Provérbios 13:4)",
+                    "As mãos diligentes governarão, mas os preguiçosos acabarão escravos. (Provérbios 12:24)",
+                    "Tanto quem oprime o pobre para enriquecer-se como quem faz cortesia ao rico, com certeza passarão necessidade. (Provérbios 22:16)",
+                    "Todo trabalho árduo traz proveito, mas o só falar leva à pobreza. (Provérbios 14:23)",
+                    "Quem cultiva a sua terra tem comida com fartura, mas quem gasta o tempo com coisas sem importância sempre será pobre. (Provérbios 28:19)",
+                    "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus. (Filipenses 4:6,7)",
+                    "Peças e serás atendido; buscai e encontrareis; batei e a porta será aberta (Mateus 7:7)",
+                    "Não se conformem com o padrão deste mundo, mas transformem-se pela renovação da sua mente (Romanos 12:2)",
+                    "Entrega o teu caminho ao SENHOR; confia nele, e ele tudo fará. (Salmos 37:5)",
+                    "Livremente lhe darás, e que o teu coração não seja maligno, quando lhe deres; pois por esta causa te abençoará o SENHOR, teu Deus, em toda a tua obra e em tudo no que puseres a tua mão. (Deuteronômio 15:10)",
+                    "E o meu Deus, de acordo com as gloriosas riquezas que ele tem para oferecer por meio de Cristo Jesus, lhes dará tudo o que vocês precisam. (Filipenses 4:19)",
+                    "Eu ando no caminho da honestidade e sigo os passos da justiça, dando riqueza aos que me amam e enchendo as suas casas de tesouros. (Provérbios 8:20-21)",
+                    "E Deus pode dar muito mais do que vocês precisam para que vocês tenham sempre tudo o que necessitam e ainda mais do que o necessário para fazerem todo tipo de boas obras. (2 Corintios 9:8)",
+                    "O homem sensato tem o suficiente para viver na riqueza e na fartura, mas o insensato não, porque gasta tudo o que ganha. (‭‭Provérbios‬ ‭21:20‬)",
+                    "Os maus pedem emprestado e não pagam, mas os bons são generosos em dar. (Salmos 37:21)",
+                    "Não se deixem dominar pelo amor ao dinheiro e fiquem satisfeitos com o que vocês têm, pois Deus disse: “Eu nunca os deixarei e jamais os abandonarei. (Hebreus 13:5)",
+                    "Se um de vocês quer construir uma torre, primeiro senta e calcula quanto vai custar, para ver se o dinheiro dá. (‭‭Lucas‬ ‭14:28‬)",
+                    "Não fiquem devendo nada a ninguém. A única dívida que vocês devem ter é a de amar uns aos outros. Quem ama os outros está obedecendo à lei. (Romanos 13:8)",
+                    "E continuou, dizendo a todos: — Prestem atenção! Tenham cuidado com todo tipo de avareza porque a verdadeira vida de uma pessoa não depende das coisas que ela tem, mesmo que sejam muitas. (Lucas 12:15)"
+                ];
+
+                var data_atual = new Date();
+                var numero_escolhido = data_atual.getDate();
+                numero_escolhido--;
+
+                console.log(frases_do_dia[numero_escolhido+1]);
+                document.getElementById("phraseHere").innerHTML = frases_do_dia[numero_escolhido];
+            }
+        </script>
+    </head>
+    <body onload="loadDayPhrase()">
+        <div class="banner lead">
+            <h3>Please God help me, I can't get out of here!!!</h3>
+        </div>
+        <p>
+            <h1 align="center" id="phraseHere"></h1>
+        </p>
+    </body>
+</html>

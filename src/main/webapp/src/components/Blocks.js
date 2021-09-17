@@ -13,7 +13,7 @@ class Blocks extends Component {
     }
 
     render() {
-        console.log('this.state', this.state);
+        // console.log('this.state', this.state);
 
         return (
             <div>

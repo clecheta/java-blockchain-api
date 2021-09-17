@@ -19,7 +19,7 @@ class Block extends Component {
         const dataDisplay = stringifiedData.length > 35 ?
             `${stringifiedData.substring(0, 35)}...` :
             stringifiedData;
-        console.log('dataDisplay', dataDisplay);
+        // console.log('dataDisplay', dataDisplay);
 
         if (this.state.displayTransaction) {
             return (
