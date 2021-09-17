@@ -5,7 +5,7 @@ import api.cryptocurrency.TransactionMiner;
 import api.util.Network;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.util.Parse;
-import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.cryptocurrency.Transaction;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;

@@ -1,8 +1,8 @@
 package api.cryptocurrency;
 
-import com.R07r35cInc.wallet.Input;
-import com.R07r35cInc.wallet.Transaction;
-import com.R07r35cInc.wallet.Wallet;
+import com.R07r35cInc.cryptocurrency.Input;
+import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;

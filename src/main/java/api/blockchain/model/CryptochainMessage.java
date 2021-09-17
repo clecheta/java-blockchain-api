@@ -1,7 +1,7 @@
 package api.blockchain.model;
 
 import com.R07r35cInc.blockchain.Block;
-import com.R07r35cInc.wallet.Transaction;
+import com.R07r35cInc.cryptocurrency.Transaction;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.util.List;

@@ -2,7 +2,6 @@ package api.blockchain;
 
 import api.blockchain.pubsub.PublishService;
 import com.R07r35cInc.util.Parse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;

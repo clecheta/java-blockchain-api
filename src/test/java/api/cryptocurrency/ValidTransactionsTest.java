@@ -1,8 +1,9 @@
 package api.cryptocurrency;
 
-import com.R07r35cInc.wallet.Transaction;
-import com.R07r35cInc.wallet.TransactionPool;
-import com.R07r35cInc.wallet.Wallet;
+import api.BaseTest;
+import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.TransactionPool;
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * https://encontreijesus.com
  */
 @QuarkusTest
-public class ValidTransactionsTest {
+public class ValidTransactionsTest extends BaseTest {
 
-    private static final String anyRecipient = "any-recipient-public-key";
     static TransactionPool transactionPool;
     static Transaction transaction;
     static Wallet senderWallet;
-    BigDecimal tooHighAmount = new BigDecimal(999999);
     List<Transaction> validTransactions;
 
     @BeforeAll
@@ -34,7 +33,7 @@ public class ValidTransactionsTest {
         senderWallet = new Wallet();
         transaction = new Transaction(
                 senderWallet,
-                anyRecipient,
+                publicKey,
                 new BigDecimal(15)
         );
     }
@@ -47,7 +46,7 @@ public class ValidTransactionsTest {
         for (int i = 0; i < 10; i++) {
             transaction = new Transaction(
                     senderWallet,
-                    anyRecipient,
+                    publicKey,
                     new BigDecimal(5)
             );
 
@@ -68,7 +67,7 @@ public class ValidTransactionsTest {
 
     @Test
     void validTransactions() {
-        List<Transaction> transactionList = transactionPool.validTransactions();
+        List<Transaction> transactionList = transactionPool.getValidTransactions();
         assertTrue(transactionList.containsAll(validTransactions), "returns valid transaction");
         assertTrue(transactionList.size() == validTransactions.size(),
                 "comparison arrays must have the same size");
