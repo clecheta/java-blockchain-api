@@ -37,3 +37,10 @@ nb-configuration.xml
 
 # Local environment
 .env
+
+# webapp
+*node_modules*
+*dist*
+*.cache*
+*.cache*
+*dist*
