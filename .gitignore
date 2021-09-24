@@ -39,7 +39,6 @@ nb-configuration.xml
 .env
 
 # webapp
-src/main/resources/META-INF/resources/
 *node_modules*
 *dist*
 *.cache*
