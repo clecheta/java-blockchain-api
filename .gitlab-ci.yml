@@ -1,6 +1,7 @@
 stages:
   - test
   - build
+  - package
 
 before_script:
   - echo "before script"
@@ -22,3 +23,22 @@ graalvm.native:
   artifacts:
     paths:
     - target/*-runner
+
+dockerimg_test:
+  stage: package
+  image:
+    name: docker:dind
+  tags:
+    - dind
+  before_script:
+    - docker info
+    - docker login -u gitlab-ci-token -p $INFRA_TEST_TOKEN $CI_REGISTRY
+  script:
+    - docker build -f src/main/docker/Dockerfile.native -t $CI_REGISTRY/infra/test/api.blockchain_test:$CI_COMMIT_SHORT_SHA .
+    - docker tag $CI_REGISTRY/infra/test/api.blockchain_test:$CI_COMMIT_SHORT_SHA $CI_REGISTRY/infra/test/api.blockchain_test:latest
+    - docker push $CI_REGISTRY/infra/test/api.blockchain_test:$CI_COMMIT_SHORT_SHA
+    - docker push $CI_REGISTRY/infra/test/api.blockchain_test:latest
+  environment:
+    name: test
+  only:
+    - master
