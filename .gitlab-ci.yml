@@ -24,7 +24,7 @@ graalvm.native:
     paths:
     - target/*-runner
 
-dockerimg_test:
+docker.test:
   stage: package
   image:
     name: docker:dind
@@ -32,7 +32,7 @@ dockerimg_test:
     - dind
   before_script:
     - docker info
-    - docker login -u gitlab-ci-token -p $INFRA_TEST_TOKEN $CI_REGISTRY
+    - docker login $CI_REGISTRY -u Jesus -p $INFRA_TEST_TOKEN
   script:
     - docker build -f src/main/docker/Dockerfile.native -t $CI_REGISTRY/infra/test/api.blockchain_test:$CI_COMMIT_SHORT_SHA .
     - docker tag $CI_REGISTRY/infra/test/api.blockchain_test:$CI_COMMIT_SHORT_SHA $CI_REGISTRY/infra/test/api.blockchain_test:latest
