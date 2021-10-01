@@ -20,7 +20,7 @@ RUN microdnf update -y && rm -rf /var/cache/yum
 RUN microdnf clean all
 RUN microdnf install curl ca-certificates
 
-HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:8080/q/health || exit 1
+HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:8018/q/health || exit 1
 
 WORKDIR /work/
 RUN chown 1001 /work \
