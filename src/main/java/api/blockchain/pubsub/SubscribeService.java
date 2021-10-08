@@ -34,8 +34,8 @@ public class SubscribeService {
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceBlockchain(BlockchainMessage message) {
+        LOGGER.infof("BlockchainMessage come from _%s", message.from);
         if (message.isValid()) {
-            LOGGER.infof("BlockchainMessage come from _%s", message.from);
             try {
                 blockchain.chain.replaceChain(message.getChain());
             } catch (RuntimeException re) {
@@ -60,8 +60,8 @@ public class SubscribeService {
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceCryptochain(CryptochainMessage message) {
+        LOGGER.infof("CryptochainMessage come from _%s", message.from);
         if (message.isValid()) {
-            LOGGER.infof("CryptochainMessage come from _%s", message.from);
             try {
                 if (miner.cryptoChain.replaceChain(message.getChain())) {
                     miner.transactionPool.clearBlockchainTransactions(message.getChain());
