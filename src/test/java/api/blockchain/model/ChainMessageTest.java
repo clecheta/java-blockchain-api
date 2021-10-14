@@ -25,21 +25,4 @@ public class ChainMessageTest {
         assertEquals(true, Arrays.stream(fields).anyMatch(f -> f.getName().equals("from")));
     }
 
-    /* TODO move to JBlock project as NetChain.isValid() test
-    @Test
-    void isValidMessage() {
-        String master = Network.getHostName();
-        String node = "node";
-
-        BlockchainMessage message = new BlockchainMessage();
-        assertFalse(message.isValid(), "missing required fields");
-        message.from = master;
-        assertFalse(message.isValid(), "missing chain");
-        message.chain = new ArrayList<Block>();
-        assertFalse(message.isValid(), "is hostname different?");
-
-        message.from = node;
-        assertTrue(message.isValid(), "is hostname different?");
-    }*/
-
 }

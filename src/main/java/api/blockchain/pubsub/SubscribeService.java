@@ -36,13 +36,13 @@ public class SubscribeService {
     /** Replaces this chain if receive a valid blockchain message */
     public void replaceBlockchain(NetChain chain) {
         LOGGER.infof("BlockchainMessage come from _%s", chain.origin);
-//        if (chain.isValid(Network.getHostName())) {
+        if (chain.isValid(Network.getHostName())) {
             try {
                 blockchain.chain.replaceChain(chain.getChain());
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }
-//        }
+        }
     }
 
     @Incoming("transaction-in")
