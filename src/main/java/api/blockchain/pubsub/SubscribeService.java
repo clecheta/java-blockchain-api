@@ -1,9 +1,10 @@
 package api.blockchain.pubsub;
 
 import api.blockchain.Blockchain;
-import api.blockchain.model.BlockchainMessage;
 import api.blockchain.model.CryptochainMessage;
 import api.cryptocurrency.TransactionMiner;
+import api.util.Network;
+import com.R07r35cInc.blockchain.NetChain;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import io.quarkus.runtime.configuration.ProfileManager;
@@ -33,15 +34,15 @@ public class SubscribeService {
     @Incoming("blockchain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceBlockchain(BlockchainMessage message) {
-        LOGGER.infof("BlockchainMessage come from _%s", message.from);
-        if (message.isValid()) {
+    public void replaceBlockchain(NetChain chain) {
+        LOGGER.infof("BlockchainMessage come from _%s", chain.origin);
+//        if (chain.isValid(Network.getHostName())) {
             try {
-                blockchain.chain.replaceChain(message.getChain());
+                blockchain.chain.replaceChain(chain.getChain());
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }
-        }
+//        }
     }
 
     @Incoming("transaction-in")

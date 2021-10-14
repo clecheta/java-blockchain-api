@@ -25,6 +25,7 @@ public class ChainMessageTest {
         assertEquals(true, Arrays.stream(fields).anyMatch(f -> f.getName().equals("from")));
     }
 
+    /* TODO move to JBlock project as NetChain.isValid() test
     @Test
     void isValidMessage() {
         String master = Network.getHostName();
@@ -39,6 +40,6 @@ public class ChainMessageTest {
 
         message.from = node;
         assertTrue(message.isValid(), "is hostname different?");
-    }
+    }*/
 
 }

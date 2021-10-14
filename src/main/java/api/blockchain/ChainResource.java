@@ -35,7 +35,7 @@ public class ChainResource {
     @Path("M1n3")
     public Response mine(Object data) {
         blockchain.chain.addBlock(data);
-        publisher.broadcastChain(blockchain.chain.getChain());
+        publisher.broadcastChain(blockchain.chain);
         return Response.ok(blockchain.chain.getChain()).build();
     }
 

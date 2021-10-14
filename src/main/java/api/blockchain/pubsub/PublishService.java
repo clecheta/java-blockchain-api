@@ -1,9 +1,9 @@
 package api.blockchain.pubsub;
 
-import api.blockchain.model.BlockchainMessage;
 import api.blockchain.model.CryptochainMessage;
 import api.util.Network;
 import com.R07r35cInc.blockchain.Block;
+import com.R07r35cInc.blockchain.NetChain;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
@@ -23,7 +23,7 @@ public class PublishService {
     @Inject
     @Broadcast
     @Channel("blockchain-to-kafka")
-    Emitter<BlockchainMessage> blockchainEmitter;
+    Emitter<NetChain> blockchainEmitter;
 
     @Inject
     @Broadcast
@@ -35,11 +35,9 @@ public class PublishService {
     @Channel("cryptochain-to-kafka")
     Emitter<CryptochainMessage> cryptochainEmitter;
 
-    public void broadcastChain(List<Block> nodeBlocks) {
-        BlockchainMessage message = new BlockchainMessage();
-        message.from = Network.getHostName();
-        message.chain = nodeBlocks;
-        blockchainEmitter.send(message);
+    public void broadcastChain(NetChain chain) {
+        chain.origin = Network.getHostName();
+        blockchainEmitter.send(chain);
     }
 
     public void broadcastTransaction(Transaction transaction) {

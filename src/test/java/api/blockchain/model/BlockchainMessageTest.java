@@ -1,5 +1,6 @@
 package api.blockchain.model;
 
+import com.R07r35cInc.blockchain.NetChain;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -19,22 +20,14 @@ public class BlockchainMessageTest {
 
     @Test
     void testFields() {
-        Field[] fields = BlockchainMessage.class.getDeclaredFields();
-        assertTrue(fields.length == 1, "class fields violated");
-        assertEquals(true, Arrays.stream(fields).anyMatch(f -> f.getName().equals("chain")));
-    }
-
-    @Test
-    public void testDefaultConstructor() {
-        BlockchainMessage message = new BlockchainMessage();
-        assertEquals(message.from, null);
-        assertEquals(message.chain, null);
+        Field[] fields = NetChain.class.getDeclaredFields();
+        assertEquals(true, Arrays.stream(fields).anyMatch(f -> f.getName().equals("origin")));
     }
 
     @Test
     void testMethods() {
-        Method[] methods = BlockchainMessage.class.getDeclaredMethods();
-        assertTrue(methods.length == 2, "this class should implement getChain()");
+        Method[] methods = NetChain.class.getDeclaredMethods();
+        assertEquals(true, Arrays.stream(methods).anyMatch(m -> m.getName().equals("isValid")));
     }
 
 }
