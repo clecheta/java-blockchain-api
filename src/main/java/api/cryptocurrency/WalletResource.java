@@ -2,7 +2,6 @@ package api.cryptocurrency;
 
 import api.cryptocurrency.model.WalletInfo;
 import com.R07r35cInc.cryptocurrency.Wallet;
-import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -30,9 +29,6 @@ public class WalletResource {
         walletInfo.address = address;
         walletInfo.balance = Wallet.calculateBalance(miner.cryptoChain.getChain(), address);
 
-        String response = Parse.toJson(walletInfo);
-        System.out.println("WalletInfo: " + response);
-
-        return Response.ok(response).build();
+        return Response.ok(walletInfo).build();
     }
 }
