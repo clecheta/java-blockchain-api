@@ -15,7 +15,7 @@ integration:
 
 graalvm.native:
   stage: build
-  image: docker
+  image: maven:3.6-jdk-11
   script:
     - ./mvnw package -s ci_settings.xml -Pnative -Dquarkus.native.container-build=true -DskipTests=true
   artifacts:
