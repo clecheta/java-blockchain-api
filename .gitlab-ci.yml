@@ -22,7 +22,7 @@ graalvm.native:
     - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
   artifacts:
     paths:
-    - target/*-runner
+      - target/*-runner
 
 docker.test:
   stage: package
