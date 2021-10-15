@@ -15,9 +15,11 @@ integration:
 
 graalvm.native:
   stage: build
-  image: docker
+  image: ghcr.io/graalvm/graalvm-ce:20.3.1.2
+  before_script:
+    - gu install native-image
   script:
-    - ./mvnw package -s ci_settings.xml -Pnative -Dquarkus.native.container-build=true -DskipTests=true
+    - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
   artifacts:
     paths:
     - target/*-runner
