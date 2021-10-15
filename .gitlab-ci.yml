@@ -19,7 +19,7 @@ graalvm.native:
   before_script:
     - gu install native-image
   script:
-    - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
+    - ./mvnw package -s ci_settings.xml -Pnative -Dquarkus.native.container-build=true -DskipTests=true
   artifacts:
     paths:
     - target/*-runner
