@@ -1,6 +1,6 @@
 package api.cryptocurrency;
 
-import api.blockchain.pubsub.PublishService;
+import api.network.PublishService;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.TransactionPool;
@@ -44,7 +44,7 @@ public class TransactionMiner {
         this.cryptoChain.addBlock(validTransactions);
 
         //4. broadcast the updated cryptochain
-        publisher.broadcastCryptochain(this.cryptoChain.getChain());
+        publisher.broadcastCryptochain(this.cryptoChain);
 
         //5. clear the pool @See ClearTransactionPoolTest
         this.transactionPool.clear();

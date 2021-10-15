@@ -1,5 +1,6 @@
-package api.blockchain.model;
+package api.cryptocurrency.model;
 
+import com.R07r35cInc.blockchain.CryptoChain;
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
@@ -8,9 +9,9 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class CryptochainDeserializer extends ObjectMapperDeserializer<CryptochainMessage> {
+public class CryptochainDeserializer extends ObjectMapperDeserializer<CryptoChain> {
 
     public CryptochainDeserializer() {
-        super(CryptochainMessage.class);
+        super(CryptoChain.class);
     }
 }

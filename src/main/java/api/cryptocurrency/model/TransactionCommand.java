@@ -1,4 +1,4 @@
-package api.blockchain.model;
+package api.cryptocurrency.model;
 
 import java.math.BigDecimal;
 

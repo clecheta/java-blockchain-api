@@ -1,4 +1,4 @@
-package api.blockchain.model;
+package api.cryptocurrency.model;
 
 import com.R07r35cInc.cryptocurrency.Transaction;
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;

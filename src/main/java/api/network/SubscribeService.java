@@ -1,12 +1,11 @@
-package api.blockchain.pubsub;
+package api.network;
 
 import api.blockchain.Blockchain;
-import api.blockchain.model.CryptochainMessage;
 import api.cryptocurrency.TransactionMiner;
-import api.util.Network;
+import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.blockchain.NetChain;
-import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -34,11 +33,11 @@ public class SubscribeService {
     @Incoming("blockchain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceBlockchain(NetChain chain) {
-        LOGGER.infof("BlockchainMessage come from _%s", chain.origin);
-        if (chain.isValid(Network.getHostName())) {
+    public void replaceBlockchain(NetChain blockchain) {
+        LOGGER.infof("Blockchain come from _%s", blockchain.origin);
+        if (blockchain.isValidForReplacement(Util.getHostName())) {
             try {
-                blockchain.chain.replaceChain(chain.getChain());
+                this.blockchain.chain.replaceChain(blockchain.getChain());
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }
@@ -60,13 +59,13 @@ public class SubscribeService {
     @Incoming("cryptochain-in")
     @Blocking
     /** Replaces this chain if receive a valid blockchain message */
-    public void replaceCryptochain(CryptochainMessage message) {
-        LOGGER.infof("CryptochainMessage come from _%s", message.from);
-        if (message.isValid()) {
+    public void replaceCryptochain(CryptoChain cryptoChain) {
+        LOGGER.infof("Cryptochain come from _%s", cryptoChain.origin);
+        if (cryptoChain.isValidForReplacement(Util.getHostName())) {
             try {
-                if (miner.cryptoChain.replaceChain(message.getChain())) {
-                    miner.transactionPool.clearBlockchainTransactions(message.getChain());
-                };
+                if (miner.cryptoChain.replaceChain(cryptoChain.getChain())) {
+                    miner.transactionPool.clearBlockchainTransactions(cryptoChain.getChain());
+                }
             } catch (RuntimeException re) {
                 LOGGER.error(re.getMessage());
             }

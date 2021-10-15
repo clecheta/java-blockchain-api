@@ -30,6 +30,9 @@ public class WalletResource {
         walletInfo.address = address;
         walletInfo.balance = Wallet.calculateBalance(miner.cryptoChain.getChain(), address);
 
-        return Response.ok(Parse.toJson(walletInfo)).build();
+        String response = Parse.toJson(walletInfo);
+        System.out.println("WalletInfo: " + response);
+
+        return Response.ok(response).build();
     }
 }

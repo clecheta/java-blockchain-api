@@ -62,10 +62,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-mutiny</artifactId><!-- necessary for the Deserializer -->
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-mongodb-panache</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- https://quarkus.io/guides/smallrye-health -->
         <dependency>
             <groupId>io.quarkus</groupId>

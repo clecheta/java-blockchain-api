@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Cleber Lecheta
@@ -27,7 +26,7 @@ public class BlockchainMessageTest {
     @Test
     void testMethods() {
         Method[] methods = NetChain.class.getDeclaredMethods();
-        assertEquals(true, Arrays.stream(methods).anyMatch(m -> m.getName().equals("isValid")));
+        assertEquals(true, Arrays.stream(methods).anyMatch(m -> m.getName().equals("isValidForReplacement")));
     }
 
 }

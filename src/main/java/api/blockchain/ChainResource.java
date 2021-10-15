@@ -1,6 +1,6 @@
 package api.blockchain;
 
-import api.blockchain.pubsub.PublishService;
+import api.network.PublishService;
 import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;

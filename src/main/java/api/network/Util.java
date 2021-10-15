@@ -1,4 +1,4 @@
-package api.util;
+package api.network;
 
 import io.quarkus.runtime.configuration.ProfileManager;
 
@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
  * @author Cleber Lecheta
  * https://encontreijesus.com
  */
-public class Network {
+public class Util {
 
     public static final String profile = ProfileManager.getActiveProfile();
 

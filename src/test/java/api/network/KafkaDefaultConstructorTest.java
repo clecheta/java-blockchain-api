@@ -1,4 +1,4 @@
-package api.blockchain.pubsub;
+package api.network;
 
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Input;

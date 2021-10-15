@@ -2,7 +2,7 @@ package api;
 
 import api.blockchain.Blockchain;
 import api.cryptocurrency.TransactionMiner;
-import api.util.Network;
+import api.network.Util;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.cryptocurrency.Transaction;
@@ -44,14 +44,14 @@ public class ApplicationLifeCycle {
     private String ROOT_NODE_ADDRESS;
 
     void onStart(@Observes StartupEvent ev) {
-        LOGGER.info("Blockchain network node _" + Network.getHostName() + " is starting...");
+        LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
         //syncing with root state
         syncChains();
         syncTransactionPollMap();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
-        LOGGER.info("Blockchain network node _" + Network.getHostName() + " stopped.");
+        LOGGER.info("Blockchain network node _" + Util.getHostName() + " stopped.");
     }
 
     private void syncChains() {

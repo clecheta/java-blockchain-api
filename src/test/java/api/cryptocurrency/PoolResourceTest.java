@@ -1,7 +1,7 @@
 package api.cryptocurrency;
 
 import api.BaseTest;
-import api.blockchain.model.TransactionCommand;
+import api.cryptocurrency.model.TransactionCommand;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
