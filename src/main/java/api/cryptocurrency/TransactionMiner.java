@@ -33,6 +33,7 @@ public class TransactionMiner {
     void mineTransactions() {
         //1. get the transaction pool's valid transactions @See ValidTransactionsTest
         List<Transaction> validTransactions = this.transactionPool.getValidTransactions();
+        //FIXME sometimes getting a empty array as there is no validTransaction, but they are - maybe related to kafka
         if (validTransactions.size() == 0) {
             throw new RuntimeException("no valid transactions found"); //do not mine!
         }
