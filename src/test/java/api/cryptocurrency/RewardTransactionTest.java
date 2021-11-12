@@ -35,13 +35,13 @@ public class RewardTransactionTest {
     @Test
     void createRewardTransaction() {
         Input expectedInput = Transaction.createRewardInput(REWARD_INPUT);
-        assertEquals(expectedInput, rewardTransaction.input, "creates a transaction with the reward input");
+        assertEquals(expectedInput, rewardTransaction.getInput(), "creates a transaction with the reward input");
     }
 
     @Test
     void createMinerTransaction() {
         BigDecimal expectedReward = MINING_REWARD;
-        assertEquals(expectedReward, rewardTransaction.outputMap.get(minerWallet.publicKey));
+        assertEquals(expectedReward, rewardTransaction.getOutputMap().get(minerWallet.publicKey));
     }
 
 }

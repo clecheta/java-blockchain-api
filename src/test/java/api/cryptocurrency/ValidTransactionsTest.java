@@ -52,9 +52,9 @@ public class ValidTransactionsTest extends BaseTest {
 
             //mess up the transactions
             if (i % 3 == 0) { //change amount
-                transaction.input.amount = tooHighAmount;
+                transaction.getInput().amount = tooHighAmount;
             } else if (i % 3 == 1) { //change signature
-                transaction.input.signature = new Wallet().sign("i" + i);
+                transaction.getInput().signature = new Wallet().sign("i" + i);
             } else {
                 //if (validTransactions.size()<=1) { // break the test to check validTransactions() implementation
                 validTransactions.add(transaction);
