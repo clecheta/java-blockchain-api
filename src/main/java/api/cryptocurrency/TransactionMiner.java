@@ -1,6 +1,8 @@
 package api.cryptocurrency;
 
 import api.network.PublishService;
+import api.repository.BlockRepository;
+import api.repository.DatabaseBlock;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.TransactionPool;
@@ -27,6 +29,9 @@ public class TransactionMiner {
     @Inject
     PublishService publisher;
 
+    @Inject
+    BlockRepository repository;
+
     /**
      * All necessary functionality to add a block of transaction poll data to the blockchain
      */
@@ -42,7 +47,9 @@ public class TransactionMiner {
         validTransactions.add(Transaction.rewardTransaction(this.wallet));
 
         //3. add a block consisting of these transactions to the blockchain
-        this.cryptoChain.addBlock(validTransactions);
+        DatabaseBlock addedBlock = new DatabaseBlock(this.cryptoChain.addBlock(validTransactions),
+                CryptoChain.class.getSimpleName());
+        repository.persist(addedBlock);
 
         //4. broadcast the updated cryptochain
         publisher.broadcastCryptochain(this.cryptoChain);

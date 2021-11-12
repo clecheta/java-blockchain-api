@@ -1,6 +1,9 @@
 package api.blockchain;
 
 import api.network.PublishService;
+import api.repository.BlockRepository;
+import api.repository.DatabaseBlock;
+import com.R07r35cInc.blockchain.BlockChain;
 import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;
@@ -22,6 +25,9 @@ public class ChainResource {
     @Inject
     PublishService publisher;
 
+    @Inject
+    BlockRepository repository;
+
     @POST
     @Produces("application/json")
     @Path("8l0cx")
@@ -34,7 +40,10 @@ public class ChainResource {
     @Produces("application/json")
     @Path("M1n3")
     public Response mine(Object data) {
-        blockchain.chain.addBlock(data);
+        DatabaseBlock addedBlock = new DatabaseBlock(blockchain.chain.addBlock(data),
+                BlockChain.class.getSimpleName());
+        repository.persist(addedBlock);
+
         publisher.broadcastChain(blockchain.chain);
         return Response.ok(blockchain.chain.getChain()).build();
     }
