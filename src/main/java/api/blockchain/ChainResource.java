@@ -2,6 +2,8 @@ package api.blockchain;
 
 import api.network.PublishService;
 import api.repository.BlockRepository;
+import api.repository.model.ChainTypeEnum;
+import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;
@@ -38,11 +40,9 @@ public class ChainResource {
     @Produces("application/json")
     @Path("M1n3")
     public Response mine(Object data) {
-        blockchain.chain.addBlock(data);
-        /*
-        BlockDatabase addedBlock = new BlockDatabase(blockchain.chain.addBlock(data), ChainTypeEnum.GENERIC);
-        repository.persist(addedBlock);
-         */
+        Block addedBlock = blockchain.chain.addBlock(data);
+        repository.add(addedBlock, ChainTypeEnum.GENERIC);
+
         publisher.broadcastChain(blockchain.chain);
         return Response.ok(blockchain.chain.getChain()).build();
     }
