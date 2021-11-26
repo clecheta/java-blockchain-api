@@ -58,7 +58,8 @@ public class ApplicationLifeCycle {
         //load chain from database
         loadDatabaseChain();
         //syncing with root state
-        syncChains();
+        syncBlockchain();
+        syncCryptochain();
         syncTransactionPollMap();
     }
 
@@ -66,8 +67,9 @@ public class ApplicationLifeCycle {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " stopped.");
     }
 
-    private void syncChains() {
-        HttpRequest request = HttpRequest.newBuilder().GET()
+    private void syncBlockchain() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create(ROOT_NODE_ADDRESS + "/Ch41N/8l0cx")).build();
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -77,13 +79,34 @@ public class ApplicationLifeCycle {
                         new TypeReference<List<Block>>() {
                         });
 
-                LOGGER.info("Sync chain with ROOT");
+                LOGGER.info("Sync blockchain with ROOT");
                 blockchain.chain.replaceChain(blockList);
             }
         } catch (ConnectException ce) {
             //do nothing we probably are in the ROOT node
         } catch (Exception e) {
-            LOGGER.error("Sync chain on connect FAILED: " + e.getMessage());
+            LOGGER.error("Sync blockchain on connect FAILED: " + e.getMessage());
+        }
+    }
+
+    private void syncCryptochain() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .uri(URI.create(ROOT_NODE_ADDRESS + "/CrYP70/Ch41N")).build();
+        try {
+            HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) { //Success, lets replace the node chain
+                Parse<List<Block<List<Transaction>>>> parse = new Parse();
+                List<Block<List<Transaction>>> blockList = parse.fromJson(response.body().toString(),
+                        new TypeReference<List<Block<List<Transaction>>>>() {});
+
+                LOGGER.info("Sync cryptochain with ROOT");
+                miner.cryptoChain.replaceChain(blockList);
+            }
+        } catch (ConnectException ce) {
+            //do nothing we probably are in the ROOT node
+        } catch (Exception e) {
+            LOGGER.error("Sync cryptochain on connect FAILED: " + e.getMessage());
         }
     }
 
