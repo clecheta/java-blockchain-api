@@ -3,9 +3,10 @@ package api;
 import api.blockchain.Blockchain;
 import api.cryptocurrency.TransactionMiner;
 import api.network.Util;
+import api.repository.BlockRepository;
 import com.R07r35cInc.blockchain.Block;
-import com.R07r35cInc.util.Parse;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.util.Parse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
@@ -36,15 +37,33 @@ public class ApplicationLifeCycle {
             .version(HttpClient.Version.HTTP_2)
             .connectTimeout(Duration.ofSeconds(60))
             .build();
+
     @Inject
     Blockchain blockchain;
+
     @Inject
     TransactionMiner miner;
+
+    @Inject
+    BlockRepository repository;
+
     @ConfigProperty(name = "root.node.address")
     private String ROOT_NODE_ADDRESS;
 
+    @ConfigProperty(name = "quarkus.http.port")
+    private String HTTP_PORT;
+
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
+        //load chain from database
+        if (HTTP_PORT.equals("8018")) { //root note
+            //repository.loadBlockchain();
+            //TODO make an improvement to not have to declare the list here, instead use direct from repository return
+            List<Block<List<Transaction>>> cryptoBlockList = repository.loadCryptochain();
+            if (cryptoBlockList.size() > 0) {
+                miner.cryptoChain.replaceChain(cryptoBlockList);
+            }
+        }
         //syncing with root state
         syncChains();
         syncTransactionPollMap();
@@ -62,7 +81,8 @@ public class ApplicationLifeCycle {
             if (response.statusCode() == 200) { //Success, lets replace the node chain
                 Parse<List<Block>> parse = new Parse();
                 List<Block> blockList = parse.fromJson(response.body().toString(),
-                        new TypeReference<List<Block>>() {});
+                        new TypeReference<List<Block>>() {
+                        });
 
                 LOGGER.info("Sync chain with ROOT");
                 blockchain.chain.replaceChain(blockList);
@@ -82,7 +102,8 @@ public class ApplicationLifeCycle {
             if (response.statusCode() == 200) { //Success, lets replace the node chain
                 Parse<Map<String, Transaction>> parse = new Parse();
                 Map<String, Transaction> rootTransactionPoolMap = parse.fromJson(response.body().toString(),
-                        new TypeReference<Map<String, Transaction>>() {});
+                        new TypeReference<Map<String, Transaction>>() {
+                        });
 
                 LOGGER.info("Sync transaction pool with ROOT");
                 miner.transactionPool.setMap(rootTransactionPoolMap);

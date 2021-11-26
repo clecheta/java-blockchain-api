@@ -2,7 +2,8 @@ package api.cryptocurrency;
 
 import api.network.PublishService;
 import api.repository.BlockRepository;
-import api.repository.DatabaseBlock;
+import api.repository.model.ChainTypeEnum;
+import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.TransactionPool;
@@ -47,9 +48,8 @@ public class TransactionMiner {
         validTransactions.add(Transaction.rewardTransaction(this.wallet));
 
         //3. add a block consisting of these transactions to the blockchain
-        DatabaseBlock addedBlock = new DatabaseBlock(this.cryptoChain.addBlock(validTransactions),
-                CryptoChain.class.getSimpleName());
-        repository.persist(addedBlock);
+        Block<List<Transaction>> addedBlock = this.cryptoChain.addBlock(validTransactions);
+        repository.add(addedBlock, ChainTypeEnum.CRYPTO);
 
         //4. broadcast the updated cryptochain
         publisher.broadcastCryptochain(this.cryptoChain);
