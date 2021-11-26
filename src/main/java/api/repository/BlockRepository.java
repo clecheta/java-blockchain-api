@@ -3,9 +3,11 @@ package api.repository;
 import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,19 +21,20 @@ import java.util.List;
 @ApplicationScoped
 public class BlockRepository {
 
+    private static final Logger LOGGER = Logger.getLogger("BlockRepository");
+    private static final String DATABASE = "blockchain";
+    private static final String COLLECTION = "block";
+
     @Inject
     MongoClient mongoClient;
 
-    public void loadBlockchain() {
-        //List<Block> blockDatabaseList = list("chain", ChainTypeEnum.GENERIC.getValue());
-        System.out.println("load blockchain");
-    }
+    public List<Block> loadBlockchain() {
+        List<Block> list = new ArrayList<>();
+        list.add(0, Block.genesis()); //add the Genesis block to begin of chain
 
-    public List<Block<List<Transaction>>> loadCryptochain() {
-        System.out.println("load cryptochain");
-        List<Block<List<Transaction>>> list = new ArrayList<>();
-        MongoCursor<Block> cursor = getCollection().find().iterator();
-
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("chain", ChainTypeEnum.GENERIC.getValue());
+        MongoCursor<Block> cursor = getCollection().find(whereQuery).iterator();
         try {
             while (cursor.hasNext()) {
                 list.add(cursor.next());
@@ -39,10 +42,25 @@ public class BlockRepository {
         } finally {
             cursor.close();
         }
+        LOGGER.debug("load: Blockchain");
+        return list;
+    }
 
-        if (list.size()>0) { //add the Genesis block to begin of chain
-            list.add(0, Block.genesis());
+    public List<Block<List<Transaction>>> loadCryptochain() {
+        List<Block<List<Transaction>>> list = new ArrayList<>();
+        list.add(0, Block.genesis()); //add the Genesis block to begin of chain
+
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("chain", ChainTypeEnum.CRYPTO.getValue());
+        MongoCursor<Block> cursor = getCollection().find(whereQuery).iterator();
+        try {
+            while (cursor.hasNext()) {
+                list.add(cursor.next());
+            }
+        } finally {
+            cursor.close();
         }
+        LOGGER.debug("load: Cryptochain");
 
         return list;
     }
@@ -53,7 +71,7 @@ public class BlockRepository {
     }
 
     private MongoCollection<Block> getCollection() {
-        return mongoClient.getDatabase("blockchain").getCollection("block", Block.class);
+        return mongoClient.getDatabase(DATABASE).getCollection(COLLECTION, Block.class);
     }
 
 }

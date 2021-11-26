@@ -56,14 +56,7 @@ public class ApplicationLifeCycle {
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
         //load chain from database
-        if (HTTP_PORT.equals("8018")) { //root note
-            //repository.loadBlockchain();
-            //TODO make an improvement to not have to declare the list here, instead use direct from repository return
-            List<Block<List<Transaction>>> cryptoBlockList = repository.loadCryptochain();
-            if (cryptoBlockList.size() > 0) {
-                miner.cryptoChain.replaceChain(cryptoBlockList);
-            }
-        }
+        loadDatabaseChain();
         //syncing with root state
         syncChains();
         syncTransactionPollMap();
@@ -114,4 +107,16 @@ public class ApplicationLifeCycle {
             LOGGER.error("Sync Transaction Poll MAP on Connect FAILED: " + e.getMessage());
         }
     }
+
+    private void loadDatabaseChain() {
+        if (HTTP_PORT.equals("8018")) { //root note
+            try {
+                //blockchain.chain.replaceChain(repository.loadBlockchain());
+                miner.cryptoChain.replaceChain(repository.loadCryptochain());
+            } catch (RuntimeException re) { //It's quite important to not give any exception during application loading
+                LOGGER.warn(re);
+            }
+        }
+    }
+
 }

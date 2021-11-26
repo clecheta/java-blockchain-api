@@ -1,5 +1,6 @@
 package api.repository;
 
+import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.util.Parse;
@@ -20,6 +21,8 @@ import java.util.List;
 public class BlockCodec implements CollectibleCodec<Block> {
 
     private final Codec<Document> documentCodec;
+    private static final Parse<List<Transaction>> cryptoParse = new Parse<>();
+    private static final Parse<Object> objectParse = new Parse<>();
 
     public BlockCodec() {
         this.documentCodec = MongoClientSettings.getDefaultCodecRegistry().get(Document.class);
@@ -68,15 +71,19 @@ public class BlockCodec implements CollectibleCodec<Block> {
         block.setDate(document.getDate("date"));
         block.setPreviousHash(document.getString("previousHash"));
         block.setHash(document.getString("hash"));
-
-        Parse<List<Transaction>> parse = new Parse<>();
-        String dataString = document.getString("data");
-        Object data = parse.fromJson(dataString, new TypeReference<List<Transaction>>() {});
-        block.setData(data);
-
         block.setNonce(document.getLong("nonce"));
         block.setIndex(document.getLong("index"));
         block.setChain(document.getString("chain"));
+
+        String dataString = document.getString("data");
+        Object data;
+        if (block.getChain().equals(ChainTypeEnum.CRYPTO.getValue())) {
+            data = cryptoParse.fromJson(dataString, new TypeReference<List<Transaction>>() {});
+        } else {
+            data = objectParse.fromJson(dataString, new TypeReference<>() {});
+        }
+        block.setData(data);
+
         return block;
     }
 
