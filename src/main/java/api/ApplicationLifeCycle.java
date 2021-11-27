@@ -55,16 +55,24 @@ public class ApplicationLifeCycle {
 
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
+
         //load chain from database
         loadDatabaseChain();
+
         //syncing with root state
         syncBlockchain();
         syncCryptochain();
         syncTransactionPollMap();
+
+        LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
+        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);
     }
 
     void onStop(@Observes ShutdownEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " stopped.");
+
+        LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
+        LOGGER.info("Wallet balance: " + this.miner.wallet.balance); //FIXME shows same value as init, this is wrong!
     }
 
     private void syncBlockchain() {
@@ -133,11 +141,24 @@ public class ApplicationLifeCycle {
 
     private void loadDatabaseChain() {
         if (HTTP_PORT.equals("8018")) { //root note
+            /* It's quite important to not give any exception during application loading,
+             * and it might happen when the chain has no mined blocked for example.
+             */
+
             try {
                 blockchain.chain.replaceChain(repository.loadBlockchain());
+            } catch (RuntimeException re) {
+                LOGGER.warn("loadBlockchain: " + re);
+            }
+
+            try {
+                //FIXME: https://git.okaut.com/Jesus/api.blockchain/-/issues/19
+                // cannot replaceChain as the calculation of balance mismatch
+                // in the next api starts, the wallet change it's address, so even if i save the balance and load it again
+                // calculation will fail as we are talking about different addresses now
                 miner.cryptoChain.replaceChain(repository.loadCryptochain());
-            } catch (RuntimeException re) { //It's quite important to not give any exception during application loading
-                LOGGER.warn(re);
+            } catch (RuntimeException re) {
+                LOGGER.warn("loadCryptochain: " + re);
             }
         }
     }
