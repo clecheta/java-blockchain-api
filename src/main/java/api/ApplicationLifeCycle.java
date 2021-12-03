@@ -6,6 +6,7 @@ import api.network.Util;
 import api.repository.BlockRepository;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.quarkus.runtime.ShutdownEvent;
@@ -104,8 +105,8 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Parse<List<Block<List<Transaction>>>> parse = new Parse();
-                List<Block<List<Transaction>>> blockList = parse.fromJson(response.body().toString(),
+                Parse<List<Block<List<Tx>>>> parse = new Parse();
+                List<Block<List<Tx>>> blockList = parse.fromJson(response.body().toString(),
                         new TypeReference<List<Block<List<Transaction>>>>() {});
 
                 LOGGER.info("Sync cryptochain with ROOT");
@@ -124,9 +125,9 @@ public class ApplicationLifeCycle {
         try {
             HttpResponse response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) { //Success, lets replace the node chain
-                Parse<Map<String, Transaction>> parse = new Parse();
-                Map<String, Transaction> rootTransactionPoolMap = parse.fromJson(response.body().toString(),
-                        new TypeReference<Map<String, Transaction>>() {
+                Parse<Map<String, Tx>> parse = new Parse();
+                Map<String, Tx> rootTransactionPoolMap = parse.fromJson(response.body().toString(),
+                        new TypeReference<Map<String, Tx>>() {
                         });
 
                 LOGGER.info("Sync transaction pool with ROOT");

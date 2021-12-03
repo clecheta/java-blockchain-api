@@ -4,6 +4,7 @@ import api.blockchain.Blockchain;
 import api.cryptocurrency.TransactionMiner;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.blockchain.NetChain;
+import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
@@ -47,7 +48,7 @@ public class SubscribeService {
     @Incoming("transaction-in")
     @Blocking
     /** Set the transaction within the local transaction pool */
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(PayTypeTransaction transaction) {
         if (transaction != null) {
             miner.transactionPool.setTransaction(transaction);
             if (!profile.startsWith("prod")) {

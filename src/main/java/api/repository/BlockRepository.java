@@ -2,7 +2,7 @@ package api.repository;
 
 import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
-import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -46,8 +46,8 @@ public class BlockRepository {
         return list;
     }
 
-    public List<Block<List<Transaction>>> loadCryptochain() {
-        List<Block<List<Transaction>>> list = new ArrayList<>();
+    public List<Block<List<Tx>>> loadCryptochain() {
+        List<Block<List<Tx>>> list = new ArrayList<>();
         list.add(0, Block.genesis()); //add the Genesis block to begin of chain
 
         BasicDBObject whereQuery = new BasicDBObject();

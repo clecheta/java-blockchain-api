@@ -2,7 +2,9 @@ package api;
 
 import com.R07r35cInc.blockchain.*;
 import com.R07r35cInc.cryptocurrency.Input;
+import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
@@ -18,7 +20,9 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
         NetChain.class,
         //cryptocurrency
         Input.class,
-        Transaction.class
+        Tx.class,
+        Transaction.class,
+        PayTypeTransaction.class
 })
 public class ReflectionConfiguration {
 

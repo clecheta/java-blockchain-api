@@ -1,8 +1,7 @@
 package api.cryptocurrency;
 
-import api.cryptocurrency.model.TransactionCommand;
 import api.network.PublishService;
-import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.*;
 import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
 import org.apache.http.HttpStatus;
@@ -36,14 +35,22 @@ public class PoolResource {
     /** creates a new transaction and add it to the transaction pool */
     public Response transact(TransactionCommand cmd) {
         try {
-            Transaction transaction = miner.transactionPool.existingTransaction(miner.wallet.publicKey);
+            /* if an invalid value is informed in type it backs to the caller
+             *  with: not one of the values accepted for Enum
+             * class: [MONEY, CREDIT, TRANSFER, DEBIT, PIX, WALLET, INTERCHANGE] */
+            if (cmd.type == null) {
+                throw new RuntimeException("wrong usage");
+            }
+
+            PayTypeTransaction transaction =
+                    (PayTypeTransaction) miner.transactionPool.existingTransaction(miner.wallet.publicKey);
 
             if (transaction != null) {
                 //when the transaction already exists in the pool, call update instead of create a new transaction
                 transaction.update(miner.wallet, cmd.recipient, cmd.amount);
             } else {
                 //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
-                transaction = miner.wallet.createTransaction(cmd.recipient, cmd.amount, miner.cryptoChain.getChain());
+                transaction = (PayTypeTransaction) miner.wallet.createTransaction(cmd, miner.cryptoChain.getChain());
             }
 
             miner.transactionPool.setTransaction(transaction);

@@ -2,7 +2,8 @@ package api.network;
 
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.blockchain.NetChain;
-import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
@@ -25,7 +26,7 @@ public class PublishService {
     @Inject
     @Broadcast
     @Channel("transaction-to-kafka")
-    Emitter<Transaction> transactionEmitter;
+    Emitter<PayTypeTransaction> transactionEmitter;
 
     @Inject
     @Broadcast
@@ -37,10 +38,9 @@ public class PublishService {
         blockchainEmitter.send(blockchain);
     }
 
-    public void broadcastTransaction(Transaction transaction) {
+    public void broadcastTransaction(PayTypeTransaction transaction) {
         transactionEmitter.send(transaction);
     }
-
 
     public void broadcastCryptochain(CryptoChain cryptoChain) {
         cryptoChain.origin = Util.getHostName();

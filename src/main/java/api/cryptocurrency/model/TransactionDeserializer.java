@@ -1,6 +1,6 @@
 package api.cryptocurrency.model;
 
-import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
@@ -9,9 +9,9 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
  * https://encontreijesus.com
  */
 @RegisterForReflection
-public class TransactionDeserializer extends ObjectMapperDeserializer<Transaction> {
+public class TransactionDeserializer extends ObjectMapperDeserializer<PayTypeTransaction> {
 
     public TransactionDeserializer() {
-        super(Transaction.class);
+        super(PayTypeTransaction.class);
     }
 }
