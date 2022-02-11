@@ -9,13 +9,13 @@ before_script:
 
 integration:
   stage: test
-  image: openjdk:11
+  image: openjdk:17
   script:
     - ./mvnw test -B -s ci_settings.xml
 
 graalvm.native:
   stage: build
-  image: ghcr.io/graalvm/graalvm-ce:20.3.1.2
+  image: ghcr.io/graalvm/graalvm-ce:22.0.0.2
   before_script:
     - gu install native-image
   script:
