@@ -3,6 +3,7 @@ package api.cryptocurrency;
 import api.BaseTest;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.TransactionPool;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeAll;
@@ -67,7 +68,7 @@ public class ValidTransactionsTest extends BaseTest {
 
     @Test
     void validTransactions() {
-        List<Transaction> transactionList = transactionPool.getValidTransactions();
+        List<Tx> transactionList = transactionPool.getValidTransactions();
         assertTrue(transactionList.containsAll(validTransactions), "returns valid transaction");
         assertTrue(transactionList.size() == validTransactions.size(),
                 "comparison arrays must have the same size");

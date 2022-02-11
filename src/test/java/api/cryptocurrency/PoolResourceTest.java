@@ -1,6 +1,7 @@
 package api.cryptocurrency;
 
 import api.BaseTest;
+import com.R07r35cInc.cryptocurrency.PayTypeEnum;
 import com.R07r35cInc.cryptocurrency.TransactionCommand;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -30,6 +31,7 @@ public class PoolResourceTest extends BaseTest {
         this.cmd = new TransactionCommand();
         cmd.recipient = publicKey;
         cmd.amount = BigDecimal.TEN;
+        cmd.type = PayTypeEnum.WALLET;
     }
 
     @Test
