@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 public class BlockCodec implements CollectibleCodec<Block> {
 

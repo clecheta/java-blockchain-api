@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @ApplicationScoped
 public class SubscribeService {

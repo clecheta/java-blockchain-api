@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * In order to broadcast an object in a kafka channel it must have a public constructor
  *
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 public class KafkaDefaultConstructorTest {
 

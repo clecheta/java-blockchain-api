@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  *
  * Wrapper for Wallet to ensure to not
  * expose any sensetive data in the endpoint.

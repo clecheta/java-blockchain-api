@@ -19,7 +19,7 @@ import java.util.List;
  * for overall the application.
  *
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @Singleton
 public class TransactionMiner {

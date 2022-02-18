@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @QuarkusTest
 public class ChainResourceTest {

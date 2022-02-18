@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 public class Util {
 

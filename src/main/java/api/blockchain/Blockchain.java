@@ -8,7 +8,7 @@ import javax.inject.Singleton;
  * Maintain a unique instance of the blockchain in the node
  *
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @Singleton
 public class Blockchain {

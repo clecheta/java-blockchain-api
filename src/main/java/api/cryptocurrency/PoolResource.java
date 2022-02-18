@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @Path("p00L")
 public class PoolResource {

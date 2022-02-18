@@ -7,7 +7,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 public class BlockCodecProvider implements CodecProvider {
     @Override

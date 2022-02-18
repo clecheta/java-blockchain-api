@@ -9,7 +9,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @RegisterForReflection(targets = {
         //blockchain

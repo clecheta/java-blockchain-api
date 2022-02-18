@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @Path("M1n3")
 public class MineResource {

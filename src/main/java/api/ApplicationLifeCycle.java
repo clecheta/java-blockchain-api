@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * @author Cleber Lecheta
- * https://encontreijesus.com
+ * https://encontreiJesus.com
  */
 @ApplicationScoped
 public class ApplicationLifeCycle {
