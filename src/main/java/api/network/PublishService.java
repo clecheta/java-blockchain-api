@@ -3,7 +3,6 @@ package api.network;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.blockchain.NetChain;
 import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
-import com.R07r35cInc.cryptocurrency.Tx;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;

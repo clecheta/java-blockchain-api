@@ -2,6 +2,7 @@ package api.cryptocurrency;
 
 import com.R07r35cInc.cryptocurrency.Input;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RewardTransactionTest {
 
     static Wallet minerWallet;
-    static Transaction rewardTransaction;
+    static Tx rewardTransaction;
     @ConfigProperty(name = "reward.input")
     private String REWARD_INPUT;
     @ConfigProperty(name = "mining.reward")
