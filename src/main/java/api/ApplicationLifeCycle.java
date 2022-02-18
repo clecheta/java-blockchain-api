@@ -5,7 +5,6 @@ import api.cryptocurrency.TransactionMiner;
 import api.network.Util;
 import api.repository.BlockRepository;
 import com.R07r35cInc.blockchain.Block;
-import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -107,7 +106,8 @@ public class ApplicationLifeCycle {
             if (response.statusCode() == 200) { //Success, lets replace the node chain
                 Parse<List<Block<List<Tx>>>> parse = new Parse();
                 List<Block<List<Tx>>> blockList = parse.fromJson(response.body().toString(),
-                        new TypeReference<List<Block<List<Transaction>>>>() {});
+                        new TypeReference<List<Block<List<Tx>>>>() {
+                        });
 
                 LOGGER.info("Sync cryptochain with ROOT");
                 miner.cryptoChain.replaceChain(blockList);
