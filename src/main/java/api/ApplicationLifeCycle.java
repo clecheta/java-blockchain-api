@@ -64,15 +64,16 @@ public class ApplicationLifeCycle {
         syncCryptochain();
         syncTransactionPollMap();
 
-        LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
-        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);
+        /*LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
+        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);*/
     }
 
     void onStop(@Observes ShutdownEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " stopped.");
 
-        LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
-        LOGGER.info("Wallet balance: " + this.miner.wallet.balance); //FIXME shows same value as init, this is wrong!
+        /*LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
+        //FIXME shows same value as init, this is wrong!
+        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);*/
     }
 
     private void syncBlockchain() {

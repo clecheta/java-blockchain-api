@@ -3,6 +3,7 @@ package api.repository;
 import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mongodb.MongoClientSettings;
@@ -78,7 +79,7 @@ public class BlockCodec implements CollectibleCodec<Block> {
         String dataString = document.getString("data");
         Object data;
         if (block.getChain().equals(ChainTypeEnum.CRYPTO.getValue())) {
-            data = cryptoParse.fromJson(dataString, new TypeReference<List<Transaction>>() {});
+            data = cryptoParse.fromJson(dataString, new TypeReference<List<Tx>>() {});
         } else {
             data = objectParse.fromJson(dataString, new TypeReference<>() {});
         }
