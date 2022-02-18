@@ -53,11 +53,16 @@ public class ApplicationLifeCycle {
     @ConfigProperty(name = "quarkus.http.port")
     private String HTTP_PORT;
 
+    @ConfigProperty(name = "load.from.database")
+    private Boolean loadFromDb;
+
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
 
         //load chain from database
-        loadDatabaseChain();
+        if(loadFromDb == true) {
+            loadDatabaseChain();
+        }
 
         //syncing with root state
         syncBlockchain();
