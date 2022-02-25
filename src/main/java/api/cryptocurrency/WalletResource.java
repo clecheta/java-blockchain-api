@@ -1,6 +1,7 @@
 package api.cryptocurrency;
 
 import api.cryptocurrency.model.WalletInfo;
+import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.Wallet;
 
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.util.UUID;
 
 /**
  * @author Cleber Lecheta
@@ -18,6 +20,9 @@ public class WalletResource {
 
     @Inject
     TransactionMiner miner;
+
+    @Inject
+    WalletRepository repository;
 
     @POST
     @Produces("application/json")
@@ -30,5 +35,23 @@ public class WalletResource {
         walletInfo.balance = Wallet.calculateBalance(miner.cryptoChain.getChain(), address);
 
         return Response.ok(walletInfo).build();
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("cRE47E")
+    public Response create() {
+        Wallet newWallet = new Wallet();
+        newWallet.uid = UUID.randomUUID().toString();
+        repository.add(newWallet);
+        return Response.ok(newWallet).build();
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("937")
+    public Response get(String id) {
+        Wallet wallet = repository.get(id);
+        return Response.ok(wallet).build();
     }
 }

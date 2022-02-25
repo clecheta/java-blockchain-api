@@ -37,7 +37,7 @@ public class BlockCodec implements CollectibleCodec<Block> {
         doc.put("hash", block.getHash());
         doc.put("data", Parse.toJson(block.getData()));
         doc.put("nonce", block.getNonce());
-        doc.put("index", block.getIndex());
+        doc.put("number", block.getNumber());
         doc.put("chain", block.getChain());
         documentCodec.encode(writer, doc, encoderContext);
     }
@@ -73,7 +73,7 @@ public class BlockCodec implements CollectibleCodec<Block> {
         block.setPreviousHash(document.getString("previousHash"));
         block.setHash(document.getString("hash"));
         block.setNonce(document.getLong("nonce"));
-        block.setIndex(document.getLong("index"));
+        block.setNumber(document.getLong("number"));
         block.setChain(document.getString("chain"));
 
         String dataString = document.getString("data");
