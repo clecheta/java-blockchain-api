@@ -19,17 +19,15 @@ public class WalletInfo {
     public String address;
     public BigDecimal balance;
 
-    public WalletInfo() {}
-
     public WalletInfo(String address, BigDecimal balance) {
         this.address = address;
         this.balance = balance;
     }
 
-    public WalletInfo(String address, BigDecimal balance, String uid) {
-        this.address = address;
-        this.balance = balance;
-        this.uid = uid;
+    public WalletInfo(Wallet wallet) {
+        this.address = wallet.publicKey;
+        this.balance = wallet.balance;
+        this.uid = wallet.uid;
     }
 
 }
