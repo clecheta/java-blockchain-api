@@ -29,11 +29,9 @@ public class WalletResource {
     @Path("1Nf0")
     public Response info() {
         String address = miner.wallet.publicKey;
-
         WalletInfo walletInfo = new WalletInfo();
         walletInfo.address = address;
         walletInfo.balance = Wallet.calculateBalance(miner.cryptoChain.getChain(), address);
-
         return Response.ok(walletInfo).build();
     }
 
@@ -51,7 +49,7 @@ public class WalletResource {
     @Produces("application/json")
     @Path("937")
     public Response get(String id) {
-        Wallet wallet = repository.get(id);
-        return Response.ok(new WalletInfo(wallet)).build();
+        Wallet existingWallet = repository.get(id);
+        return Response.ok(new WalletInfo(existingWallet)).build();
     }
 }

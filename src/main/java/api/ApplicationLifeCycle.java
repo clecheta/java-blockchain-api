@@ -4,6 +4,7 @@ import api.blockchain.Blockchain;
 import api.cryptocurrency.TransactionMiner;
 import api.network.Util;
 import api.repository.BlockRepository;
+import api.repository.DatabaseRepository;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
@@ -47,6 +48,9 @@ public class ApplicationLifeCycle {
     @Inject
     BlockRepository repository;
 
+    @Inject
+    DatabaseRepository databaseRepository;
+
     @ConfigProperty(name = "root.node.address")
     private String ROOT_NODE_ADDRESS;
 
@@ -71,6 +75,7 @@ public class ApplicationLifeCycle {
 
         /*LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
         LOGGER.info("Wallet balance: " + this.miner.wallet.balance);*/
+        databaseRepository.createIndex();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
