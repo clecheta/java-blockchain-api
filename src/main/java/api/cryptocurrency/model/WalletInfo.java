@@ -1,5 +1,6 @@
 package api.cryptocurrency.model;
 
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.math.BigDecimal;
@@ -16,5 +17,12 @@ public class WalletInfo {
 
     public String address;
     public BigDecimal balance;
+
+    public WalletInfo() {}
+
+    public WalletInfo(Wallet wallet) {
+        this.address = wallet.publicKey;
+        this.balance = wallet.balance;
+    }
 
 }

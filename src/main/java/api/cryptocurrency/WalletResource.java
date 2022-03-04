@@ -44,7 +44,7 @@ public class WalletResource {
         Wallet newWallet = new Wallet();
         newWallet.uid = UUID.randomUUID().toString();
         repository.add(newWallet);
-        return Response.ok(newWallet).build();
+        return Response.ok(new WalletInfo(newWallet)).build();
     }
 
     @POST
@@ -52,6 +52,6 @@ public class WalletResource {
     @Path("937")
     public Response get(String id) {
         Wallet wallet = repository.get(id);
-        return Response.ok(wallet).build();
+        return Response.ok(new WalletInfo(wallet)).build();
     }
 }

@@ -52,11 +52,12 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         Document doc = new Document();
         doc.put("balance", wallet.balance);
         doc.put("uid", wallet.uid);
-        ECDSA.setKeyPair(wallet.keyPair);
-        ECPrivateKey ecPrivkey = (ECPrivateKey) wallet.keyPair.getPrivate();
-        doc.put("privateKey", ecPrivkey.getEncoded());
-        ECPublicKey ecPubkey = (ECPublicKey) wallet.keyPair.getPublic();
-        doc.put("publicKey", ecPubkey.getEncoded());
+        doc.put("publicKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
+        doc.put("privateKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
+//        ECDSA.setKeyPair(wallet.keyPair);
+//        ECPrivateKey ecPrivkey = (ECPrivateKey) wallet.keyPair.getPrivate();
+//        ECPublicKey ecPubkey = (ECPublicKey) wallet.keyPair.getPublic();
+
         documentCodec.encode(writer, doc, encoderContext);
     }
 
@@ -87,32 +88,15 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     public Wallet decode(BsonReader reader, DecoderContext decoderContext) {
         Document document = documentCodec.decode(reader, decoderContext);
         String uid = document.getString("uid");
-        String privateKeyEncoded = document.getString("privateKey");
-        String publicKeyEncoded = document.getString("publicKey");
-        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyEncoded);
-        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyEncoded);
-
-        /*String privateKeyBase64 = document.getString("privateKey");
-        String publicKeyBase64 = document.getString("publicKey");
-        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyBase64);
-        byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyBase64);
-        KeyPair keyPair;
-        try {
-            KeyFactory kf = KeyFactory.getInstance("EC");
-            X509EncodedKeySpec X509privateKey = new X509EncodedKeySpec(privateKeyBytes);
-            PrivateKey privateKey = kf.generatePrivate(X509privateKey);
-            X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(publicKeyBytes);
-            PublicKey publicKey = kf.generatePublic(X509publicKey);
-            keyPair = new KeyPair(publicKey, privateKey);
-            ECDSA.setKeyPair(keyPair);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }*/
+        BigDecimal balance = BigDecimal.ONE;
+        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("publicKey"));
+        ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("privateKey"));
+        KeyPair keyPair = new KeyPair(publicKey, privateKey);
 
 //        Decimal128 dec = document.get
 //        wallet.balance = new BigDecimal(document.getString("balance"));
 //        wallet.publicKey = document.getString("publicKey");
-        return new Wallet();
+        return new Wallet(keyPair, balance, uid);
     }
 
 }
