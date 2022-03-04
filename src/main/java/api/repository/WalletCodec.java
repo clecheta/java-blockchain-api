@@ -8,8 +8,9 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.CollectibleCodec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
-import org.bson.types.Decimal128;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
@@ -32,7 +33,7 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     @Override
     public void encode(BsonWriter writer, Wallet wallet, EncoderContext encoderContext) {
         Document doc = new Document();
-        doc.put("balance", wallet.balance);
+        doc.put("balance", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray()));
         doc.put("uid", wallet.uid);
         doc.put("publicKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
         doc.put("privateKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
@@ -66,11 +67,15 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     public Wallet decode(BsonReader reader, DecoderContext decoderContext) {
         Document document = documentCodec.decode(reader, decoderContext);
         String uid = document.getString("uid");
-        Decimal128 balance = document.get("balance", Decimal128.class);
+        byte[] encodedBalance = Base64.getDecoder().decode(document.getString("balance"));
+        long valueBalance = new BigInteger(encodedBalance).longValue();
+        BigDecimal balance = new BigDecimal(valueBalance);
+
         ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("publicKey"));
         ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("privateKey"));
         KeyPair keyPair = new KeyPair(publicKey, privateKey);
-        return new Wallet(keyPair, balance.bigDecimalValue(), uid);
+        return new Wallet(keyPair, balance, uid);
     }
+
 
 }
