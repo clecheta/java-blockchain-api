@@ -10,6 +10,8 @@ before_script:
 integration:
   stage: test
   image: openjdk:17
+  services:
+    - name: mongo
   script:
     - ./mvnw test -B -s ci_settings.xml
 
