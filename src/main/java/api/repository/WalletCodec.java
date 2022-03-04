@@ -77,5 +77,4 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         return new Wallet(keyPair, balance, uid);
     }
 
-
 }
