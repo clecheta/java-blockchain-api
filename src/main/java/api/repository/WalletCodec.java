@@ -33,8 +33,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     @Override
     public void encode(BsonWriter writer, Wallet wallet, EncoderContext encoderContext) {
         Document doc = new Document();
-        doc.put("balance", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray()));
-        doc.put("uid", wallet.uid);
+        doc.put("src", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray()));
+        doc.put("origin", wallet.uid);
         doc.put("publicKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
         doc.put("privateKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
         documentCodec.encode(writer, doc, encoderContext);
@@ -66,8 +66,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     @Override
     public Wallet decode(BsonReader reader, DecoderContext decoderContext) {
         Document document = documentCodec.decode(reader, decoderContext);
-        String uid = document.getString("uid");
-        byte[] encodedBalance = Base64.getDecoder().decode(document.getString("balance"));
+        String uid = document.getString("origin");
+        byte[] encodedBalance = Base64.getDecoder().decode(document.getString("src"));
         long valueBalance = new BigInteger(encodedBalance).longValue();
         BigDecimal balance = new BigDecimal(valueBalance);
 
