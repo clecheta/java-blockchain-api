@@ -33,10 +33,12 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     @Override
     public void encode(BsonWriter writer, Wallet wallet, EncoderContext encoderContext) {
         Document doc = new Document();
-        doc.put("src", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray()));
-        doc.put("origin", wallet.uid);
-        doc.put("publicKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
-        doc.put("privateKey", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
+        doc.put("c3", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray())); //src
+        doc.put("a0", wallet.uid); //origin - TODO: put it in md5 format
+        doc.put("d7", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
+        doc.put("b8", Base64.getEncoder().encodeToString(wallet.getSTARTING_BALANCE().unscaledValue().toByteArray()));
+        doc.put("e5", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
+        doc.put("j1", wallet.nonce);
         documentCodec.encode(writer, doc, encoderContext);
     }
 
@@ -66,15 +68,25 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     @Override
     public Wallet decode(BsonReader reader, DecoderContext decoderContext) {
         Document document = documentCodec.decode(reader, decoderContext);
-        String uid = document.getString("origin");
-        byte[] encodedBalance = Base64.getDecoder().decode(document.getString("src"));
+
+        byte[] encodedBalance = Base64.getDecoder().decode(document.getString("c3"));
         long valueBalance = new BigInteger(encodedBalance).longValue();
         BigDecimal balance = new BigDecimal(valueBalance);
 
-        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("publicKey"));
-        ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("privateKey"));
+        String uid = document.getString("a0");
+
+        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("d7"));
+
+        byte[] encodedStartBalance = Base64.getDecoder().decode(document.getString("b8"));
+        long valueStartBalance = new BigInteger(encodedStartBalance).longValue();
+        BigDecimal startBalance = new BigDecimal(valueStartBalance);
+
+        ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("e5"));
+
+        Long nonce = document.getLong("j1");
+
         KeyPair keyPair = new KeyPair(publicKey, privateKey);
-        return new Wallet(keyPair, balance, uid);
+        return new Wallet(keyPair, balance, uid, startBalance, nonce);
     }
 
 }

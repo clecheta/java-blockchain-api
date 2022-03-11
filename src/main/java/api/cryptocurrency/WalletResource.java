@@ -3,12 +3,14 @@ package api.cryptocurrency;
 import api.cryptocurrency.model.WalletInfo;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.Wallet;
+import com.R07r35cInc.util.Calculate;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -30,7 +32,7 @@ public class WalletResource {
     public Response info() {
         String address = miner.wallet.publicKey;
         WalletInfo walletInfo = new WalletInfo(
-                address, Wallet.calculateBalance(miner.cryptoChain.getChain(), address));
+                address, Calculate.walletBalance(miner.cryptoChain.getChain(), address, BigDecimal.ZERO));
         return Response.ok(walletInfo).build();
     }
 

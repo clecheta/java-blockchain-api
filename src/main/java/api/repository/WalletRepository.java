@@ -27,8 +27,8 @@ public class WalletRepository {
 
     public Wallet get(String uid) {
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("uid", uid);
-        Wallet wallet = getCollection().find(new Document("uid", uid)).first();
+        whereQuery.put("a0", uid);
+        Wallet wallet = getCollection().find(new Document("a0", uid)).first();
         return wallet;
     }
 
