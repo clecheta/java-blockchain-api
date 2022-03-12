@@ -2,9 +2,11 @@ package api.repository;
 
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Wallet;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import org.bson.Document;
 import org.jboss.logging.Logger;
@@ -34,7 +36,12 @@ public class DatabaseRepository {
             count++;
         }
         if (count <= 1) {
-            getWalletCollection().createIndex(Indexes.ascending("uid"));
+            IndexOptions options = new IndexOptions().unique(true);
+            getWalletCollection().createIndex(Indexes.ascending("a0"), options); //uid
+            BasicDBObject publicKeyIndex = new BasicDBObject("d7", 1);
+            getWalletCollection().createIndex(publicKeyIndex, options);
+            BasicDBObject privateKeyIndex = new BasicDBObject("e5", 1);
+            getWalletCollection().createIndex(privateKeyIndex, options);
         }
 
         //Block
