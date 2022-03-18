@@ -1,11 +1,11 @@
 package api.cryptocurrency;
 
+import api.BaseTest;
 import com.R07r35cInc.cryptocurrency.Input;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,18 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * https://encontreiJesus.com
  */
 @QuarkusTest
-public class RewardTransactionTest {
+public class RewardTransactionTest extends BaseTest {
 
     static Wallet minerWallet;
     static Tx rewardTransaction;
-    @ConfigProperty(name = "reward.input")
-    private String REWARD_INPUT;
-    @ConfigProperty(name = "mining.reward")
-    private BigDecimal MINING_REWARD;
 
     @BeforeEach
     void init() {
-        minerWallet = new Wallet();
+        minerWallet = new Wallet(STARTING_BALANCE);
         rewardTransaction = Transaction.rewardTransaction(minerWallet);
     }
 
