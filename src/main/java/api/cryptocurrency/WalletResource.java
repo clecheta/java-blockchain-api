@@ -10,7 +10,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 
 /**
  * @author Cleber Lecheta
@@ -30,8 +29,8 @@ public class WalletResource {
     @Path("1Nf0")
     public Response info() {
         String address = miner.wallet.publicKey;
-        WalletInfo walletInfo = new WalletInfo(
-                address, Calculate.walletBalance(miner.cryptoChain.getChain(), address, BigDecimal.ZERO));
+        WalletInfo walletInfo = new WalletInfo(address,
+                Calculate.walletBalance(miner.cryptoChain.getChain(), address, miner.wallet.getSTARTING_BALANCE()));
         return Response.ok(walletInfo).build();
     }
 

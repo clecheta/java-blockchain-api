@@ -1,7 +1,0 @@
-#used desc to favorites cryptochain search
-db.block.createIndex( { "chain": -1 } );
-db.block.createIndex( { "index": -1, "chain": -1 } );
-
-db.block.createIndex( { "hash": 1 } );
-#used desc to favorites recent added items first
-db.block.createIndex( { "date": -1, "hash": 1 } );

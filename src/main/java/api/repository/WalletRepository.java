@@ -8,6 +8,8 @@ import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.Base64;
 
 /**
  * @author Cleber Lecheta
@@ -32,6 +34,23 @@ public class WalletRepository {
 
     public void add(Wallet wallet) {
         getCollection().insertOne(wallet);
+    }
+
+    public void update(Wallet wallet, BigDecimal currentValue) {
+        //query — holds the field name and current value of that field for the document to be updated
+        BasicDBObject query = new BasicDBObject();
+        query.put("a0", wallet.uid);
+
+        //newDocument — holds the new value of the field balance for the document we’re updating
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("c3", Base64.getEncoder().encodeToString(currentValue.unscaledValue().toByteArray()));
+        newDocument.put("j1", wallet.nonce);
+
+        //updateObject — we pass in the $set operator to update the specified field.
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$set", newDocument);
+
+        getCollection().updateOne(query, updateObject);
     }
 
     private MongoCollection<Wallet> getCollection() {
