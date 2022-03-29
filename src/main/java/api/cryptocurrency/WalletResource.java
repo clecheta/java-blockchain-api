@@ -47,7 +47,7 @@ public class WalletResource {
     @Produces("application/json")
     @Path("937")
     public Response get(String id) {
-        Wallet existingWallet = repository.get(id);
+        Wallet existingWallet = repository.getByUid(id);
         return Response.ok(new WalletInfo(existingWallet.publicKey, existingWallet.balance)).build();
     }
 }

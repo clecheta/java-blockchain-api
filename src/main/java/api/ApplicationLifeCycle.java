@@ -160,7 +160,7 @@ public class ApplicationLifeCycle {
 
     private void loadWallet() {
         if (HTTP_PORT.equals("8018")) { //make load from database operation only from root note
-            miner.wallet = walletRepository.get(mainWallet);
+            miner.wallet = walletRepository.getByUid(mainWallet);
             loadDatabaseChain(); //load wallet before chain
         }
     }

@@ -61,7 +61,7 @@ public class TransactionMiner {
         BigDecimal currentValue = Calculate.walletBalance(this.cryptoChain.getChain(),
                 this.wallet.publicKey,
                 this.wallet.getSTARTING_BALANCE());
-        this.wallet.nonce += 1;
+        this.wallet.nonce += 1; //Should only update the number of output transactions (money that goes out) from the wallet
         walletRepository.update(this.wallet, currentValue); //TODO: use Vert.x bus event to write to disk
 
         //4. broadcast the updated cryptochain

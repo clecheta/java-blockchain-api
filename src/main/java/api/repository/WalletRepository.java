@@ -25,12 +25,21 @@ public class WalletRepository {
     @Inject
     MongoClient mongoClient;
 
-    public Wallet get(String uid) {
+    public Wallet getByUid(String uid) {
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("a0", uid);
         Wallet wallet = getCollection().find(new Document("a0", uid)).first();
         return wallet;
     }
+
+    /*
+    public Wallet getByKey(String key) {
+        String base64Key = Base64.getEncoder().encodeToString(key.getBytes());
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("d7", base64Key);
+        Wallet wallet = getCollection().find(new Document("d7", base64Key)).first();
+        return wallet;
+    }*/
 
     public void add(Wallet wallet) {
         getCollection().insertOne(wallet);
@@ -44,7 +53,7 @@ public class WalletRepository {
         //newDocument — holds the new value of the field balance for the document we’re updating
         BasicDBObject newDocument = new BasicDBObject();
         newDocument.put("c3", Base64.getEncoder().encodeToString(currentValue.unscaledValue().toByteArray()));
-        newDocument.put("j1", wallet.nonce);
+        newDocument.put("j1", wallet.nonce); //TODO shall we encrypt this value as well?
 
         //updateObject — we pass in the $set operator to update the specified field.
         BasicDBObject updateObject = new BasicDBObject();
