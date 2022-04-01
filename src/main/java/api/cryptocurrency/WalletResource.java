@@ -3,7 +3,6 @@ package api.cryptocurrency;
 import api.cryptocurrency.model.WalletInfo;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.Wallet;
-import com.R07r35cInc.util.Calculate;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
@@ -19,20 +18,7 @@ import javax.ws.rs.core.Response;
 public class WalletResource {
 
     @Inject
-    TransactionMiner miner;
-
-    @Inject
     WalletRepository repository;
-
-    @POST
-    @Produces("application/json")
-    @Path("1Nf0")
-    public Response info() {
-        String address = miner.wallet.publicKey;
-        WalletInfo walletInfo = new WalletInfo(address,
-                Calculate.walletBalance(miner.cryptoChain.getChain(), address, miner.wallet.getSTARTING_BALANCE()));
-        return Response.ok(walletInfo).build();
-    }
 
     @POST
     @Produces("application/json")
@@ -47,7 +33,9 @@ public class WalletResource {
     @Produces("application/json")
     @Path("937")
     public Response get(String id) {
+        //Never get wallet from publicAddress, this information must be kept in the backend
         Wallet existingWallet = repository.getByUid(id);
         return Response.ok(new WalletInfo(existingWallet.publicKey, existingWallet.balance)).build();
     }
+
 }
