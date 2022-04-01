@@ -26,8 +26,7 @@ public class TransactionMiner {
 
     public CryptoChain cryptoChain = new CryptoChain();
     public TransactionPool transactionPool = new TransactionPool();
-    public Wallet wallet = new Wallet();
-    public Wallet rewardWallet;
+    public Wallet rewardWallet = new Wallet();
 
     @Inject
     PublishService publisher;

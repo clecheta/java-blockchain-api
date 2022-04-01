@@ -23,6 +23,8 @@ import java.util.Map;
 @ApplicationScoped
 public class BlockService {
 
+    //private static final Logger LOGGER = Logger.getLogger("BlockService");
+
     @Inject
     TransactionMiner miner;
 

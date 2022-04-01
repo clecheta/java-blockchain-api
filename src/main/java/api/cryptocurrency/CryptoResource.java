@@ -24,9 +24,11 @@ public class CryptoResource {
     @Produces("application/json")
     @Path("1Nf0")
     public Response info() {
-        String address = miner.wallet.publicKey;
+        //TODO create a total chain transact money calculation with all the inputs wallets have received
+        //or even sum all the wallets balance without faucet computation
+        String address = miner.rewardWallet.publicKey;
         WalletInfo walletInfo = new WalletInfo(address,
-                Calculate.walletBalance(miner.cryptoChain.getChain(), address, miner.wallet.getSTARTING_BALANCE()));
+                Calculate.walletBalance(miner.cryptoChain.getChain(), address, miner.rewardWallet.getSTARTING_BALANCE()));
         return Response.ok(walletInfo).build();
     }
 

@@ -18,6 +18,7 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -63,9 +64,6 @@ public class ApplicationLifeCycle {
 
     @ConfigProperty(name = "load.from.database")
     private Boolean loadFromDb;
-
-    @ConfigProperty(name = "wallet.faucet.address")
-    private String mainWallet;
 
     @ConfigProperty(name = "wallet.reward.address")
     private String rewardWallet;
@@ -162,19 +160,11 @@ public class ApplicationLifeCycle {
     }
 
     private void loadFromDatabase() {
-        if (HTTP_PORT.equals("8018")) { //make load from database operation only from root note
-            loadWallet();
-            loadChain();
-        }
+        loadWallet();
+        loadChain();
     }
 
     private void loadWallet() {
-        try {
-            miner.wallet = walletRepository.getByUid(mainWallet);
-        } catch (RuntimeException re) {
-            LOGGER.error("loading Wallet: " + re.getMessage());
-        }
-
         try {
             miner.rewardWallet = walletRepository.getByUid(rewardWallet);
         } catch (RuntimeException re) {
@@ -184,20 +174,22 @@ public class ApplicationLifeCycle {
 
     /* Failure on one chain must not interfere in the other, so the process of loading should not be interrupted */
     private void loadChain() {
-        try {
-            blockchain.chain.replaceChain(blockRepository.loadBlockchain());
-        } catch (RuntimeException re) {
-            LOGGER.error("loadBlockchain: " + re);
-        }
+        if (HTTP_PORT.equals("8018")) { //make load chain from database operation only from root note, other nodes must sync
+            try {
+                blockchain.chain.replaceChain(blockRepository.loadBlockchain());
+            } catch (RuntimeException re) {
+                LOGGER.error("loadBlockchain: " + re);
+            }
 
-        try {
-            //FIXME: https://git.okaut.com/Jesus/api.blockchain/-/issues/19
-            // cannot replaceChain as the calculation of balance mismatch
-            // in the next api starts, the wallet change it's address, so even if i save the balance and load it again
-            // calculation will fail as we are talking about different addresses now
-            miner.cryptoChain.replaceChain(blockRepository.loadCryptochain(), miner.wallet.getSTARTING_BALANCE());
-        } catch (RuntimeException re) {
-            LOGGER.error("loadCryptochain: " + re);
+            try {
+                //FIXME: https://git.okaut.com/Jesus/api.blockchain/-/issues/19
+                // cannot replaceChain as the calculation of balance mismatch
+                // in the next api starts, the wallet change it's address, so even if i save the balance and load it again
+                // calculation will fail as we are talking about different addresses now
+                miner.cryptoChain.replaceChain(blockRepository.loadCryptochain(), BigDecimal.ZERO);
+            } catch (RuntimeException re) {
+                LOGGER.error("loadCryptochain: " + re);
+            }
         }
     }
 
