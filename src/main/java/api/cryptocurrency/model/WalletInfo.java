@@ -24,10 +24,12 @@ public class WalletInfo {
         this.balance = balance;
     }
 
+    /* New wallet just created must inform it`s id to be saved by the caller
+     * all others calls should use the default constructor
     public WalletInfo(Wallet wallet) {
         this.address = wallet.publicKey;
         this.balance = wallet.balance;
         this.uid = wallet.uid;
-    }
+    }*/
 
 }

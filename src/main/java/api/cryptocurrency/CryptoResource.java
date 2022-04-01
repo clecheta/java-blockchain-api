@@ -26,6 +26,7 @@ public class CryptoResource {
     public Response info() {
         //TODO create a total chain transact money calculation with all the inputs wallets have received
         //or even sum all the wallets balance without faucet computation
+        //even better make a job that compute this value on daily bases and save it to further read just the latest registry
         String address = miner.rewardWallet.publicKey;
         WalletInfo walletInfo = new WalletInfo(address,
                 Calculate.walletBalance(miner.cryptoChain.getChain(), address, miner.rewardWallet.getSTARTING_BALANCE()));

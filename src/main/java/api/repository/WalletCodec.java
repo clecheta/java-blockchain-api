@@ -2,6 +2,7 @@ package api.repository;
 
 import com.R07r35cInc.cryptocurrency.Wallet;
 import com.R07r35cInc.util.ECDSA;
+import com.R07r35cInc.util.Parse;
 import com.mongodb.MongoClientSettings;
 import org.bson.*;
 import org.bson.codecs.Codec;
@@ -11,6 +12,7 @@ import org.bson.codecs.EncoderContext;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
@@ -35,10 +37,10 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         Document doc = new Document();
         doc.put("c3", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray())); //src
         doc.put("a0", wallet.uid); //origin - TODO: put it in md5 format?
-        doc.put("d7", Base64.getEncoder().encodeToString(wallet.keyPair.getPublic().getEncoded()));
+        doc.put("d7", Base64.getEncoder().encodeToString(wallet.publicKey.getBytes(StandardCharsets.UTF_8)));
         doc.put("b8", Base64.getEncoder().encodeToString(wallet.getSTARTING_BALANCE().unscaledValue().toByteArray()));
         doc.put("e5", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
-        doc.put("j1", wallet.nonce);
+        doc.put("j1", Base64.getEncoder().encodeToString(Parse.longToBytes(wallet.nonce)));
         documentCodec.encode(writer, doc, encoderContext);
     }
 
@@ -75,7 +77,9 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
 
         String uid = document.getString("a0");
 
-        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("d7")); //TODO it looks like this is not being crypt by base64...
+        byte[] encodedPublicKey = Base64.getDecoder().decode(document.getString("d7"));
+        String stringPublicKey = new String(encodedPublicKey, StandardCharsets.UTF_8);
+        ECPublicKey publicKey = ECDSA.loadPublicKey(stringPublicKey);
 
         byte[] encodedStartBalance = Base64.getDecoder().decode(document.getString("b8"));
         long valueStartBalance = new BigInteger(encodedStartBalance).longValue();
@@ -83,7 +87,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
 
         ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("e5"));
 
-        Long nonce = document.getLong("j1");
+        byte[] encodedNonce = Base64.getDecoder().decode(document.getString("j1"));
+        Long nonce = Parse.bytesToLong(encodedNonce);
 
         KeyPair keyPair = new KeyPair(publicKey, privateKey);
         return new Wallet(keyPair, balance, uid, startBalance, nonce);

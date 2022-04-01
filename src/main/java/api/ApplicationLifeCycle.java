@@ -168,7 +168,7 @@ public class ApplicationLifeCycle {
         try {
             miner.rewardWallet = walletRepository.getByUid(rewardWallet);
         } catch (RuntimeException re) {
-            LOGGER.error("loading Reward Wallet: " + re.getMessage());
+            LOGGER.error("Reward Wallet: " + re.getMessage());
         }
     }
 
@@ -178,7 +178,7 @@ public class ApplicationLifeCycle {
             try {
                 blockchain.chain.replaceChain(blockRepository.loadBlockchain());
             } catch (RuntimeException re) {
-                LOGGER.error("loadBlockchain: " + re);
+                LOGGER.warn("Blockchain: " + re.getMessage());
             }
 
             try {
@@ -188,7 +188,7 @@ public class ApplicationLifeCycle {
                 // calculation will fail as we are talking about different addresses now
                 miner.cryptoChain.replaceChain(blockRepository.loadCryptochain(), BigDecimal.ZERO);
             } catch (RuntimeException re) {
-                LOGGER.error("loadCryptochain: " + re);
+                LOGGER.warn("Cryptochain: " + re.getMessage());
             }
         }
     }

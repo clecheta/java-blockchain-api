@@ -26,7 +26,10 @@ public class WalletResource {
     public Response create() {
         Wallet newWallet = new Wallet();
         repository.add(newWallet);
-        return Response.ok(new WalletInfo(newWallet)).build();
+
+        WalletInfo walletInfo = new WalletInfo(newWallet.publicKey, newWallet.balance);
+        walletInfo.uid = newWallet.uid;
+        return Response.ok(walletInfo).build();
     }
 
     @POST
@@ -34,8 +37,12 @@ public class WalletResource {
     @Path("937")
     public Response get(String id) {
         //Never get wallet from publicAddress, this information must be kept in the backend
-        Wallet existingWallet = repository.getByUid(id);
-        return Response.ok(new WalletInfo(existingWallet.publicKey, existingWallet.balance)).build();
+        try {
+            Wallet existingWallet = repository.getByUid(id);
+            return Response.ok(new WalletInfo(existingWallet.publicKey, existingWallet.balance)).build();
+        } catch (RuntimeException re) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
 }
