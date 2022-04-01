@@ -67,12 +67,15 @@ public class ApplicationLifeCycle {
     @ConfigProperty(name = "wallet.faucet.address")
     private String mainWallet;
 
+    @ConfigProperty(name = "wallet.reward.address")
+    private String rewardWallet;
+
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
 
         //load chain from database
-        if(loadFromDb == true) {
-            loadWallet();
+        if (loadFromDb == true) {
+            loadFromDatabase();
         }
 
         //syncing with root state
@@ -158,17 +161,29 @@ public class ApplicationLifeCycle {
         }
     }
 
-    private void loadWallet() {
+    private void loadFromDatabase() {
         if (HTTP_PORT.equals("8018")) { //make load from database operation only from root note
-            miner.wallet = walletRepository.getByUid(mainWallet);
-            loadDatabaseChain(); //load wallet before chain
+            loadWallet();
+            loadChain();
         }
     }
 
-    /* It's quite important to not give any exception during application loading,
-     * and it might happen when the chain has no mined blocked for example.
-     */
-    private void loadDatabaseChain() {
+    private void loadWallet() {
+        try {
+            miner.wallet = walletRepository.getByUid(mainWallet);
+        } catch (RuntimeException re) {
+            LOGGER.error("loading Wallet: " + re.getMessage());
+        }
+
+        try {
+            miner.rewardWallet = walletRepository.getByUid(rewardWallet);
+        } catch (RuntimeException re) {
+            LOGGER.error("loading Reward Wallet: " + re.getMessage());
+        }
+    }
+
+    /* Failure on one chain must not interfere in the other, so the process of loading should not be interrupted */
+    private void loadChain() {
         try {
             blockchain.chain.replaceChain(blockRepository.loadBlockchain());
         } catch (RuntimeException re) {

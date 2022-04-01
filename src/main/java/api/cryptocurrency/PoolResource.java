@@ -1,6 +1,7 @@
 package api.cryptocurrency;
 
 import api.network.PublishService;
+import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.*;
 import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
@@ -29,6 +30,9 @@ public class PoolResource {
     @Inject
     PublishService publisher;
 
+    @Inject
+    WalletRepository walletRepository;
+
     @POST
     @Produces("application/json")
     @Path("tRaN5ACt")
@@ -38,19 +42,27 @@ public class PoolResource {
             /* if an invalid value is informed in type it backs to the caller
              *  with: not one of the values accepted for Enum
              * class: [MONEY, CREDIT, TRANSFER, DEBIT, PIX, WALLET, INTERCHANGE] */
-            if (cmd.type == null) {
+            if (cmd.type == null || cmd.uid == null || cmd.recipient == null) {
                 throw new RuntimeException("wrong usage");
             }
 
+            //TODO ideally we should use a cmd token from logged user and get the wallet of the logged user by then comparing uid.
+            Wallet srcWallet = walletRepository.getByUid(cmd.uid);
+            Wallet destWallet = walletRepository.getByKey(cmd.recipient);
+            if (srcWallet == null || destWallet == null) {
+                //Unknown address
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+
             PayTypeTransaction transaction =
-                    (PayTypeTransaction) miner.transactionPool.existingTransaction(miner.wallet.publicKey);
+                    (PayTypeTransaction) miner.transactionPool.existingTransaction(srcWallet.publicKey);
 
             if (transaction != null) {
                 //when the transaction already exists in the pool, call update instead of create a new transaction
-                transaction.update(miner.wallet, cmd.recipient, cmd.amount);
+                transaction.update(srcWallet, cmd.recipient, cmd.amount);
             } else {
                 //make sure only creates a new transaction if the wallet doesn't have an existing transaction in the pool
-                transaction = (PayTypeTransaction) miner.wallet.createTransaction(cmd, miner.cryptoChain.getChain());
+                transaction = (PayTypeTransaction) srcWallet.createTransaction(cmd, miner.cryptoChain.getChain());
             }
 
             miner.transactionPool.setTransaction(transaction);

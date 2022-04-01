@@ -75,7 +75,7 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
 
         String uid = document.getString("a0");
 
-        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("d7"));
+        ECPublicKey publicKey = ECDSA.loadPublicKey(document.getString("d7")); //TODO it looks like this is not being crypt by base64...
 
         byte[] encodedStartBalance = Base64.getDecoder().decode(document.getString("b8"));
         long valueStartBalance = new BigInteger(encodedStartBalance).longValue();
