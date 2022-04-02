@@ -53,10 +53,9 @@ public class WalletRepository {
     }
 
     public void update(Wallet wallet, BigDecimal currentValue) {
-        String md5Id = Parse.toMD5(wallet.uid);
         //query — holds the field name and current value of that field for the document to be updated
         BasicDBObject query = new BasicDBObject();
-        query.put("a0", md5Id);
+        query.put("a0", wallet.uid); //no need to crypt to MD5 here
 
         //newDocument — holds the new value of the field balance for the document we’re updating
         BasicDBObject newDocument = new BasicDBObject();

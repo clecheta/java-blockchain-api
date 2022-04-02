@@ -27,7 +27,7 @@ public class DatabaseRepository {
     @Inject
     MongoClient mongoClient;
 
-    //TODO create named index, and at startup verify if the ones that should be unique are UNIQUE indeed.
+    //TODO at startup verify if the indexes that should be unique are UNIQUE indeed (check then by name).
 
     public void createIndex() {
         MongoDatabase database = mongoClient.getDatabase(DATABASE);
@@ -38,8 +38,9 @@ public class DatabaseRepository {
             count++;
         }
         if (count < 3) { //this number must ensure the total number of indexes expected in the database
-            IndexOptions options = new IndexOptions().unique(true);
+            IndexOptions options = new IndexOptions().unique(true).name("wal_1");
             getWalletCollection().createIndex(Indexes.ascending("a0"), options); //uid
+            options = new IndexOptions().unique(true).name("wal_2");
             BasicDBObject publicKeyIndex = new BasicDBObject("d7", 1);
             getWalletCollection().createIndex(publicKeyIndex, options);
         }
