@@ -25,10 +25,11 @@ public class WalletResource {
     @Path("cRE47E")
     public Response create() {
         Wallet newWallet = new Wallet();
+        String originalId = newWallet.uid;
         repository.add(newWallet);
 
         WalletInfo walletInfo = new WalletInfo(newWallet.publicKey, newWallet.balance);
-        walletInfo.uid = newWallet.uid;
+        walletInfo.uid = originalId;
         return Response.ok(walletInfo).build();
     }
 

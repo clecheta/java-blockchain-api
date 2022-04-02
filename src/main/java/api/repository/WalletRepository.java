@@ -28,9 +28,10 @@ public class WalletRepository {
     MongoClient mongoClient;
 
     public Wallet getByUid(String uid) {
+        String md5Id = Parse.toMD5(uid);
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("a0", uid);
-        Wallet wallet = getCollection().find(new Document("a0", uid)).first();
+        whereQuery.put("a0", md5Id);
+        Wallet wallet = getCollection().find(new Document("a0", md5Id)).first();
         if (wallet == null) {
             throw new RuntimeException("Wallet not found!");
         }
@@ -46,13 +47,16 @@ public class WalletRepository {
     }
 
     public void add(Wallet wallet) {
+        String md5Id = Parse.toMD5(wallet.uid);
+        wallet.uid = md5Id;
         getCollection().insertOne(wallet);
     }
 
     public void update(Wallet wallet, BigDecimal currentValue) {
+        String md5Id = Parse.toMD5(wallet.uid);
         //query — holds the field name and current value of that field for the document to be updated
         BasicDBObject query = new BasicDBObject();
-        query.put("a0", wallet.uid);
+        query.put("a0", md5Id);
 
         //newDocument — holds the new value of the field balance for the document we’re updating
         BasicDBObject newDocument = new BasicDBObject();

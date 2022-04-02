@@ -39,7 +39,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         doc.put("a0", wallet.uid); //origin - TODO: put it in md5 format?
         doc.put("d7", Base64.getEncoder().encodeToString(wallet.publicKey.getBytes(StandardCharsets.UTF_8)));
         doc.put("b8", Base64.getEncoder().encodeToString(wallet.getSTARTING_BALANCE().unscaledValue().toByteArray()));
-        doc.put("e5", Base64.getEncoder().encodeToString(wallet.keyPair.getPrivate().getEncoded()));
+        String test = Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded());
+        doc.put("e5", Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded()));
         doc.put("j1", Base64.getEncoder().encodeToString(Parse.longToBytes(wallet.nonce)));
         documentCodec.encode(writer, doc, encoderContext);
     }
@@ -85,7 +86,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         long valueStartBalance = new BigInteger(encodedStartBalance).longValue();
         BigDecimal startBalance = new BigDecimal(valueStartBalance);
 
-        ECPrivateKey privateKey = ECDSA.loadPrivateKey(document.getString("e5"));
+        byte[] privateKeyByteArray = Parse.decodeHexString(document.getString("e5"));
+        ECPrivateKey privateKey = ECDSA.loadPrivateKey(privateKeyByteArray);
 
         byte[] encodedNonce = Base64.getDecoder().decode(document.getString("j1"));
         Long nonce = Parse.bytesToLong(encodedNonce);
