@@ -36,10 +36,9 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     public void encode(BsonWriter writer, Wallet wallet, EncoderContext encoderContext) {
         Document doc = new Document();
         doc.put("c3", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray())); //src
-        doc.put("a0", wallet.uid); //origin - TODO: put it in md5 format?
+        doc.put("a0", wallet.uid); //origin
         doc.put("d7", Base64.getEncoder().encodeToString(wallet.publicKey.getBytes(StandardCharsets.UTF_8)));
         doc.put("b8", Base64.getEncoder().encodeToString(wallet.getSTARTING_BALANCE().unscaledValue().toByteArray()));
-        String test = Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded());
         doc.put("e5", Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded()));
         doc.put("j1", Base64.getEncoder().encodeToString(Parse.longToBytes(wallet.nonce)));
         documentCodec.encode(writer, doc, encoderContext);

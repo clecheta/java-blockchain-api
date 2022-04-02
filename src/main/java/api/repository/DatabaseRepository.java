@@ -27,6 +27,8 @@ public class DatabaseRepository {
     @Inject
     MongoClient mongoClient;
 
+    //TODO create named index, and at startup verify if the ones that should be unique are UNIQUE indeed.
+
     public void createIndex() {
         MongoDatabase database = mongoClient.getDatabase(DATABASE);
 
@@ -35,13 +37,11 @@ public class DatabaseRepository {
         for (Document index : getWalletCollection().listIndexes()) {
             count++;
         }
-        if (count <= 1) {
+        if (count < 3) { //this number must ensure the total number of indexes expected in the database
             IndexOptions options = new IndexOptions().unique(true);
             getWalletCollection().createIndex(Indexes.ascending("a0"), options); //uid
             BasicDBObject publicKeyIndex = new BasicDBObject("d7", 1);
             getWalletCollection().createIndex(publicKeyIndex, options);
-            BasicDBObject privateKeyIndex = new BasicDBObject("e5", 1);
-            getWalletCollection().createIndex(privateKeyIndex, options);
         }
 
         //Block
@@ -49,7 +49,7 @@ public class DatabaseRepository {
         for (Document index : getBlockCollection().listIndexes()) {
             count++;
         }
-        if (count <= 1) {
+        if (count < 4) { //this number must ensure the total number of indexes expected in the database
             getBlockCollection().createIndex(Indexes.ascending("number"));
             getBlockCollection().createIndex(Indexes.descending("date"));
             getBlockCollection().createIndex(Indexes.ascending("hash"));
