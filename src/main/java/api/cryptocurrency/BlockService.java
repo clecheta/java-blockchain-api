@@ -3,6 +3,7 @@ package api.cryptocurrency;
 import api.cryptocurrency.model.CryptoBlockAddedCommand;
 import api.repository.BlockRepository;
 import api.repository.WalletRepository;
+import com.R07r35cInc.cryptocurrency.RewardTransaction;
 import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
@@ -56,7 +57,7 @@ public class BlockService {
 
         //Update involved wallets balance according to the transactions made
         for (Tx transaction : transactionList) {
-            if (!transaction.getInput().address.equals(Transaction.REWARD_INPUT)) { //Regular Transactions
+            if (!(transaction instanceof RewardTransaction)) { //Regular Transactions
                 Wallet inputWallet = walletRepository.getByKey(transaction.getInput().address);
                 updateWalletBalance(inputWallet, true); //Money sender
 
