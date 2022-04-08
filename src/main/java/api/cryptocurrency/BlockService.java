@@ -9,6 +9,7 @@ import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import com.R07r35cInc.util.Calculate;
 import io.quarkus.vertx.ConsumeEvent;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -34,6 +35,9 @@ public class BlockService {
 
     @Inject
     WalletRepository walletRepository;
+
+    @ConfigProperty(name = "mining.reward.enabled")
+    private Boolean rewardEnabled;
 
     /**
      * Post actions after a mined block is added to the chain.
@@ -74,7 +78,9 @@ public class BlockService {
         }
 
         //Update reward wallet balance, do not increase nonce in this case
-        updateWalletBalance(miner.rewardWallet, false);
+        if (rewardEnabled != null && rewardEnabled == true) {
+            updateWalletBalance(miner.rewardWallet, false);
+        }
     }
 
     /**

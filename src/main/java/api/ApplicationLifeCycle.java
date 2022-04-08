@@ -62,36 +62,28 @@ public class ApplicationLifeCycle {
     @ConfigProperty(name = "quarkus.http.port")
     private String HTTP_PORT;
 
-    @ConfigProperty(name = "load.from.database")
-    private Boolean loadFromDb;
-
-    @ConfigProperty(name = "wallet.reward.address")
+    @ConfigProperty(name = "mining.reward.wallet")
     private String rewardWallet;
+
+    @ConfigProperty(name = "mining.reward.enabled")
+    private Boolean rewardEnabled;
 
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
 
         //load chain from database
-        if (loadFromDb == true) {
-            loadFromDatabase();
-        }
+        loadFromDatabase();
 
         //syncing with root state
         syncBlockchain();
         syncCryptochain();
         syncTransactionPollMap();
 
-        /*LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
-        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);*/
         databaseRepository.createIndex();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " stopped.");
-
-        /*LOGGER.info("Wallet address: " + this.miner.wallet.publicKey);
-        //FIXME shows same value as init, this is wrong!
-        LOGGER.info("Wallet balance: " + this.miner.wallet.balance);*/
     }
 
     private void syncBlockchain() {
@@ -165,10 +157,12 @@ public class ApplicationLifeCycle {
     }
 
     private void loadWallet() {
-        try {
-            miner.rewardWallet = walletRepository.getByUid(rewardWallet);
-        } catch (RuntimeException re) {
-            LOGGER.error("Reward Wallet: " + re.getMessage());
+        if (rewardEnabled != null && rewardEnabled == true) {
+            try {
+                miner.rewardWallet = walletRepository.getByUid(rewardWallet);
+            } catch (RuntimeException re) {
+                LOGGER.error("Reward Wallet: " + re.getMessage());
+            }
         }
     }
 

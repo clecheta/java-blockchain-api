@@ -9,6 +9,7 @@ import com.R07r35cInc.cryptocurrency.TransactionPool;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.vertx.core.eventbus.EventBus;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,6 +35,9 @@ public class TransactionMiner {
     @Inject
     EventBus bus;
 
+    @ConfigProperty(name = "mining.reward.enabled")
+    private Boolean rewardEnabled;
+
     /**
      * All necessary functionality to add a block of transaction poll data to the blockchain
      */
@@ -46,7 +50,9 @@ public class TransactionMiner {
         }
 
         //2. generate the miner's reward @See RewardTransactionTest
-        validTransactions.add(Transaction.rewardTransaction(this.rewardWallet));
+        if (rewardEnabled != null && rewardEnabled == true) {
+            validTransactions.add(Transaction.rewardTransaction(this.rewardWallet));
+        }
 
         //3. add a block consisting of these transactions to the blockchain
         Block<List<Transaction>> addedBlock = this.cryptoChain.addBlock(validTransactions);

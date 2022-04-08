@@ -1,14 +1,17 @@
 package api.cryptocurrency;
 
 import api.BaseTest;
+import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.PayTypeEnum;
 import com.R07r35cInc.cryptocurrency.TransactionCommand;
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 
@@ -23,13 +26,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @QuarkusTest
 public class PoolResourceTest extends BaseTest {
 
-    private static final int UUID_LENGTH = 36;
+    @Inject
+    WalletRepository walletRepository;
+
     TransactionCommand cmd;
+    String srcUid;
+    Wallet srcWallet;
+    Wallet destWallet;
 
     @BeforeEach
     void init() {
+        srcWallet = new Wallet(new BigDecimal(100));
+        srcUid = srcWallet.uid;
+        destWallet = new Wallet();
+        walletRepository.add(srcWallet);
+        walletRepository.add(destWallet);
+
         this.cmd = new TransactionCommand();
-        cmd.recipient = publicKey;
+        cmd.uid = srcUid;
+        cmd.recipient = destWallet.publicKey;
         cmd.amount = BigDecimal.TEN;
         cmd.type = PayTypeEnum.WALLET;
     }

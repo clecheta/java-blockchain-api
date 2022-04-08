@@ -1,4 +1,4 @@
-package api.blockchain.model;
+package api.blockchain;
 
 import com.R07r35cInc.blockchain.NetChain;
 import io.quarkus.test.junit.QuarkusTest;
