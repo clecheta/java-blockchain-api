@@ -29,7 +29,7 @@ public class WalletResource {
         if (userIdentification == null || userIdentification.length()==0) {
             newWallet = new Wallet();
         } else {
-            if (userIdentification.length() <= 20) {
+            if (userIdentification.length() < 20) {
                 return Response.status(HttpStatus.SC_BAD_REQUEST, "too short identification").build();
             }
             newWallet = new Wallet(userIdentification);
