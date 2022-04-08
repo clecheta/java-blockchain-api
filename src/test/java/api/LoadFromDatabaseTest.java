@@ -7,11 +7,13 @@ import com.R07r35cInc.util.Parse;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +42,12 @@ public class LoadFromDatabaseTest extends BaseTest {
 
     @ConfigProperty(name = "mining.reward.wallet")
     private String rewardWalletIdentification;
+
+    @BeforeAll
+    static void setup() throws InterruptedException {
+        LOGGER.info("Waiting: ApplicationLifeCycle.loadFromDatabase()");
+        TimeUnit.SECONDS.sleep(60);
+    }
 
     @BeforeEach
     void init() {
