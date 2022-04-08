@@ -62,7 +62,7 @@ public class MoneyFlowTest extends BaseTest {
 
     @Test
     //by the end of this test the origin wallet must have 80, destination 20, and reward 1
-    public void walletToWallet() throws InterruptedException {
+    public void walletToWalletSingleTransaction() throws InterruptedException {
         TransactionCommand cmd = new TransactionCommand(destWallet.publicKey, new BigDecimal(20), PayTypeEnum.WALLET);
         cmd.uid = srcUid; //original UID before encryption on add to repository
 

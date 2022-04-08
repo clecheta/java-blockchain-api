@@ -41,7 +41,7 @@ public class TransactionMiner {
     /**
      * All necessary functionality to add a block of transaction poll data to the blockchain
      */
-    void mineTransactions() {
+    Boolean mineTransactions() {
         //1. get the transaction pool's valid transactions @See ValidTransactionsTest
         List<Tx> validTransactions = this.transactionPool.getValidTransactions();
         //FIXME sometimes getting a empty array as there is no validTransaction, but they are - maybe related to kafka
@@ -56,6 +56,9 @@ public class TransactionMiner {
 
         //3. add a block consisting of these transactions to the blockchain
         Block<List<Transaction>> addedBlock = this.cryptoChain.addBlock(validTransactions);
+        if (addedBlock == null || addedBlock.getData().size()==0) {
+            return false;
+        }
         bus.send("blockAddedPostActions", new CryptoBlockAddedCommand(addedBlock)); //use Vert.X EventBus to not block the process
 
         //4. broadcast the updated cryptochain
@@ -63,6 +66,8 @@ public class TransactionMiner {
 
         //5. clear the pool @See ClearTransactionPoolTest
         this.transactionPool.clear();
+
+        return true;
     }
 
 }

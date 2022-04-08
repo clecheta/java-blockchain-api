@@ -15,4 +15,8 @@ public class BaseTest {
     public static final BigDecimal tooHighAmount = new BigDecimal(9000);
     public static final String REWARD_INPUT = "*authorized-reward*";
     public static final BigDecimal REWARD_MINER = new BigDecimal(1);
+
+    /* This is the "ideal" values to stress chain test with total amount and wallets quantity
+    public static final Long TEN_TRILLION = 10000000000000L;
+    public static final Long FIVE_MILLION = 5000000L;*/
 }
