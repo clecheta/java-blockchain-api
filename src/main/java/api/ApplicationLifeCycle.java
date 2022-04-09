@@ -168,8 +168,7 @@ public class ApplicationLifeCycle {
 
     /* Failure on one chain must not interfere in the other, so the process of loading should not be interrupted */
     private void loadChain() {
-        //make load chain from database operation only from root note, other nodes must sync
-        if (HTTP_PORT.equals("8018") || Util.profile.equals("test")) {
+        if (HTTP_PORT.equals("8018")) { //make load chain from database operation only from root note, other nodes must sync
             try {
                 blockchain.chain.replaceChain(blockRepository.loadBlockchain());
             } catch (RuntimeException re) {
