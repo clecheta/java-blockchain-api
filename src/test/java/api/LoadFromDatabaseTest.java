@@ -63,7 +63,7 @@ public class LoadFromDatabaseTest extends BaseTest {
     }
 
     /* FIXME https://git.okaut.com/Jesus/api.blockchain/-/issues/14#note_6741
-     * Test does Work as expected in localhost but not in gitlab-ci pipeline
+     * Test does Work as expected in localhost but not in gitlab-ci pipeline */
     @Test
     public void loadCryptochain() {
         assertNotNull(miner.cryptoChain);
@@ -81,5 +81,5 @@ public class LoadFromDatabaseTest extends BaseTest {
         Boolean isValid = miner.cryptoChain.isValidTransactionData(newChain.getChain(), BigDecimal.ZERO);
         assertTrue(isValid, "the transaction data is valid");
         LOGGER.info("Cryptochain: DATA IS VALID");
-    }*/
+    }
 }
