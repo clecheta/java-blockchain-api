@@ -7,13 +7,11 @@ import com.R07r35cInc.util.Parse;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,12 +41,6 @@ public class LoadFromDatabaseTest extends BaseTest {
     @ConfigProperty(name = "mining.reward.wallet")
     private String rewardWalletIdentification;
 
-    @BeforeAll
-    static void setup() throws InterruptedException {
-        LOGGER.info("Waiting: ApplicationLifeCycle.loadFromDatabase()");
-        TimeUnit.SECONDS.sleep(60);
-    }
-
     @BeforeEach
     void init() {
         LOGGER.info("ApplicationLifeCycle already run, let's test: loadFromDatabase()");
@@ -73,7 +65,6 @@ public class LoadFromDatabaseTest extends BaseTest {
     @Test
     public void loadCryptochain() {
         assertNotNull(miner.cryptoChain);
-        /* FIXME: does run on local test BUT NOT in the pipeline with same database
         //Always compare the database size by adding +1 to size referring the in memory (Genesis Block)
         assertEquals(10+1, miner.cryptoChain.getChain().size(),
                 "initial chain size must match the saved data");
@@ -88,6 +79,5 @@ public class LoadFromDatabaseTest extends BaseTest {
         Boolean isValid = miner.cryptoChain.isValidTransactionData(newChain.getChain(), BigDecimal.ZERO);
         assertTrue(isValid, "the transaction data is valid");
         LOGGER.info("Cryptochain: DATA IS VALID");
-         */
     }
 }
