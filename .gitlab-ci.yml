@@ -1,7 +1,3 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
   - test
   - build
@@ -14,6 +10,8 @@ before_script:
 integration:
   stage: test
   image: maven:3.8.5-openjdk-17
+  tags:
+    - dind
   services:
     - name: git.okaut.com:5050/infra/test/mongo:blockchain
       alias: blockchain_db
