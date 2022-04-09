@@ -8,8 +8,7 @@ import com.R07r35cInc.util.Parse;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -29,7 +28,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
-public class LoadFromDatabaseTest extends BaseTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@Order(1)
+public class DatabaseTest extends BaseTest {
 
     private static final Logger LOGGER = Logger.getLogger("LoadFromDatabaseTest");
 
@@ -49,6 +51,7 @@ public class LoadFromDatabaseTest extends BaseTest {
     }
 
     @Test
+    @Order(1)
     public void loadWallet() {
         assertNotNull(miner.rewardWallet);
         assertEquals(Parse.toMD5(rewardWalletIdentification), miner.rewardWallet.uid,
@@ -59,6 +62,7 @@ public class LoadFromDatabaseTest extends BaseTest {
     }
 
     @Test
+    @Order(2)
     public void loadBlockchain() {
         assertNotNull(blockchain.chain);
     }
@@ -66,6 +70,7 @@ public class LoadFromDatabaseTest extends BaseTest {
     /* FIXME https://git.okaut.com/Jesus/api.blockchain/-/issues/14#note_6741
      * Test does Work as expected in localhost but not in gitlab-ci pipeline */
     @Test
+    @Order(3)
     public void loadCryptochain() {
         assertNotNull(miner.cryptoChain);
         LOGGER.info("loadCryptochain: " + Util.getHostIp() + " " + Util.getHostName() + " | " + Util.profile);
