@@ -12,6 +12,7 @@ import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,13 +46,13 @@ public class ApplicationLifeCycleTest extends BaseTest {
 
     @BeforeEach
     void init() {
-        LOGGER.info("ApplicationLifeCycle already run, let's test: loadFromDatabase()");
         assertNotNull(miner);
     }
 
     @Test
     @Order(1)
-    public void loadWallet() {
+    public void loadWallet() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
         assertNotNull(miner.rewardWallet);
         assertEquals(Parse.toMD5(rewardWalletIdentification), miner.rewardWallet.uid,
                 "reward wallet identification must match application.properties value");
@@ -62,19 +63,19 @@ public class ApplicationLifeCycleTest extends BaseTest {
 
     @Test
     @Order(2)
-    public void loadBlockchain() {
+    public void loadBlockchain() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
         assertNotNull(blockchain.chain);
     }
 
-    /* FIXME https://git.okaut.com/Jesus/api.blockchain/-/issues/14#note_6741
-     * Test does Work as expected in localhost but not in gitlab-ci pipeline */
     @Test
     @Order(3)
-    public void loadCryptochain() {
+    public void loadCryptochain() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
         assertNotNull(miner.cryptoChain);
         LOGGER.info("loadCryptochain: " + Util.getHostIp() + " " + Util.getHostName() + " | " + Util.profile);
 
-        if(Util.getHostIp().contains("127.0.1.1")) {
+        if(Util.getHostIp().contains("127.0.1.1")) { //FIXME https://git.okaut.com/Jesus/api.blockchain/-/issues/14#note_6753
             //Always compare the database size by adding +1 to size referring the in memory (Genesis Block)
             assertEquals(10 + 1, miner.cryptoChain.getChain().size(),
                     "initial chain size must match the saved data");

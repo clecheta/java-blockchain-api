@@ -79,7 +79,7 @@ public class MoneyFlowTest extends BaseTest {
                 .statusCode(HttpStatus.SC_OK);
 
         //wait bus.send("blockAddedPostActions"...) to reach BlockService and persist the changes in transacted wallets
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(10);
 
         Wallet savedSrcWallet = walletRepository.getByKey(srcWallet.publicKey);
         Wallet savedDestWallet = walletRepository.getByKey(destWallet.publicKey);

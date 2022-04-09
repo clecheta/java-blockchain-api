@@ -75,6 +75,8 @@ public class MoneyWalletTest extends BaseTest {
     @Test
     //by the end of this test the total money in the chain must be equal to the original totalAmount initial specified
     public void expendTotalChainMoney() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(10);
+
         assertEquals(totalWallets, destKeys.size(), "there must have the right number of wallets to test");
         long leftLimit = 0L;
         long rightLimit = destKeys.size() - 1;
@@ -115,7 +117,7 @@ public class MoneyWalletTest extends BaseTest {
                 "the destination wallets must have received all the money from the origin wallet");
 
         //wait bus.send("blockAddedPostActions"...) to reach BlockService and persist the changes in transacted wallets
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(10);
 
         Wallet savedRewardWallet = walletRepository.getByKey(rewardWallet.publicKey);
         assertEquals(new BigDecimal(minerInterationCount), savedRewardWallet.balance,
