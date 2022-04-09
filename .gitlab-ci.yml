@@ -1,6 +1,10 @@
-image: docker:latest
-services:
-  - docker:dind
+.zoo_service: &zoo_service
+  name: zookeeper:latest
+  alias: zookeeper
+
+.kafka_service: &kafka_service
+  name: bitnami/kafka:latest
+  alias: kafka
 
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
@@ -17,6 +21,14 @@ stages:
   - package
 
 integration:
+  variables:
+    FF_NETWORK_PER_BUILD: 1
+    ALLOW_ANONYMOUS_LOGIN: "yes"
+    KAFKA_BROKER_ID: 1
+    KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092"
+    KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
+    KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
+    ALLOW_PLAINTEXT_LISTENER: "yes"  
   stage: test
   image: maven:3.8.5-openjdk-17
   before_script:
@@ -24,6 +36,8 @@ integration:
   services:
     - name: git.okaut.com:5050/infra/test/mongo:blockchain
       alias: blockchain_db
+    - *zoo_service
+    - *kafka_service
   script:
     - mvn test -B -s ci_settings.xml -Dquarkus.mongodb.connection-string=mongodb://blockchain_db:27017
 
