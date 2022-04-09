@@ -1,17 +1,24 @@
+image: docker:latest
+services:
+  - docker:dind
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .m2/repository
+
 stages:
   - test
   - build
   - package
 
-before_script:
-  - echo "before script"
-  - echo $CI_COMMIT_BRANCH
-
 integration:
   stage: test
   image: maven:3.8.5-openjdk-17
-  tags:
-    - dind
   services:
     - name: git.okaut.com:5050/infra/test/mongo:blockchain
       alias: blockchain_db
