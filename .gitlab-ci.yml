@@ -31,8 +31,6 @@ integration:
     ALLOW_PLAINTEXT_LISTENER: "yes"  
   stage: test
   image: maven:3.8.5-openjdk-17
-  before_script:
-    - docker-compose up -d
   services:
     - name: git.okaut.com:5050/infra/test/mongo:blockchain
       alias: blockchain_db
