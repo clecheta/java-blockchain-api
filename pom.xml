@@ -201,6 +201,9 @@
                                         </java.util.logging.manager>
                                         <maven.home>${maven.home}</maven.home>
                                     </systemPropertyVariables>
+                                    <environmentVariables>
+                                        <TESTCONTAINERS_RYUK_DISABLED>true</TESTCONTAINERS_RYUK_DISABLED>
+                                    </environmentVariables>
                                 </configuration>
                             </execution>
                         </executions>
