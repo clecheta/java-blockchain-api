@@ -15,6 +15,8 @@ integration:
   services:
     - name: git.okaut.com:5050/infra/test/mongo:blockchain
       alias: blockchain_db
+  before_script:
+    - docker-compose --version
   script:
     - mvn test -B -s ci_settings.xml -Dquarkus.mongodb.connection-string=mongodb://blockchain_db:27017
 
