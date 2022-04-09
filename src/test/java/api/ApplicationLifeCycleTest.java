@@ -12,7 +12,6 @@ import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,8 +50,7 @@ public class ApplicationLifeCycleTest extends BaseTest {
 
     @Test
     @Order(1)
-    public void loadWallet() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(10);
+    public void loadWallet() {
         assertNotNull(miner.rewardWallet);
         assertEquals(Parse.toMD5(rewardWalletIdentification), miner.rewardWallet.uid,
                 "reward wallet identification must match application.properties value");
@@ -63,33 +61,33 @@ public class ApplicationLifeCycleTest extends BaseTest {
 
     @Test
     @Order(2)
-    public void loadBlockchain() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(10);
+    public void loadBlockchain() {
         assertNotNull(blockchain.chain);
     }
 
+    /**
+     * This test is dependant of database state and must run with the initial docker database image instance
+     * in it initial state - without any modifications
+     */
     @Test
     @Order(3)
-    public void loadCryptochain() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(10);
+    public void loadCryptochain() {
         assertNotNull(miner.cryptoChain);
         LOGGER.info("loadCryptochain: " + Util.getHostIp() + " " + Util.getHostName() + " | " + Util.profile);
 
-        if(Util.getHostIp().contains("127.0.1.1")) { //FIXME https://git.okaut.com/Jesus/api.blockchain/-/issues/14#note_6753
-            //Always compare the database size by adding +1 to size referring the in memory (Genesis Block)
-            assertEquals(10 + 1, miner.cryptoChain.getChain().size(),
-                    "initial chain size must match the saved data");
-            LOGGER.info("Cryptochain: IN PLACE");
+        //Always compare the database size by adding +1 to size referring the in memory (Genesis Block)
+        assertEquals(10 + 1, miner.cryptoChain.getChain().size(),
+                "initial chain size must match the saved data");
+        LOGGER.info("Cryptochain: IN PLACE");
 
-            CryptoChain newChain = new CryptoChain();
-            assertDoesNotThrow(() -> {
-                newChain.replaceChain(miner.cryptoChain.getChain());
-            }, "The incoming chain has valid data");
-            LOGGER.info("Cryptochain: REPLACE CHAIN - Successfully");
+        CryptoChain newChain = new CryptoChain();
+        assertDoesNotThrow(() -> {
+            newChain.replaceChain(miner.cryptoChain.getChain());
+        }, "The incoming chain has valid data");
+        LOGGER.info("Cryptochain: REPLACE CHAIN - Successfully");
 
-            Boolean isValid = miner.cryptoChain.isValidTransactionData(newChain.getChain(), BigDecimal.ZERO);
-            assertTrue(isValid, "the transaction data is valid");
-            LOGGER.info("Cryptochain: DATA IS VALID");
-        }
+        Boolean isValid = miner.cryptoChain.isValidTransactionData(newChain.getChain(), BigDecimal.ZERO);
+        assertTrue(isValid, "the transaction data is valid");
+        LOGGER.info("Cryptochain: DATA IS VALID");
     }
 }
