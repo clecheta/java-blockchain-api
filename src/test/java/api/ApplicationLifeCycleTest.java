@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 /**
  * @author Cleber Lecheta
  * https://encontreiJesus.com
@@ -28,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @Order(1)
-public class DatabaseTest extends BaseTest {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class ApplicationLifeCycleTest extends BaseTest {
 
     private static final Logger LOGGER = Logger.getLogger("LoadFromDatabaseTest");
 

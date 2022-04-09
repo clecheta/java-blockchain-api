@@ -10,8 +10,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -29,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@Order(3)
 public class MoneyWalletTest extends BaseTest {
 
     //private static final Logger LOGGER = Logger.getLogger("MoneyChainTest");
@@ -83,7 +84,7 @@ public class MoneyWalletTest extends BaseTest {
         cmd.type = PayTypeEnum.WALLET;
         cmd.uid = srcUid;
         try {
-            while (totalAmount.compareTo(BigDecimal.ZERO)>0) { //There still money to expend
+            while (totalAmount.compareTo(BigDecimal.ZERO) > 0) { //There still money to expend
                 for (int i = 0; i < 10; i++) { //Let's create one block per 10 transactions
                     cmd.recipient = destKeys.get(generatedLong.intValue());
                     cmd.amount = new BigDecimal(100);
@@ -128,7 +129,7 @@ public class MoneyWalletTest extends BaseTest {
 
         Wallet savedDestWallet;
         String walletKey;
-        for (Long i = 0L; i <= totalWallets-1; i++) {
+        for (Long i = 0L; i <= totalWallets - 1; i++) {
             walletKey = destKeys.get(i.intValue());
             savedDestWallet = walletRepository.getByKey(walletKey);
             assertEquals(0, savedDestWallet.nonce,

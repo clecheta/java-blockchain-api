@@ -10,8 +10,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -32,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@Order(2)
 public class MoneyFlowTest extends BaseTest {
 
     @Inject
