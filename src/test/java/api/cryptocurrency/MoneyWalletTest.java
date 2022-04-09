@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
-public class MoneyChainTest extends BaseTest {
+public class MoneyWalletTest extends BaseTest {
 
     //private static final Logger LOGGER = Logger.getLogger("MoneyChainTest");
 

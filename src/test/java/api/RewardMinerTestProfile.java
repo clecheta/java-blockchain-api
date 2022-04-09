@@ -12,7 +12,10 @@ public class RewardMinerTestProfile implements QuarkusTestProfile {
 
     @Override
     public Map<String, String> getConfigOverrides() {
-        return Map.of("mining.reward.enabled", "true");
+        return Map.of(
+                "quarkus.http.port", "8018",
+                "mining.reward.enabled", "true"
+        );
     }
 
 }
