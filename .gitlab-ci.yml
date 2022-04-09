@@ -37,7 +37,7 @@ integration:
     - *zoo_service
     - *kafka_service
   script:
-    - mvn test -B -s ci_settings.xml -Dquarkus.mongodb.connection-string=mongodb://blockchain_db:27017
+    - mvn test -B -s ci_settings.xml -Dquarkus.mongodb.connection-string=mongodb://blockchain_db:27017 -Dkafka.bootstrap.servers=kafka:9092
 
 graalvm.native:
   stage: build
