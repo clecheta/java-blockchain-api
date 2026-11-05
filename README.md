@@ -1,4 +1,4 @@
-# Java Blockchain API
+## JBlock | Java Blockchain API
 
 > **Honorable mention — craftsmanship era**  
 > From June 2021 through August 2023, this API and its surrounding stack were built by hand — software as craft.  
