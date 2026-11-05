@@ -1,5 +1,9 @@
 # Java Blockchain API
 
+> **Honorable mention — craftsmanship era**  
+> From June 2021 through August 2023, this API and its surrounding stack were built by hand — software as craft.  
+> From November 2026 onward, evolution continues with AI as a collaborator, without erasing that artisan foundation.
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, visit https://quarkus.io/.
