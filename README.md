@@ -61,9 +61,11 @@ docker-compose up -d
 ./mvnw compile quarkus:dev
 ./mvnw quarkus:dev -Dquarkus.profile=node -Ddebug=5006
 
-# 4) create wallets / pool a tx on root, then mine and assert peer tip
+# 4) full HTTP smoke (seed funded wallet → transact → mine → peer tip/hash)
 ./scripts/smoke-two-nodes.sh
 ```
+
+The script does **not** use the UI. Strategy / alternatives: GitLab **api#41**.
 
 Catch-up endpoints (root):
 
