@@ -78,6 +78,10 @@ A **regulated digital bank** would still require a separate product and complian
 
 ---
 
+## Capacity evidence (local ledger plane)
+
+Start with the [capacity testing guide](./capacity/README.md) (why, how to run, how to evaluate). Measured ceilings: [CAPACITY_BASELINE.md](./capacity/CAPACITY_BASELINE.md). Where limits sit (architecture vs source vs infrastructure): [LIMITATIONS.md](./capacity/LIMITATIONS.md). Harness: `scripts/capacity/` (Phase 1). This does **not** make the API a digital bank; it bounds the ledger plane on a given machine.
+
 ## Synthesis
 
 | Question | Answer |

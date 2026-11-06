@@ -1,0 +1,716 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 109.6304629649967,
+  "duration_requested_s": 90.0,
+  "stop_reason": "duration",
+  "wallet_pairs": 16,
+  "workers": 8,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 1168,
+  "tx_fail": 16,
+  "mine_ok": 74,
+  "mine_fail": 0,
+  "settled_units": 1168,
+  "tx_per_s": 10.653973069263825,
+  "mine_per_s": 0.6749948691143177,
+  "dollars_per_s": 10.653973069263825,
+  "error_rate": 0.013513513513513514,
+  "tx_latency": {
+    "count": 1184,
+    "p50_ms": 53.42866500723176,
+    "p95_ms": 80.65746283973566,
+    "p99_ms": 87.47575907327703,
+    "max_ms": 93.64433097653091,
+    "min_ms": 2.830090990755707
+  },
+  "mine_latency": {
+    "count": 74,
+    "p50_ms": 518.4325194859412,
+    "p95_ms": 2019.1314465191672,
+    "p99_ms": 2776.9018763327035,
+    "max_ms": 2819.1069760359824,
+    "min_ms": 69.68141498509794
+  },
+  "host_samples": [
+    {
+      "ts": 1793990546.9962358,
+      "load1": 3.59,
+      "load5": 3.33,
+      "load15": 3.02,
+      "mem_available_kib": 5655120
+    },
+    {
+      "ts": 1793990547.9790897,
+      "load1": 3.59,
+      "load5": 3.33,
+      "load15": 3.02,
+      "mem_available_kib": 5670972
+    },
+    {
+      "ts": 1793990548.5924907,
+      "load1": 3.59,
+      "load5": 3.33,
+      "load15": 3.02,
+      "mem_available_kib": 5673272
+    },
+    {
+      "ts": 1793990551.223209,
+      "load1": 3.38,
+      "load5": 3.29,
+      "load15": 3.01,
+      "mem_available_kib": 5673884
+    },
+    {
+      "ts": 1793990553.1844108,
+      "load1": 3.38,
+      "load5": 3.29,
+      "load15": 3.01,
+      "mem_available_kib": 5684700
+    },
+    {
+      "ts": 1793990554.7018743,
+      "load1": 3.38,
+      "load5": 3.29,
+      "load15": 3.01,
+      "mem_available_kib": 5681936
+    },
+    {
+      "ts": 1793990555.9016187,
+      "load1": 3.51,
+      "load5": 3.32,
+      "load15": 3.02,
+      "mem_available_kib": 5703664
+    },
+    {
+      "ts": 1793990558.0154219,
+      "load1": 3.51,
+      "load5": 3.32,
+      "load15": 3.02,
+      "mem_available_kib": 5693220
+    },
+    {
+      "ts": 1793990558.772135,
+      "load1": 3.51,
+      "load5": 3.32,
+      "load15": 3.02,
+      "mem_available_kib": 5681936
+    },
+    {
+      "ts": 1793990560.8501518,
+      "load1": 3.31,
+      "load5": 3.28,
+      "load15": 3.01,
+      "mem_available_kib": 5694596
+    },
+    {
+      "ts": 1793990562.5574117,
+      "load1": 3.31,
+      "load5": 3.28,
+      "load15": 3.01,
+      "mem_available_kib": 5641168
+    },
+    {
+      "ts": 1793990563.9155607,
+      "load1": 3.31,
+      "load5": 3.28,
+      "load15": 3.01,
+      "mem_available_kib": 5649048
+    },
+    {
+      "ts": 1793990565.2694154,
+      "load1": 3.2,
+      "load5": 3.26,
+      "load15": 3.01,
+      "mem_available_kib": 5662048
+    },
+    {
+      "ts": 1793990566.1678717,
+      "load1": 3.2,
+      "load5": 3.26,
+      "load15": 3.01,
+      "mem_available_kib": 5628364
+    },
+    {
+      "ts": 1793990568.6697917,
+      "load1": 3.2,
+      "load5": 3.26,
+      "load15": 3.01,
+      "mem_available_kib": 5619400
+    },
+    {
+      "ts": 1793990570.1590257,
+      "load1": 3.27,
+      "load5": 3.27,
+      "load15": 3.01,
+      "mem_available_kib": 5644552
+    },
+    {
+      "ts": 1793990570.8627439,
+      "load1": 3.27,
+      "load5": 3.27,
+      "load15": 3.01,
+      "mem_available_kib": 5630572
+    },
+    {
+      "ts": 1793990571.8797915,
+      "load1": 3.27,
+      "load5": 3.27,
+      "load15": 3.01,
+      "mem_available_kib": 5617636
+    },
+    {
+      "ts": 1793990573.5340798,
+      "load1": 3.27,
+      "load5": 3.27,
+      "load15": 3.01,
+      "mem_available_kib": 5589372
+    },
+    {
+      "ts": 1793990574.4857047,
+      "load1": 3.27,
+      "load5": 3.27,
+      "load15": 3.01,
+      "mem_available_kib": 5595732
+    },
+    {
+      "ts": 1793990575.356791,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5581108
+    },
+    {
+      "ts": 1793990575.967048,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5583384
+    },
+    {
+      "ts": 1793990576.6337876,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5593840
+    },
+    {
+      "ts": 1793990577.2346587,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5605768
+    },
+    {
+      "ts": 1793990578.616779,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5608160
+    },
+    {
+      "ts": 1793990579.4349287,
+      "load1": 3.41,
+      "load5": 3.3,
+      "load15": 3.02,
+      "mem_available_kib": 5610020
+    },
+    {
+      "ts": 1793990580.2818391,
+      "load1": 3.45,
+      "load5": 3.31,
+      "load15": 3.03,
+      "mem_available_kib": 5601004
+    },
+    {
+      "ts": 1793990581.6664252,
+      "load1": 3.45,
+      "load5": 3.31,
+      "load15": 3.03,
+      "mem_available_kib": 5609548
+    },
+    {
+      "ts": 1793990584.9655724,
+      "load1": 3.26,
+      "load5": 3.28,
+      "load15": 3.02,
+      "mem_available_kib": 5612300
+    },
+    {
+      "ts": 1793990585.6013992,
+      "load1": 3.26,
+      "load5": 3.28,
+      "load15": 3.02,
+      "mem_available_kib": 5605580
+    },
+    {
+      "ts": 1793990587.208043,
+      "load1": 3.26,
+      "load5": 3.28,
+      "load15": 3.02,
+      "mem_available_kib": 5577448
+    },
+    {
+      "ts": 1793990587.86295,
+      "load1": 3.26,
+      "load5": 3.28,
+      "load15": 3.02,
+      "mem_available_kib": 5575560
+    },
+    {
+      "ts": 1793990588.4810934,
+      "load1": 3.26,
+      "load5": 3.28,
+      "load15": 3.02,
+      "mem_available_kib": 5565424
+    },
+    {
+      "ts": 1793990590.7656236,
+      "load1": 3.08,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5571288
+    },
+    {
+      "ts": 1793990592.05032,
+      "load1": 3.08,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5563380
+    },
+    {
+      "ts": 1793990593.098964,
+      "load1": 3.08,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5599472
+    },
+    {
+      "ts": 1793990593.9165795,
+      "load1": 3.08,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5597600
+    },
+    {
+      "ts": 1793990594.7491922,
+      "load1": 3.08,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5600968
+    },
+    {
+      "ts": 1793990595.8286252,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5609236
+    },
+    {
+      "ts": 1793990596.3998868,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5619012
+    },
+    {
+      "ts": 1793990597.0070312,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5579260
+    },
+    {
+      "ts": 1793990598.0523443,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5618812
+    },
+    {
+      "ts": 1793990598.7192166,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5621652
+    },
+    {
+      "ts": 1793990599.79733,
+      "load1": 2.99,
+      "load5": 3.22,
+      "load15": 3.0,
+      "mem_available_kib": 5624820
+    },
+    {
+      "ts": 1793990600.8040254,
+      "load1": 3.39,
+      "load5": 3.3,
+      "load15": 3.03,
+      "mem_available_kib": 5627200
+    },
+    {
+      "ts": 1793990601.6087492,
+      "load1": 3.39,
+      "load5": 3.3,
+      "load15": 3.03,
+      "mem_available_kib": 5629716
+    },
+    {
+      "ts": 1793990604.9693308,
+      "load1": 3.28,
+      "load5": 3.27,
+      "load15": 3.02,
+      "mem_available_kib": 5644516
+    },
+    {
+      "ts": 1793990606.3799298,
+      "load1": 3.28,
+      "load5": 3.27,
+      "load15": 3.02,
+      "mem_available_kib": 5641088
+    },
+    {
+      "ts": 1793990607.4356966,
+      "load1": 3.28,
+      "load5": 3.27,
+      "load15": 3.02,
+      "mem_available_kib": 5564076
+    },
+    {
+      "ts": 1793990609.0197957,
+      "load1": 3.28,
+      "load5": 3.27,
+      "load15": 3.02,
+      "mem_available_kib": 5646584
+    },
+    {
+      "ts": 1793990610.8881054,
+      "load1": 3.1,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5665688
+    },
+    {
+      "ts": 1793990613.0339942,
+      "load1": 3.1,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5524092
+    },
+    {
+      "ts": 1793990613.7325764,
+      "load1": 3.1,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5534636
+    },
+    {
+      "ts": 1793990614.6570237,
+      "load1": 3.1,
+      "load5": 3.24,
+      "load15": 3.01,
+      "mem_available_kib": 5540840
+    },
+    {
+      "ts": 1793990615.262741,
+      "load1": 3.09,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5543072
+    },
+    {
+      "ts": 1793990616.0977285,
+      "load1": 3.09,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5541604
+    },
+    {
+      "ts": 1793990616.9013033,
+      "load1": 3.09,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5535716
+    },
+    {
+      "ts": 1793990618.3355558,
+      "load1": 3.09,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5520400
+    },
+    {
+      "ts": 1793990619.467489,
+      "load1": 3.09,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5518724
+    },
+    {
+      "ts": 1793990620.2150226,
+      "load1": 3.08,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5508248
+    },
+    {
+      "ts": 1793990622.8364964,
+      "load1": 3.08,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5510136
+    },
+    {
+      "ts": 1793990624.4464223,
+      "load1": 3.08,
+      "load5": 3.23,
+      "load15": 3.01,
+      "mem_available_kib": 5512704
+    },
+    {
+      "ts": 1793990625.9144542,
+      "load1": 3.08,
+      "load5": 3.22,
+      "load15": 3.01,
+      "mem_available_kib": 5517472
+    },
+    {
+      "ts": 1793990626.6506026,
+      "load1": 3.08,
+      "load5": 3.22,
+      "load15": 3.01,
+      "mem_available_kib": 5518556
+    },
+    {
+      "ts": 1793990628.0127866,
+      "load1": 3.08,
+      "load5": 3.22,
+      "load15": 3.01,
+      "mem_available_kib": 5520112
+    },
+    {
+      "ts": 1793990629.7376244,
+      "load1": 3.08,
+      "load5": 3.22,
+      "load15": 3.01,
+      "mem_available_kib": 5537496
+    },
+    {
+      "ts": 1793990630.4768803,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5530840
+    },
+    {
+      "ts": 1793990631.2363298,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5497272
+    },
+    {
+      "ts": 1793990632.1178558,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5499112
+    },
+    {
+      "ts": 1793990632.903678,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5473680
+    },
+    {
+      "ts": 1793990634.127264,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5463828
+    },
+    {
+      "ts": 1793990634.9469998,
+      "load1": 3.23,
+      "load5": 3.25,
+      "load15": 3.02,
+      "mem_available_kib": 5465296
+    },
+    {
+      "ts": 1793990635.8719122,
+      "load1": 4.41,
+      "load5": 3.5,
+      "load15": 3.1,
+      "mem_available_kib": 5473660
+    },
+    {
+      "ts": 1793990636.9822707,
+      "load1": 4.41,
+      "load5": 3.5,
+      "load15": 3.1,
+      "mem_available_kib": 5470240
+    }
+  ],
+  "errors": [
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.007143339957110584,
+      "error": "",
+      "uid": "ee35528d-a380-40e9-8cc9-3df08a697421"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00699457002338022,
+      "error": "",
+      "uid": "9ef066f5-e46f-4e76-a831-e72010bb1117"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.0034304599976167083,
+      "error": "",
+      "uid": "0e4c2f65-7cb1-4cbb-9cb9-860ad7737944"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00428009097231552,
+      "error": "",
+      "uid": "0e4c2f65-7cb1-4cbb-9cb9-860ad7737944"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.003672541002742946,
+      "error": "",
+      "uid": "6f1077ca-3c37-447a-a591-b1094ae5d8f6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00408795103430748,
+      "error": "",
+      "uid": "0e4c2f65-7cb1-4cbb-9cb9-860ad7737944"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.004061890009324998,
+      "error": "",
+      "uid": "745749b5-96ea-4266-9bcc-e1eeb6c52a16"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.016003751021344215,
+      "error": "",
+      "uid": "74246759-dcc5-473a-88a7-d21ac61ac7d4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.013510677963495255,
+      "error": "",
+      "uid": "93e074d1-4ef4-401d-8eca-778890e05613"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.01997020503040403,
+      "error": "",
+      "uid": "649c6b32-f0e3-4179-ab3f-3870f8859a79"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.0030538439750671387,
+      "error": "",
+      "uid": "9ef066f5-e46f-4e76-a831-e72010bb1117"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.003503948973957449,
+      "error": "",
+      "uid": "9ef066f5-e46f-4e76-a831-e72010bb1117"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.0033393779885955155,
+      "error": "",
+      "uid": "9ef066f5-e46f-4e76-a831-e72010bb1117"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.016274621011689305,
+      "error": "",
+      "uid": "c692b7d4-9c71-4384-895c-37846a390f34"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.004469779960345477,
+      "error": "",
+      "uid": "9ef066f5-e46f-4e76-a831-e72010bb1117"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.002830090990755707,
+      "error": "",
+      "uid": "0e4c2f65-7cb1-4cbb-9cb9-860ad7737944"
+    }
+  ],
+  "rounds": 74,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 10.654,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=1168 tx_fail=16 err_rate=0.014; pairs=16 workers=8",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T183500Z/suite_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 74,
+      "first_fail": null,
+      "signal": "Throughput is gated by explicit mine cycles and one-pending-tx-per-sender; observed mine_ok=74 mine_fail=0 mine_every=10",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T183500Z/suite_throughput.json"
+      ]
+    }
+  ]
+}

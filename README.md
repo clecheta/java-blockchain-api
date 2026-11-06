@@ -102,6 +102,12 @@ Then run the native executable with:
 ./target/api.blockchain-1.0.0-SNAPSHOT-runner
 ```
 
+## Capacity testing (ledger plane)
+
+Local Phase-1 capacity battery (max ledger `$`, wallets, host throughput) and how to evaluate results:
+
+→ [docs/capacity/README.md](docs/capacity/README.md)
+
 ## Health checks
 
 Root node (same paths on peer `:8081`):

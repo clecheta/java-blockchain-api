@@ -1,0 +1,241 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 19.04302905400982,
+  "duration_requested_s": 90.0,
+  "stop_reason": "error_rate",
+  "wallet_pairs": 20,
+  "workers": 8,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 21,
+  "tx_fail": 19,
+  "mine_ok": 1,
+  "mine_fail": 1,
+  "settled_units": 21,
+  "tx_per_s": 1.102765738603865,
+  "mine_per_s": 0.052512654219231666,
+  "dollars_per_s": 1.102765738603865,
+  "error_rate": 0.475,
+  "tx_latency": {
+    "count": 40,
+    "p50_ms": 19.117549993097782,
+    "p95_ms": 78.10108731791838,
+    "p99_ms": 97.36105747811962,
+    "max_ms": 101.57290496863425,
+    "min_ms": 2.7965520275756717
+  },
+  "mine_latency": {
+    "count": 2,
+    "p50_ms": 297.2093200078234,
+    "p95_ms": 489.9422491143923,
+    "p99_ms": 507.07406503497623,
+    "max_ms": 511.3570190151222,
+    "min_ms": 83.06162100052461
+  },
+  "host_samples": [
+    {
+      "ts": 1793989974.434519,
+      "load1": 5.11,
+      "load5": 3.82,
+      "load15": 2.84,
+      "mem_available_kib": 5467652
+    },
+    {
+      "ts": 1793989974.7761667,
+      "load1": 5.11,
+      "load5": 3.82,
+      "load15": 2.84,
+      "mem_available_kib": 5443284
+    }
+  ],
+  "errors": [
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006138209020718932,
+      "error": "",
+      "uid": "bc92a880-bde2-4c5e-9cc3-6438e2a93fff"
+    },
+    {
+      "phase": "mine",
+      "status": 500,
+      "error": "{\"details\":\"Error id 73d20f85-c994-49d7-af54-0b1a0c6ca377-1, org.jboss.resteasy.spi.UnhandledException: java.util.ConcurrentModificationException\",\"stack\":\"org.jboss.resteasy.spi.UnhandledException: java.util.ConcurrentModificationException\\n\\tat org.jboss.resteasy.core.ExceptionHandler.handleApplicationException(ExceptionHandler.java:107)\\n\\tat org.jboss.resteasy.core.ExceptionHandler.handleException(ExceptionHandler.java:344)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.writeException(SynchronousDispatcher.java:210)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.invoke(SynchronousDispatcher.java:457)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.lambda$invoke$0(SynchronousDispatcher.java:245)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.lambda$preprocess$0(SynchronousDispatcher.java:159)\\n\\tat org.jboss.resteasy.core.interception.jaxrs.PreMatchContainerRequestContext.filter(PreMatchContainerRequestContext.java:321)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.preprocess(SynchronousDispatcher.java:162)\\n\\tat org.jboss.resteasy.core.SynchronousDispatcher.invoke(SynchronousDispatcher.java:234)\\n\\tat io.quarkus.resteasy.runtime.standalone.RequestDispatcher.service(RequestDispatcher.java:84)\\n\\tat io.quarkus.resteasy.runtime.standalone.VertxRequestHandler.dispatch(VertxRequestHandler.java:151)\\n\\tat io.quarkus.resteasy.runtime.standalone.VertxRequestHandler$1.run(VertxRequestHandler.java:97)\\n\\tat io.quarkus.vertx.core.runtime.VertxCoreRecorder$15.runWith(VertxCoreRecorder.java:695)\\n\\tat org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)\\n\\tat org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)\\n\\tat org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)\\n\\tat org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)\\n\\tat org.jboss.threads.DelegatingRunnable.run(DelegatingRunnable.java:11)\\n\\tat org.jboss.thr"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00989312498131767,
+      "error": "",
+      "uid": "677c5e07-673a-44ba-8b2e-ecfaf126aa06"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00950523599749431,
+      "error": "",
+      "uid": "894e1b22-6d1e-4b0c-b88e-6193b4eba5de"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.0092193289892748,
+      "error": "",
+      "uid": "93ee6439-92a2-4d3e-9833-8a777491f1a8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.010772868001367897,
+      "error": "",
+      "uid": "275df7c8-c8b4-47b5-80ce-08d65fbd49a4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006479970004875213,
+      "error": "",
+      "uid": "81023eff-e381-44b5-8972-f1253c876842"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.013631891983095556,
+      "error": "",
+      "uid": "f92d1424-4fa8-4a2a-b449-e07253618fea"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006600310967769474,
+      "error": "",
+      "uid": "a02999e9-9267-4c0d-aba7-ad7d3f007300"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.013953246991150081,
+      "error": "",
+      "uid": "5cd7cba9-4dc8-483a-871b-091cb537f868"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.004464390978682786,
+      "error": "",
+      "uid": "ae7289ae-d139-495d-89fb-733df332a8c7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.004747809027321637,
+      "error": "",
+      "uid": "9b602c6b-42b6-4ddb-b761-f70f7c012206"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006507255951873958,
+      "error": "",
+      "uid": "88e627b0-e18a-4432-a2e2-afae0950ae91"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006287052005063742,
+      "error": "",
+      "uid": "9f7b58f8-cb8f-43d2-8a32-e836f4fb6524"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00986100995214656,
+      "error": "",
+      "uid": "1fd9e193-e0d1-4ae6-bb55-02ebe7a0d905"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.00740379502531141,
+      "error": "",
+      "uid": "4c3f33b8-2d8a-4232-af9b-d1df208dad56"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.005179248983040452,
+      "error": "",
+      "uid": "50e7a12e-0933-4135-8abb-41920db57fca"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.006830436992458999,
+      "error": "",
+      "uid": "adea70da-cb4e-4ea7-a829-765846727b76"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.0027965520275756717,
+      "error": "",
+      "uid": "79400051-dff9-45c9-9b24-ac527f1b63cd"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 0.004725207982119173,
+      "error": "",
+      "uid": "a766cc90-c076-4bec-b8e9-fc9cdbed5919"
+    }
+  ],
+  "rounds": 1,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": null,
+      "first_fail": 1.1028,
+      "signal": "stop=error_rate; tx_ok=21 tx_fail=19 err_rate=0.475; pairs=20 workers=8",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T183209Z/suite_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 1,
+      "first_fail": null,
+      "signal": "Throughput is gated by explicit mine cycles and one-pending-tx-per-sender; observed mine_ok=1 mine_fail=1 mine_every=10",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T183209Z/suite_throughput.json"
+      ]
+    }
+  ]
+}
