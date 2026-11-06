@@ -1,0 +1,48 @@
+{
+  "run_id": "20261106T210210Z",
+  "items": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "design",
+      "metric": "settlement_model",
+      "last_good": null,
+      "first_fail": null,
+      "signal": "Transfers are accepted into an in-memory pool and settled in scheduled PostgreSQL-fenced batches; wallet creation starts at balance 0 and authorized funding is a separate service operation.",
+      "evidence_files": [
+        "src/main/java/api/cryptocurrency/PoolResource.java",
+        "src/main/java/api/cryptocurrency/MineResource.java",
+        "src/main/java/api/cryptocurrency/BlockService.java"
+      ]
+    },
+    {
+      "layer": "infrastructure",
+      "primary": "infrastructure",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 195.9909,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=11780 tx_fail=0 err_rate=0.000; pairs=20 workers=32",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T210210Z/suite_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 24,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=24 mine_fail=0 mine_every=500",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T210210Z/suite_throughput.json"
+      ]
+    }
+  ]
+}

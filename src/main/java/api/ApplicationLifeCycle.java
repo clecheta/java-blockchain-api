@@ -6,6 +6,7 @@ import api.network.PeerSyncService;
 import api.network.Util;
 import api.repository.BlockRepository;
 import api.repository.DatabaseRepository;
+import api.repository.LedgerMigrationService;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.runtime.ShutdownEvent;
@@ -43,10 +44,10 @@ public class ApplicationLifeCycle {
     DatabaseRepository databaseRepository;
 
     @Inject
-    PeerSyncService peerSyncService;
+    LedgerMigrationService ledgerMigration;
 
-    @ConfigProperty(name = "quarkus.http.port")
-    private String HTTP_PORT;
+    @Inject
+    PeerSyncService peerSyncService;
 
     @ConfigProperty(name = "mining.reward.wallet")
     private String rewardWallet;
@@ -57,13 +58,17 @@ public class ApplicationLifeCycle {
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
 
+        ledgerMigration.migrateIfEnabled();
+
         //load chain from database
         loadFromDatabase();
 
-        //syncing with root state (full bootstrap)
-        peerSyncService.syncBlockchainFull();
-        peerSyncService.syncCryptochainFull();
-        peerSyncService.syncTransactionPoolMap();
+        if (!peerSyncService.isRoot()) {
+            // Peers bootstrap from the single settlement/root node.
+            peerSyncService.syncBlockchainFull();
+            peerSyncService.syncCryptochainFull();
+            peerSyncService.syncTransactionPoolMap();
+        }
 
         databaseRepository.createIndex();
     }
@@ -92,7 +97,7 @@ public class ApplicationLifeCycle {
 
     /* Failure on one chain must not interfere in the other, so the process of loading should not be interrupted */
     private void loadChain() {
-        if (HTTP_PORT.equals("8018")) { //make load chain from database operation only from root note, other nodes must sync
+        if (peerSyncService.isRoot()) {
             try {
                 blockchain.chain.replaceChain(blockRepository.loadBlockchain());
             } catch (RuntimeException re) {

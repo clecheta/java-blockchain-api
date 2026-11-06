@@ -40,7 +40,8 @@ Do **not** replace Phase 1 with “only JMeter.” Settlement here is stateful (
 ### Prerequisites
 
 1. Sibling library installed: `mvn -f ../java-blockchain/pom.xml install -DskipTests`
-2. Infra up: `docker compose up -d` (Mongo + Kafka)
+2. Infra up: `docker compose up -d` (PostgreSQL + Kafka; Mongo remains only
+   for optional migration)
 3. Root API: `./mvnw compile quarkus:dev` → `http://localhost:8018` ready (`/q/health/ready`)
 4. Python 3.10+ deps:
 
@@ -51,7 +52,10 @@ source .venv-capacity/bin/activate
 pip install -r scripts/capacity/requirements.txt
 ```
 
-HTTP wallet create always starts at **balance 0**. Funded treasuries are inserted by `api.network.CapacityWalletSeeder` (Maven test classpath) so amounts round-trip through `WalletCodec`.
+HTTP wallet create always starts at **balance 0**. The battery creates wallets
+through HTTP and credits treasuries through the authenticated
+`POST /W4LL37/fUND` endpoint. Override `BANK_CLIENT_API_KEY` and
+`BANK_SERVICE_API_KEY` when local defaults are not active.
 
 ### Full battery
 
@@ -75,12 +79,14 @@ python3 scripts/capacity/run_battery.py \
 | Flag | Default | Meaning |
 |------|---------|---------|
 | `--base-url` | `http://localhost:8018` | Root API |
-| `--mongo-uri` | `mongodb://localhost:27017` | Seeder connection |
+| `--mongo-uri` | `mongodb://localhost:27017` | Deprecated compatibility flag; funding is HTTP/PostgreSQL |
 | `--run-id` | UTC timestamp | Evidence folder name |
 | `--wallet-hard-cap` | `5000` | Suite B create ceiling |
 | `--wallet-time-budget-s` | `600` | Suite B soft stop |
+| `--wallet-workers` | `32` | Concurrent wallet-create workers |
 | `--throughput-duration-s` | `90` | Suite C window |
 | `--throughput-pairs` | `20` | Concurrent funded senders |
+| `--throughput-workers` | `32` | Concurrent HTTP workers |
 | `--skip-smoke` | off | Skip multi-node post-check |
 | `--skip-money` / `--skip-wallets` / `--skip-throughput` | off | Skip a suite |
 
@@ -90,7 +96,7 @@ Operator notes and suite internals: [`scripts/capacity/README.md`](../../scripts
 
 | Suite | Question | Method (short) |
 |-------|----------|----------------|
-| **A — money** | Max `$` | Seed treasury → `POST /p00L/tRaN5ACt` (**amount as JSON string**) → mine → check balances; geometric probe + binary search; then multi-chunk settled volume |
+| **A — money** | Max `$` | Fund treasury → `POST /p00L/tRaN5ACt` (**amount as JSON string**) → settle → check balances; geometric probe + binary search; then multi-chunk settled volume |
 | **B — wallets** | Max accounts | Parallel `POST /W4LL37/cRE47E` batches until fail, ready drop, p95 budget, time, or hard cap |
 | **C — throughput** | Max this host | N funded senders, concurrent transfers, mine every K txs; report tx/s, mine/s, `$`/s |
 | **Smoke (post)** | Multi-node still OK? | Existing `scripts/smoke-two-nodes.sh` at a *comfortable* load (not a ceiling hunt) |
@@ -166,6 +172,10 @@ After a serious run:
 | Doc | Role |
 |-----|------|
 | **[README.md](README.md) (this file)** | Why / how to run / how to evaluate |
+| [IMPROVEMENT_ROADMAP.md](IMPROVEMENT_ROADMAP.md) | G0-G3 capacity and bank-ledger delivery roadmap |
+| [CLOUD_SETTLEMENT_SCHEDULING.md](CLOUD_SETTLEMENT_SCHEDULING.md) | AWS/GCP/Azure scheduling and multi-node fencing |
+| [POSTGRES_LEDGER_RUNBOOK.md](POSTGRES_LEDGER_RUNBOOK.md) | Ledger migration, backup, restore, and fencing |
+| [OPERATIONS_SLOS.md](OPERATIONS_SLOS.md) | Metrics, traces, initial SLOs, and required alerts |
 | [INTENT.md](INTENT.md) | Short intent + non-goals |
 | [SPEC.md](SPEC.md) | Pass/fail and evidence layout |
 | [CAPACITY_BASELINE.md](CAPACITY_BASELINE.md) | Latest numeric ceilings |

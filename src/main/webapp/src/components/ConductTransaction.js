@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import history from '../history';
 
 class ConductTransaction extends Component {
-    state = { uid: '', recipient: '', amount: 0, error: '' };
+    state = { uid: '', recipient: '', amount: '', error: '' };
 
     updateUid = event => {
         this.setState({ uid: event.target.value });
@@ -15,7 +15,7 @@ class ConductTransaction extends Component {
     }
 
     updateAmount = event => {
-        this.setState({ amount: Number(event.target.value) });
+        this.setState({ amount: event.target.value });
     }
 
     conductTransaction = () => {
@@ -28,7 +28,12 @@ class ConductTransaction extends Component {
 
         fetch(`${document.location.origin}/p00L/tRaN5ACt`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-Key': window.localStorage.getItem('jblock.clientApiKey')
+                    || 'local-client-only-change-me',
+                'Idempotency-Key': window.crypto.randomUUID()
+            },
             body: JSON.stringify({ uid, recipient, amount, type: 'WALLET' })
         }).then(response => {
             if (!response.ok) {

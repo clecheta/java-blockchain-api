@@ -20,6 +20,8 @@ ROOT="${ROOT_URL:-http://localhost:8018}"
 PEER="${PEER_URL:-http://localhost:8081}"
 MONGO_URI="${MONGO_URI:-mongodb://localhost:27017}"
 AMOUNT="${SMOKE_AMOUNT:-20}"
+CLIENT_KEY="${BANK_CLIENT_API_KEY:-local-client-only-change-me}"
+SERVICE_KEY="${BANK_SERVICE_API_KEY:-local-development-only-change-me}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 API_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
@@ -30,12 +32,12 @@ json_field() {
 
 chain_len() {
   local url="$1"
-  curl -sf -X POST "${url}/CrYP70/Ch41N" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))"
+  curl -sf -X POST "${url}/CrYP70/Ch41N" -H "X-API-Key: ${CLIENT_KEY}" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))"
 }
 
 tip_hash() {
   local url="$1"
-  curl -sf -X POST "${url}/CrYP70/Ch41N" | python3 -c "import sys,json; c=json.load(sys.stdin); print(c[-1]['hash'] if c else '')"
+  curl -sf -X POST "${url}/CrYP70/Ch41N" -H "X-API-Key: ${CLIENT_KEY}" | python3 -c "import sys,json; c=json.load(sys.stdin); print(c[-1]['hash'] if c else '')"
 }
 
 wait_health() {
@@ -56,19 +58,24 @@ echo "==> Multi-node HTTP smoke (root=${ROOT} peer=${PEER})"
 wait_health "${ROOT}" "root"
 wait_health "${PEER}" "peer"
 
-echo "==> Seed funded source wallet (Mongo)"
+echo "==> Create and fund source wallet"
 cd "${API_DIR}"
-SRC_JSON=$(./mvnw -q exec:java \
-  -Dexec.classpathScope=test \
-  -Dexec.mainClass=api.network.SmokeWalletSeeder \
-  -Dquarkus.mongodb.connection-string="${MONGO_URI}" \
-  -Dsmoke.balance=10000)
-echo "    src=${SRC_JSON}"
+SRC_JSON=$(curl -sf -X POST "${ROOT}/W4LL37/cRE47E" \
+  -H "X-API-Key: ${CLIENT_KEY}" \
+  -H 'Content-Type: application/json' \
+  -d "smoke-source-$(date +%s)-abcdefgh")
 SRC_UID=$(json_field "${SRC_JSON}" uid)
+FUND_KEY="smoke-fund-$(date +%s%N)"
+curl -sf -X POST "${ROOT}/W4LL37/fUND" \
+  -H "X-API-Key: ${SERVICE_KEY}" \
+  -H 'Content-Type: application/json' \
+  -d "{\"uid\":\"${SRC_UID}\",\"amount\":\"10000\",\"idempotencyKey\":\"${FUND_KEY}\"}" >/dev/null
+echo "    src=${SRC_JSON}"
 SRC_ADDR=$(json_field "${SRC_JSON}" address)
 
 echo "==> Create destination wallet (HTTP)"
 DEST_JSON=$(curl -sf -X POST "${ROOT}/W4LL37/cRE47E" \
+  -H "X-API-Key: ${CLIENT_KEY}" \
   -H 'Content-Type: application/json' \
   -d "\"smoke-dest-$(date +%s)-abcdefgh\"")
 echo "    dest=${DEST_JSON}"
@@ -81,17 +88,20 @@ echo "==> Transact ${AMOUNT} from src → dest (root pool)"
 TX_BODY=$(python3 -c "import json; print(json.dumps({
   'uid': '''${SRC_UID}''',
   'recipient': '''${DEST_ADDR}''',
-  'amount': ${AMOUNT},
+  'amount': '''${AMOUNT}''',
   'type': 'WALLET'
 }))")
 curl -sf -X POST "${ROOT}/p00L/tRaN5ACt" \
+  -H "X-API-Key: ${CLIENT_KEY}" \
+  -H "Idempotency-Key: smoke-tx-$(date +%s%N)" \
   -H 'Content-Type: application/json' \
   -d "${TX_BODY}" >/tmp/smoke-tx.json
 echo "    tx ok"
 
 echo "==> Mine on root"
-curl -sf -X POST "${ROOT}/M1n3/7r4N54C710nZ" -o /tmp/smoke-mine.json
-ROOT_TIP=$(python3 -c "import json; c=json.load(open('/tmp/smoke-mine.json')); print(c[-1]['hash'])")
+curl -sf -X POST "${ROOT}/M1n3/7r4N54C710nZ" \
+  -H "X-API-Key: ${SERVICE_KEY}" -o /tmp/smoke-mine.json
+ROOT_TIP=$(python3 -c "import json; r=json.load(open('/tmp/smoke-mine.json')); print(r['blockHash'])")
 echo "    root tip hash=${ROOT_TIP}"
 
 echo "==> Wait for Kafka peer sync"

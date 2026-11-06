@@ -11,10 +11,9 @@
 set -euo pipefail
 
 ROOT="${ROOT_URL:-http://localhost:8018}"
-MONGO_URI="${MONGO_URI:-mongodb://localhost:27017}"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-API_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 OUT_FILE="${INIT_WALLETS_FILE:-/tmp/jblock-local-wallets.json}"
+CLIENT_KEY="${BANK_CLIENT_API_KEY:-local-client-only-change-me}"
+SERVICE_KEY="${BANK_SERVICE_API_KEY:-local-development-only-change-me}"
 
 json_get() {
   local json="$1" expr="$2"
@@ -38,18 +37,26 @@ wait_health() {
 echo "==> Init local wallets (root=${ROOT})"
 wait_health "${ROOT}"
 
-echo "==> Seed alice (10000) + bob (1000) into Mongo"
-cd "${API_DIR}"
-WALLETS_JSON=$(./mvnw -q test-compile exec:java \
-  -Dexec.classpathScope=test \
-  -Dexec.mainClass=api.network.InitTestWallets \
-  -Dquarkus.mongodb.connection-string="${MONGO_URI}")
+echo "==> Create and fund alice (10000) + bob (1000)"
+ALICE_JSON=$(curl -sf -X POST "${ROOT}/W4LL37/cRE47E" \
+  -H "X-API-Key: ${CLIENT_KEY}" -H 'Content-Type: application/json' \
+  -d "alice-local-$(date +%s%N)")
+BOB_JSON=$(curl -sf -X POST "${ROOT}/W4LL37/cRE47E" \
+  -H "X-API-Key: ${CLIENT_KEY}" -H 'Content-Type: application/json' \
+  -d "bob-local-$(date +%s%N)")
+ALICE_UID=$(json_get "${ALICE_JSON}" "d['uid']")
+BOB_UID=$(json_get "${BOB_JSON}" "d['uid']")
+curl -sf -X POST "${ROOT}/W4LL37/fUND" \
+  -H "X-API-Key: ${SERVICE_KEY}" -H 'Content-Type: application/json' \
+  -d "{\"uid\":\"${ALICE_UID}\",\"amount\":\"10000\",\"idempotencyKey\":\"alice-$(date +%s%N)\"}" >/dev/null
+curl -sf -X POST "${ROOT}/W4LL37/fUND" \
+  -H "X-API-Key: ${SERVICE_KEY}" -H 'Content-Type: application/json' \
+  -d "{\"uid\":\"${BOB_UID}\",\"amount\":\"1000\",\"idempotencyKey\":\"bob-$(date +%s%N)\"}" >/dev/null
+WALLETS_JSON=$(python3 -c 'import json,sys; a=json.loads(sys.argv[1]); b=json.loads(sys.argv[2]); a["balance"]="10000"; b["balance"]="1000"; print(json.dumps({"alice":a,"bob":b}))' "${ALICE_JSON}" "${BOB_JSON}")
 echo "${WALLETS_JSON}" > "${OUT_FILE}"
 
-ALICE_UID=$(json_get "${WALLETS_JSON}" "d['alice']['uid']")
 ALICE_ADDR=$(json_get "${WALLETS_JSON}" "d['alice']['address']")
 ALICE_BAL=$(json_get "${WALLETS_JSON}" "d['alice']['balance']")
-BOB_UID=$(json_get "${WALLETS_JSON}" "d['bob']['uid']")
 BOB_ADDR=$(json_get "${WALLETS_JSON}" "d['bob']['address']")
 BOB_BAL=$(json_get "${WALLETS_JSON}" "d['bob']['balance']")
 
@@ -88,12 +95,14 @@ cat <<EOF
  Option B — curl (same transfer)
 ============================================================
  curl -s -X POST ${ROOT}/p00L/tRaN5ACt \\
+   -H 'X-API-Key: ${CLIENT_KEY}' \\
+   -H 'Idempotency-Key: init-example-1' \\
    -H 'Content-Type: application/json' \\
-   -d '{"uid":"${ALICE_UID}","recipient":"${BOB_ADDR}","amount":20,"type":"WALLET"}'
+   -d '{"uid":"${ALICE_UID}","recipient":"${BOB_ADDR}","amount":"20","type":"WALLET"}'
 
- curl -s -X POST ${ROOT}/M1n3/7r4N54C710nZ | python3 -m json.tool | tail
+ curl -s -X POST ${ROOT}/M1n3/7r4N54C710nZ -H 'X-API-Key: ${SERVICE_KEY}'
 
- curl -s -X POST ${ROOT}/CrYP70/Ch41N | python3 -c \\
+ curl -s -X POST ${ROOT}/CrYP70/Ch41N -H 'X-API-Key: ${CLIENT_KEY}' | python3 -c \\
    "import sys,json; c=json.load(sys.stdin); print('blocks',len(c),'tip',c[-1]['hash'][:16]+'…')"
 
  If PoolResource logs "wrong usage", the body is missing uid/recipient/amount/type.

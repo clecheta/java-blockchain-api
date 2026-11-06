@@ -36,9 +36,11 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
     public void encode(BsonWriter writer, Wallet wallet, EncoderContext encoderContext) {
         Document doc = new Document();
         doc.put("c3", Base64.getEncoder().encodeToString(wallet.balance.unscaledValue().toByteArray())); //src
+        doc.put("c3Scale", wallet.balance.scale());
         doc.put("a0", wallet.uid); //origin
         doc.put("d7", Base64.getEncoder().encodeToString(wallet.publicKey.getBytes(StandardCharsets.UTF_8)));
         doc.put("b8", Base64.getEncoder().encodeToString(wallet.getSTARTING_BALANCE().unscaledValue().toByteArray()));
+        doc.put("b8Scale", wallet.getSTARTING_BALANCE().scale());
         doc.put("e5", Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded()));
         doc.put("j1", Base64.getEncoder().encodeToString(Parse.longToBytes(wallet.nonce)));
         documentCodec.encode(writer, doc, encoderContext);
@@ -72,8 +74,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         Document document = documentCodec.decode(reader, decoderContext);
 
         byte[] encodedBalance = Base64.getDecoder().decode(document.getString("c3"));
-        long valueBalance = new BigInteger(encodedBalance).longValue();
-        BigDecimal balance = new BigDecimal(valueBalance);
+        int balanceScale = document.getInteger("c3Scale", 0);
+        BigDecimal balance = new BigDecimal(new BigInteger(encodedBalance), balanceScale);
 
         String uid = document.getString("a0");
 
@@ -82,8 +84,8 @@ public class WalletCodec implements CollectibleCodec<Wallet> {
         ECPublicKey publicKey = ECDSA.loadPublicKey(stringPublicKey);
 
         byte[] encodedStartBalance = Base64.getDecoder().decode(document.getString("b8"));
-        long valueStartBalance = new BigInteger(encodedStartBalance).longValue();
-        BigDecimal startBalance = new BigDecimal(valueStartBalance);
+        int startingScale = document.getInteger("b8Scale", 0);
+        BigDecimal startBalance = new BigDecimal(new BigInteger(encodedStartBalance), startingScale);
 
         byte[] privateKeyByteArray = Parse.decodeHexString(document.getString("e5"));
         ECPrivateKey privateKey = ECDSA.loadPrivateKey(privateKeyByteArray);

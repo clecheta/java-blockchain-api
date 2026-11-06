@@ -1,16 +1,12 @@
-"""Seed funded wallets via CapacityWalletSeeder (WalletCodec-compatible)."""
+"""Create and fund wallets through the production API contract."""
 
 from __future__ import annotations
 
-import json
 import os
-import subprocess
-from pathlib import Path
+import time
 from typing import Any
 
-
-def api_root() -> Path:
-    return Path(__file__).resolve().parents[2]
+import httpx
 
 
 def seed_funded_wallets(
@@ -19,39 +15,39 @@ def seed_funded_wallets(
     mongo_uri: str | None = None,
     timeout_s: float = 300.0,
 ) -> list[dict[str, Any]]:
-    """Insert ``count`` funded wallets; returns [{uid, address, balance}, ...]."""
-    root = api_root()
-    env = os.environ.copy()
-    uri = mongo_uri or env.get("MONGO_URI", "mongodb://localhost:27017")
-    cmd = [
-        str(root / "mvnw"),
-        "-q",
-        "exec:java",
-        "-Dexec.classpathScope=test",
-        "-Dexec.mainClass=api.network.CapacityWalletSeeder",
-        f"-Dquarkus.mongodb.connection-string={uri}",
-        f"-Dcapacity.count={count}",
-        f"-Dcapacity.balance={balance}",
-    ]
-    proc = subprocess.run(
-        cmd,
-        cwd=root,
-        capture_output=True,
-        text=True,
-        timeout=timeout_s,
-        check=False,
-        env=env,
-    )
-    if proc.returncode != 0:
-        raise RuntimeError(
-            "CapacityWalletSeeder failed "
-            f"(exit={proc.returncode}):\nstdout={proc.stdout}\nstderr={proc.stderr}"
-        )
-    line = proc.stdout.strip().splitlines()[-1] if proc.stdout.strip() else ""
-    try:
-        data = json.loads(line)
-    except json.JSONDecodeError as exc:
-        raise RuntimeError(f"Bad seeder JSON: {line!r}\nstderr={proc.stderr}") from exc
-    if not isinstance(data, list):
-        raise RuntimeError(f"Expected JSON array from seeder, got: {data!r}")
-    return data
+    """Create and idempotently fund wallets; keeps the old mongo_uri argument
+    for backwards-compatible callers."""
+    del mongo_uri
+    base_url = os.environ.get("ROOT_URL", "http://localhost:8018").rstrip("/")
+    client_api_key = os.environ.get(
+        "BANK_CLIENT_API_KEY", "local-client-only-change-me")
+    service_api_key = os.environ.get(
+        "BANK_SERVICE_API_KEY", "local-development-only-change-me")
+    wallets: list[dict[str, Any]] = []
+    with httpx.Client(base_url=base_url, timeout=timeout_s) as client:
+        for index in range(count):
+            uid = f"capacity-funded-{time.time_ns()}-{index}"
+            created = client.post(
+                "/W4LL37/cRE47E",
+                headers={
+                    "Content-Type": "application/json",
+                    "X-API-Key": client_api_key,
+                },
+                content=uid,
+            )
+            created.raise_for_status()
+            wallet = created.json()
+            wallet["uid"] = str(wallet["uid"]).strip('"')
+            funded = client.post(
+                "/W4LL37/fUND",
+                headers={"X-API-Key": service_api_key},
+                json={
+                    "uid": wallet["uid"],
+                    "amount": str(balance),
+                    "idempotencyKey": f"capacity-{wallet['uid']}",
+                },
+            )
+            funded.raise_for_status()
+            wallet["balance"] = str(balance)
+            wallets.append(wallet)
+    return wallets

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import time
+import os
+import uuid
 from dataclasses import dataclass
 from typing import Any
 
@@ -22,7 +24,15 @@ class HttpResult:
 class ApiClient:
     def __init__(self, base_url: str, timeout_s: float = 60.0) -> None:
         self.base_url = base_url.rstrip("/")
-        self.client = httpx.Client(base_url=self.base_url, timeout=timeout_s)
+        self.client_key = os.environ.get(
+            "BANK_CLIENT_API_KEY", "local-client-only-change-me")
+        self.service_key = os.environ.get(
+            "BANK_SERVICE_API_KEY", "local-development-only-change-me")
+        self.client = httpx.Client(
+            base_url=self.base_url,
+            timeout=timeout_s,
+            headers={"X-API-Key": self.client_key},
+        )
 
     def close(self) -> None:
         self.client.close()
@@ -109,7 +119,10 @@ class ApiClient:
         return self._request(
             "POST",
             "/p00L/tRaN5ACt",
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Content-Type": "application/json",
+                "Idempotency-Key": str(uuid.uuid4()),
+            },
             json={
                 "uid": uid,
                 "recipient": recipient,
@@ -119,7 +132,9 @@ class ApiClient:
         )
 
     def mine(self) -> HttpResult:
-        return self._request("POST", "/M1n3/7r4N54C710nZ")
+        return self._request(
+            "POST", "/M1n3/7r4N54C710nZ",
+            headers={"X-API-Key": self.service_key})
 
     def chain(self) -> HttpResult:
         return self._request("POST", "/CrYP70/Ch41N")

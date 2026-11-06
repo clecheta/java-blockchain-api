@@ -34,8 +34,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--skip-smoke", action="store_true", help="Skip post-check smoke-two-nodes.sh")
     p.add_argument("--wallet-time-budget-s", type=float, default=600.0)
     p.add_argument("--wallet-hard-cap", type=int, default=5000)
+    p.add_argument("--wallet-workers", type=int, default=32)
     p.add_argument("--throughput-duration-s", type=float, default=90.0)
     p.add_argument("--throughput-pairs", type=int, default=20)
+    p.add_argument("--throughput-workers", type=int, default=32)
     return p.parse_args()
 
 
@@ -109,6 +111,7 @@ def main() -> int:
                 out_dir,
                 time_budget_s=args.wallet_time_budget_s,
                 hard_cap=args.wallet_hard_cap,
+                workers=args.wallet_workers,
             )
             summary["suites"]["B_wallets"] = {
                 "last_good_wallet_count": wallets.get("last_good_wallet_count"),
@@ -129,6 +132,7 @@ def main() -> int:
                 args.mongo_uri,
                 duration_s=args.throughput_duration_s,
                 wallet_pairs=args.throughput_pairs,
+                workers=args.throughput_workers,
             )
             summary["suites"]["C_throughput"] = {
                 "tx_per_s": tp.get("tx_per_s"),

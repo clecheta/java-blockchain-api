@@ -21,13 +21,16 @@ Treat it as a **cryptochain / shared-ledger lab and MVP stack**, or as a possibl
 | Bank-like concern | How it appears here |
 |---|---|
 | Accounts | ECDSA wallets (`WalletResource` — create / info) |
-| Balance | Wallet balance derived from chain activity |
+| Balance | PostgreSQL materialized balance plus append-only settlement history |
 | Transfers | Wallet → wallet via transaction pool (`PoolResource`) |
-| Settlement / confirmation | Mine pending transactions into blocks (`MineResource` / chain mine) |
-| Immutable book | Cryptochain blocks persisted (Mongo) and synced (Kafka) |
+| Settlement / confirmation | Scheduled, single-writer batch settlement (`MineResource`) |
+| Immutable book | Cryptochain blocks persisted in PostgreSQL and fanned out through Kafka |
 | HTTP surface | Quarkus REST API + demo UI |
 
-Operationally the network is **closed / private**: whoever controls Kafka, Mongo, and the network perimeter controls who participates. Trust comes from infrastructure isolation plus ECDSA signatures — not from banking KYC or formal MSP/RBAC.
+Operationally the network is **closed / private**: whoever controls PostgreSQL,
+Kafka, credentials, and the network perimeter controls who participates. Trust
+comes from infrastructure isolation, API keys, and ECDSA signatures — not from
+banking KYC or customer-grade authorization.
 
 Historical project language once described the chain wallet as a “bank account,” then moved toward **individual wallets** for wallet-to-wallet flows. That metaphor is useful for teaching; it is not a banking domain model.
 
@@ -37,11 +40,11 @@ Historical project language once described the chain wallet as a “bank account
 
 | Typical digital bank | This project today |
 |---|---|
-| Login, session, authorization, API keys | Open Expansion debt (`api#22`, `api#30` in lineage docs) |
+| Login, session, customer authorization | Bootstrap client/service API keys only; no OIDC, customer identity, or consent model |
 | KYC / AML, limits, sanctions screening | Not present |
 | Pix / TED / cards / credit / fees / statements | On-chain transfers + optional mining reward only (`PayTypeEnum` labels are decorative types, not payment rails) |
 | Regulated custody, audit trails for supervisors, chargebacks / disputes | PoW cryptochain model, not accounting/custody ops |
-| Production SLAs, formal change control, dual control | Study / craft stack; mining often manual; demo-oriented UI |
+| Production SLAs, formal change control, dual control | Capacity harness, metrics, and scheduled settlement exist; formal SLO operations and dual control do not |
 
 Open Expansion items that matter if anyone stretches toward “bank-like” use (auth, balance calculation hardening, when to mine, datastore decision) live in the sibling lineage docs under `java-blockchain-docs` — they do not close the gap to a regulated bank by themselves.
 
@@ -68,11 +71,13 @@ Open Expansion items that matter if anyone stretches toward “bank-like” use 
 
 Without abandoning the current codebase, natural next steps toward a **stronger ledger service** (still short of a digital bank) would include:
 
-1. Authentication and authorization on the API (JWT / mTLS / API keys; allowlist of nodes).
+1. Replace bootstrap API keys with customer/service identity (OIDC, mTLS, scoped roles, and node allowlists).
 2. Hardening balance and starting-balance rules so configuration cannot inflate spendable funds.
 3. Clear custody model (who holds keys; hot vs cold; no demo `uid` pasted into a browser).
-4. Explicit settlement policy (when to mine; who may mine; reward policy off by default for non-demo nets).
-5. Durable datastore and ops story fit for audit (see datastore decision work in lineage docs).
+4. Operate the existing scheduled settlement policy with explicit latency SLOs,
+   multi-cloud failover, and reward policy disabled.
+5. Complete the PostgreSQL HA/PITR, immutable audit, reconciliation, and
+   operational-control story.
 
 A **regulated digital bank** would still require a separate product and compliance stack around (or instead of) this ledger: customer identity, payment schemes, risk, reporting, and legal entity controls.
 
@@ -81,6 +86,17 @@ A **regulated digital bank** would still require a separate product and complian
 ## Capacity evidence (local ledger plane)
 
 Start with the [capacity testing guide](./capacity/README.md) (why, how to run, how to evaluate). Measured ceilings: [CAPACITY_BASELINE.md](./capacity/CAPACITY_BASELINE.md). Where limits sit (architecture vs source vs infrastructure): [LIMITATIONS.md](./capacity/LIMITATIONS.md). Harness: `scripts/capacity/` (Phase 1). This does **not** make the API a digital bank; it bounds the ledger plane on a given machine.
+
+The 2026-11-06 reference run passed G1 with a 50,000-wallet create sweep and
+243.961 authenticated accepted transactions/s, and restored a PostgreSQL
+population of 102,322 wallets. It did **not** meet the 1,000
+transactions/s G2 target. The main remaining ledger boundary is durable,
+cross-node pending-balance reservation; the current in-memory pool is not a
+production banking queue.
+
+The path from that baseline toward market-grade ledger infrastructure is
+documented in the
+[capacity improvement roadmap](./capacity/IMPROVEMENT_ROADMAP.md).
 
 ## Synthesis
 

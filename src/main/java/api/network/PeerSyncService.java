@@ -50,16 +50,20 @@ public class PeerSyncService {
     @ConfigProperty(name = "root.node.address")
     String rootNodeAddress;
 
-    @ConfigProperty(name = "quarkus.http.port")
-    String httpPort;
+    @ConfigProperty(name = "ledger.node.role", defaultValue = "peer")
+    String nodeRole;
+
+    @ConfigProperty(name = "bank.client.api-key")
+    String clientApiKey;
 
     public boolean isRoot() {
-        return "8018".equals(httpPort);
+        return "settler".equalsIgnoreCase(nodeRole);
     }
 
     public void syncBlockchainFull() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
+                .header("X-API-Key", clientApiKey)
                 .uri(URI.create(rootNodeAddress + "/Ch41N/8l0cx")).build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -81,6 +85,7 @@ public class PeerSyncService {
     public void syncCryptochainFull() {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
+                .header("X-API-Key", clientApiKey)
                 .uri(URI.create(rootNodeAddress + "/CrYP70/Ch41N")).build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -101,6 +106,7 @@ public class PeerSyncService {
 
     public void syncTransactionPoolMap() {
         HttpRequest request = HttpRequest.newBuilder().GET()
+                .header("X-API-Key", clientApiKey)
                 .uri(URI.create(rootNodeAddress + "/p00L/7r4n54C7ioNM4p")).build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -161,6 +167,7 @@ public class PeerSyncService {
         }
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
+                .header("X-API-Key", clientApiKey)
                 .uri(URI.create(rootNodeAddress + "/CrYP70/Ch41N/from/" + fromInclusive)).build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -182,6 +189,7 @@ public class PeerSyncService {
         }
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.noBody())
+                .header("X-API-Key", clientApiKey)
                 .uri(URI.create(rootNodeAddress + "/Ch41N/from/" + fromInclusive)).build();
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());

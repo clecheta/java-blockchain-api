@@ -60,7 +60,10 @@ def run_suite_wallets(
     host_samples: list[dict[str, Any]] = []
     base_url = api.base_url
 
-    for batch_size in BATCH_SCHEDULE:
+    batch_index = 0
+    while True:
+        batch_size = BATCH_SCHEDULE[min(batch_index, len(BATCH_SCHEDULE) - 1)]
+        batch_index += 1
         if created >= hard_cap:
             stop_reason = "hard_cap"
             break

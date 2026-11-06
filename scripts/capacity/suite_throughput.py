@@ -16,7 +16,7 @@ DEFAULT_DURATION_S = 90.0
 DEFAULT_WALLET_PAIRS = 20
 DEFAULT_SEED_BALANCE = 10_000
 DEFAULT_TX_AMOUNT = 1
-MINE_EVERY = 10
+MINE_EVERY = 500
 ERROR_RATE_STOP = 0.15
 
 
@@ -79,24 +79,66 @@ def run_suite_throughput(
     tx_fail = 0
     mine_ok = 0
     mine_fail = 0
+    mine_skipped = 0
     settled_units = 0
     host_samples: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
     pending_since_mine = 0
     stop_reason = "duration"
+    mine_executor = ThreadPoolExecutor(max_workers=1)
+    mine_future = None
+
+    def _mine(batch_units: int) -> dict[str, Any]:
+        with ApiClient(base_url, timeout_s=120.0) as mine_client:
+            t0 = time.perf_counter()
+            result = mine_client.mine()
+            return {
+                "result": result,
+                "elapsed_s": time.perf_counter() - t0,
+                "batch_units": batch_units,
+            }
+
+    def _record_mine(item: dict[str, Any]) -> int:
+        nonlocal mine_ok, mine_fail, mine_skipped, settled_units
+        result = item["result"]
+        mine_lat.add(item["elapsed_s"])
+        if result.status == 200:
+            mine_ok += 1
+            count = (
+                int(result.body.get("transactionCount", 0))
+                if isinstance(result.body, dict) else 0
+            )
+            settled_units += count * tx_amount
+            return count
+        elif result.status == 204:
+            mine_skipped += 1
+        else:
+            mine_fail += 1
+            if len(errors) < 50:
+                errors.append({
+                    "phase": "mine",
+                    "status": result.status,
+                    "error": str(result.error or result.text or "")[:2000],
+                })
+        return 0
 
     base_url = api.base_url
     deadline = time.perf_counter() + duration_s
     round_idx = 0
 
+    load_started = time.perf_counter()
     while time.perf_counter() < deadline:
+        if mine_future is not None and mine_future.done():
+            _record_mine(mine_future.result())
+            mine_future = None
+
         if not api.ready().ok:
             stop_reason = "ready_failed"
             break
         host_samples.append(sample_host())
 
-        # One transfer per sender that still has balance (respects one-pending-per-sender
-        # by mining frequently and using distinct senders in parallel).
+        # Multiple pending transfers per sender are intentional: acceptance
+        # throughput and periodic batch settlement are measured separately.
         batch = [
             (s, d)
             for s, d in pairs
@@ -132,31 +174,12 @@ def run_suite_throughput(
                     if len(errors) < 50:
                         errors.append({"phase": "transact", **item})
 
-        # Mine after the batch completes. Brief pause lets Kafka consumer churn
-        # settle; ConcurrentModificationException on mine is a real concurrency finding.
-        if pending_since_mine >= MINE_EVERY or pending_since_mine >= len(batch):
-            time.sleep(0.3)
-            t0 = time.perf_counter()
-            mine = api.mine()
-            mine_lat.add(time.perf_counter() - t0)
-            if mine.ok:
-                mine_ok += 1
-                settled_units += pending_since_mine * tx_amount
-                pending_since_mine = 0
-            else:
-                mine_fail += 1
-                err_text = str(mine.error or mine.text or "")
-                if len(errors) < 50:
-                    errors.append(
-                        {
-                            "phase": "mine",
-                            "status": mine.status,
-                            "error": err_text[:2000],
-                        }
-                    )
-                if "ConcurrentModificationException" in err_text:
-                    stop_reason = "concurrent_modification_on_mine"
-                    break
+        # Settle a larger batch periodically. Mining every HTTP transfer would
+        # measure settlement latency instead of transfer-accept capacity.
+        if pending_since_mine >= MINE_EVERY and mine_future is None:
+            batch_units = pending_since_mine
+            pending_since_mine = 0
+            mine_future = mine_executor.submit(_mine, batch_units)
 
         total = tx_ok + tx_fail
         if total >= 40 and (tx_fail / total) > ERROR_RATE_STOP:
@@ -164,27 +187,30 @@ def run_suite_throughput(
             break
 
         round_idx += 1
-        # Brief pause to avoid spinning the CPU only on client side
-        time.sleep(0.05)
 
-    # Final mine for leftovers
-    if pending_since_mine > 0:
-        mine = api.mine()
-        if mine.ok:
-            mine_ok += 1
-            settled_units += pending_since_mine * tx_amount
-            pending_since_mine = 0
-        else:
-            mine_fail += 1
+    accept_elapsed = max(time.perf_counter() - load_started, 1e-6)
+
+    # Drain the in-flight settlement, then settle leftovers.
+    if mine_future is not None:
+        _record_mine(mine_future.result())
+    max_drain_attempts = (max(tx_ok - settled_units, 0) // MINE_EVERY) + 2
+    for _ in range(max_drain_attempts):
+        if settled_units >= tx_ok:
+            break
+        if _record_mine(_mine(tx_ok - settled_units)) == 0:
+            break
+    pending_since_mine = max(tx_ok - settled_units, 0)
+    mine_executor.shutdown(wait=True)
 
     elapsed = max(sw.elapsed(), 1e-6)
-    tx_per_s = tx_ok / elapsed
-    mine_per_s = mine_ok / elapsed
-    dollars_per_s = settled_units / elapsed
+    settlement_elapsed = max(time.perf_counter() - load_started, 1e-6)
+    tx_per_s = tx_ok / accept_elapsed
+    mine_per_s = mine_ok / settlement_elapsed
+    dollars_per_s = settled_units / settlement_elapsed
     total_tx = tx_ok + tx_fail
     err_rate = (tx_fail / total_tx) if total_tx else 0.0
 
-    # Architecture signal: one pending/sender — effective parallelism ≈ wallet_pairs
+    # Too few senders can still serialize cryptographic signing per account.
     sender_contention = workers > wallet_pairs
 
     err0 = errors[0] if errors else {}
@@ -219,7 +245,7 @@ def run_suite_throughput(
             last_good=mine_ok,
             first_fail=None,
             signal=(
-                "Throughput is gated by explicit mine cycles and one-pending-tx-per-sender; "
+                "Transfers are accepted continuously and settled in periodic batches; "
                 f"observed mine_ok={mine_ok} mine_fail={mine_fail} mine_every={MINE_EVERY}"
             ),
             mine_required=True,
@@ -231,6 +257,8 @@ def run_suite_throughput(
     result = {
         "suite": "C_throughput",
         "elapsed_s": elapsed,
+        "accept_window_s": accept_elapsed,
+        "settlement_window_s": settlement_elapsed,
         "duration_requested_s": duration_s,
         "stop_reason": stop_reason,
         "wallet_pairs": wallet_pairs,
@@ -241,6 +269,7 @@ def run_suite_throughput(
         "tx_fail": tx_fail,
         "mine_ok": mine_ok,
         "mine_fail": mine_fail,
+        "mine_skipped": mine_skipped,
         "settled_units": settled_units,
         "tx_per_s": tx_per_s,
         "mine_per_s": mine_per_s,

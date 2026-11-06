@@ -89,8 +89,9 @@ def architecture_notes_from_design() -> list[dict[str, Any]]:
             "metric": "settlement_model",
             "last_good": None,
             "first_fail": None,
-            "signal": "Settlement requires explicit mine; pool allows one pending tx per sender; "
-            "wallet HTTP create starts at balance 0 (funding needs Mongo seed).",
+            "signal": "Transfers are accepted into an in-memory pool and settled in scheduled "
+            "PostgreSQL-fenced batches; wallet creation starts at balance 0 and authorized "
+            "funding is a separate service operation.",
             "evidence_files": [
                 "src/main/java/api/cryptocurrency/PoolResource.java",
                 "src/main/java/api/cryptocurrency/MineResource.java",

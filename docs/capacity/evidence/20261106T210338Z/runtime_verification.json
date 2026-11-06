@@ -1,0 +1,17 @@
+{
+  "run_date": "2026-11-06",
+  "packaged_build": "PASS",
+  "api_test_suite": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "authorization": {
+    "unauthenticated_wallet_create_status": 401,
+    "client_key_settlement_status": 401,
+    "service_key_empty_settlement_status": 204
+  },
+  "two_node_smoke": "PASS",
+  "peer_tip_matched_root": true
+}

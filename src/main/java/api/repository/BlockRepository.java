@@ -1,18 +1,13 @@
 package api.repository;
 
+import api.repository.entity.BlockEntity;
 import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.Tx;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
 import org.jboss.logging.Logger;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,26 +19,13 @@ import java.util.List;
 public class BlockRepository {
 
     private static final Logger LOGGER = Logger.getLogger("BlockRepository");
-    private static final String DATABASE = "blockchain";
-    private static final String COLLECTION = "block";
-
-    @Inject
-    MongoClient mongoClient;
-
     public List<Block> loadBlockchain() {
         List<Block> list = new ArrayList<>();
         list.add(0, Block.genesis()); //add the Genesis block to begin of chain
-
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("chain", ChainTypeEnum.GENERIC.getValue());
-        MongoCursor<Block> cursor = getCollection().find(whereQuery).sort(Sorts.ascending("number")).iterator();
-        try {
-            while (cursor.hasNext()) {
-                list.add(cursor.next());
-            }
-        } finally {
-            cursor.close();
-        }
+        List<BlockEntity> entities = BlockEntity.find(
+                "chainType = ?1 order by blockNumber",
+                ChainTypeEnum.GENERIC.getValue()).list();
+        entities.forEach(entity -> list.add(entity.toDomain()));
         LOGGER.debug("load: Blockchain");
         return list;
     }
@@ -52,16 +34,10 @@ public class BlockRepository {
         List<Block<List<Tx>>> list = new ArrayList<>();
         list.add(0, Block.genesis()); //add the Genesis block to begin of chain
 
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("chain", ChainTypeEnum.CRYPTO.getValue());
-        MongoCursor<Block> cursor = getCollection().find(whereQuery).sort(Sorts.ascending("number")).iterator();
-        try {
-            while (cursor.hasNext()) {
-                list.add(cursor.next());
-            }
-        } finally {
-            cursor.close();
-        }
+        List<BlockEntity> entities = BlockEntity.find(
+                "chainType = ?1 order by blockNumber",
+                ChainTypeEnum.CRYPTO.getValue()).list();
+        entities.forEach(entity -> list.add(entity.toDomain()));
         LOGGER.debug("load: Cryptochain");
 
         return list;
@@ -73,19 +49,10 @@ public class BlockRepository {
      */
     public List<Block> loadBlockchainFromNumber(long fromInclusive) {
         List<Block> list = new ArrayList<>();
-        MongoCursor<Block> cursor = getCollection()
-                .find(Filters.and(
-                        Filters.eq("chain", ChainTypeEnum.GENERIC.getValue()),
-                        Filters.gte("number", fromInclusive)))
-                .sort(Sorts.ascending("number"))
-                .iterator();
-        try {
-            while (cursor.hasNext()) {
-                list.add(cursor.next());
-            }
-        } finally {
-            cursor.close();
-        }
+        List<BlockEntity> entities = BlockEntity.find(
+                "chainType = ?1 and blockNumber >= ?2 order by blockNumber",
+                ChainTypeEnum.GENERIC.getValue(), fromInclusive).list();
+        entities.forEach(entity -> list.add(entity.toDomain()));
         LOGGER.debugf("load: Blockchain from number %d (%d blocks)", fromInclusive, list.size());
         return list;
     }
@@ -95,30 +62,25 @@ public class BlockRepository {
      */
     public List<Block<List<Tx>>> loadCryptochainFromNumber(long fromInclusive) {
         List<Block<List<Tx>>> list = new ArrayList<>();
-        MongoCursor<Block> cursor = getCollection()
-                .find(Filters.and(
-                        Filters.eq("chain", ChainTypeEnum.CRYPTO.getValue()),
-                        Filters.gte("number", fromInclusive)))
-                .sort(Sorts.ascending("number"))
-                .iterator();
-        try {
-            while (cursor.hasNext()) {
-                list.add(cursor.next());
-            }
-        } finally {
-            cursor.close();
-        }
+        List<BlockEntity> entities = BlockEntity.find(
+                "chainType = ?1 and blockNumber >= ?2 order by blockNumber",
+                ChainTypeEnum.CRYPTO.getValue(), fromInclusive).list();
+        entities.forEach(entity -> list.add(entity.toDomain()));
         LOGGER.debugf("load: Cryptochain from number %d (%d blocks)", fromInclusive, list.size());
         return list;
     }
 
-    public void add(Block block, ChainTypeEnum chainType) {
-        block.setChain(chainType.getValue());
-        getCollection().insertOne(block);
+    public Block<List<Tx>> loadCryptochainTip() {
+        BlockEntity entity = BlockEntity.find(
+                "chainType = ?1 order by blockNumber desc",
+                ChainTypeEnum.CRYPTO.getValue()).firstResult();
+        return entity == null ? Block.genesis() : entity.toDomain();
     }
 
-    private MongoCollection<Block> getCollection() {
-        return mongoClient.getDatabase(DATABASE).getCollection(COLLECTION, Block.class);
+    @Transactional
+    public void add(Block block, ChainTypeEnum chainType) {
+        block.setChain(chainType.getValue());
+        BlockEntity.fromDomain(block, chainType).persistAndFlush();
     }
 
 }

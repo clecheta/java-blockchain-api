@@ -1,0 +1,13 @@
+{
+  "run_id": "20261106T202306Z",
+  "base_url": "http://localhost:8018",
+  "suites": {
+    "C_throughput": {
+      "tx_per_s": 282.5761358484645,
+      "dollars_per_s": 3.30993546252566,
+      "mine_per_s": 0.006619870925051319,
+      "stop_reason": "duration"
+    }
+  },
+  "smoke_two_nodes": null
+}

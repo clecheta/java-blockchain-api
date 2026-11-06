@@ -35,3 +35,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: blockchain
+      POSTGRES_USER: blockchain
+      POSTGRES_PASSWORD: blockchain
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blockchain -d blockchain"]
+      interval: 5s
+      timeout: 5s
+      retries: 12

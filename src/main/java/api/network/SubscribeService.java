@@ -7,7 +7,6 @@ import api.network.model.CryptoBlockMessage;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
 import com.R07r35cInc.cryptocurrency.Tx;
-import com.R07r35cInc.util.Parse;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
 
@@ -25,7 +24,6 @@ import java.util.List;
 @ApplicationScoped
 public class SubscribeService {
 
-    public static final String profile = Util.profile;
     private static final Logger LOGGER = Logger.getLogger("SubscribeService");
 
 
@@ -74,8 +72,9 @@ public class SubscribeService {
     public void setTransaction(PayTypeTransaction transaction) {
         if (transaction != null) {
             miner.transactionPool.setTransaction(transaction);
-            if (!profile.startsWith("prod")) {
-                LOGGER.info(Parse.toJson(miner.transactionPool));
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debugf("Replicated transaction; pool size=%d",
+                        miner.transactionPool.size());
             }
         }
     }

@@ -82,6 +82,19 @@ public class WalletResourceTest extends BaseTest {
     }
 
     @Test
+    void persistedBalancePreservesMagnitudeAndScale() {
+        BigDecimal amount = new BigDecimal("9223372036854775808.1234");
+        Wallet wallet = new Wallet(amount);
+        String originalUid = wallet.uid;
+
+        walletRepository.add(wallet);
+        Wallet restored = walletRepository.getByUid(originalUid);
+
+        assertEquals(amount, restored.balance);
+        assertEquals(amount, restored.getSTARTING_BALANCE());
+    }
+
+    @Test
     public void createWalletWithShortId() {
         String smallWalletIdentification = getRandomString(8);
         given().contentType(ContentType.JSON)

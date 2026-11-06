@@ -1,57 +1,65 @@
 # Capacity baseline
 
-Host-specific Phase-1 numbers from the **full** local battery run on **2026-11-06**.
+Host-specific Phase-1 results after P0-P3 implementation on **2026-11-06**.
+How to reproduce and interpret the battery: [README.md](README.md). Limit
+classification: [LIMITATIONS.md](LIMITATIONS.md).
 
 | Field | Value |
 |-------|-------|
-| Canonical evidence | [`evidence/20261106T185800Z/`](evidence/20261106T185800Z/) |
-| Earlier money-only (string amounts) | [`evidence/20261106T185200Z/`](evidence/20261106T185200Z/) |
-| Earlier B/C/smoke | [`evidence/20261106T183500Z/`](evidence/20261106T183500Z/) |
-| Machine | 13th Gen Intel i7-1355U, 12 threads, ~30 GiB RAM (`machine.json`) |
-| App | Root Quarkus JVM `:8018` + Compose Mongo 7 + Kafka 3.8 |
+| Full canonical battery | [`evidence/20261106T204026Z/`](evidence/20261106T204026Z/) |
+| Final secured comparable throughput | [`evidence/20261106T210338Z/`](evidence/20261106T210338Z/) |
+| Machine | 13th Gen Intel i7-1355U, 12 threads, ~30 GiB RAM |
+| Runtime | Two Quarkus JVMs, PostgreSQL 17, Kafka, authentication and idempotency enabled |
 
-How to read these numbers: [README.md](README.md). Where limits sit: [LIMITATIONS.md](LIMITATIONS.md).
-
-## Suite A — Money
+## Money
 
 | Metric | Last-good | First-fail |
 |--------|-----------|------------|
-| Single transfer amount (ledger `$`, amount as JSON **string**) | `9223372036854775807` (`Long.MAX_VALUE`) | *none in probe ladder* |
-| Settled volume (50 × chunk 100) | `5000` (all chunks OK) | — |
+| Single settled transfer | `9223372036854775807` (`Long.MAX_VALUE`) | none in probe ladder |
+| Multi-chunk settled volume | `5000` | none |
 
-Notes:
+Amounts use the lossless JSON-string contract and `BigDecimal` storage. JSON
+numbers are accepted only when they are safe integers; floating-point and
+unsafe integer numbers are rejected.
 
-- Probe ladder reached `Long.MAX_VALUE` successfully when `amount` is a JSON string (Jackson → `BigDecimal`).
-- Sending `amount` as a JSON **number** is unsafe above ~`2^53−1` (IEEE-754). See LIMITATIONS.
-- Historical `MoneyFlowTest` note (“Kafka error above ~10000”) was **not** reproduced for single-transfer settlement up to `Long.MAX_VALUE` on this host/run.
-- Latent storage bound remains `WalletCodec` decode via `longValue()` (~`Long.MAX_VALUE`) if balances larger than signed long are ever introduced.
+## Wallets
 
-## Suite B — Wallets
+| Metric | Result |
+|--------|--------|
+| One-run create sweep | **50,000** wallets, zero failures |
+| Create latency | p50 56.8 ms; p95 123.3 ms; p99 165.9 ms |
+| Stop reason | configured hard cap, not a discovered failure |
+| PostgreSQL backup/restore population | **102,322** wallets and 314 blocks |
 
-| Metric | Last-good | First-fail / stop |
-|--------|-----------|-------------------|
-| Wallet count | **2000** | soft stop `hard_cap` (no HTTP/ready failure) |
-| Create latency | p50 ≈ 11 ms, p95 ≈ 18 ms, p99 ≈ 32 ms | — |
-| Stop reason | `hard_cap` (budget 2000 / 480 s) | — |
+The sweep proves 50,000 successful creates. The restore drill proves storage
+and recovery above 100,000 rows; it is not a one-run 100,000-create latency
+claim.
 
-No hard cliff inside the configured cap. Re-run with a higher `--wallet-hard-cap` to hunt further.
+## Transfer acceptance and settlement
 
-## Suite C — Throughput
+Final secured, instrumented, comparable trial (100 funded senders, 64 HTTP
+workers, 60-second acceptance window):
 
-| Metric | Value |
-|--------|-------|
-| tx/s | **≈ 12.06** |
-| `$`/s settled | **≈ 12.06** (1 unit/tx) |
-| mine cycles/s | **≈ 0.76** |
-| Window | 90 s, 16 funded pairs, 8 workers |
-| tx_ok / tx_fail | 1309 / 19 (error rate ≈ 1.4%) |
-| Stop reason | `duration` |
-| tx latency | p50 ≈ 28 ms, p95 ≈ 53 ms, p99 ≈ 57 ms |
+| Metric | Result |
+|--------|--------|
+| Accepted | **14,700**, zero failures |
+| Accepted throughput | **243.961 transactions/s** |
+| Acceptance latency | p50 49.8 ms; p95 90.8 ms; p99 114.2 ms |
+| Settled | **14,700** in 30 bounded blocks |
+| End-to-end settlement throughput | **202.471 transactions/s** |
+| Settlement latency per 500-item block | p50 1.78 s; p95 4.32 s; max 5.05 s |
 
-An earlier concurrent run (`20261106T183209Z`) also surfaced `ConcurrentModificationException` on mine under load — see LIMITATIONS (source).
+The full canonical run before the final security/telemetry pass accepted
+15,400 transfers at **255.586 transactions/s** and settled all of them at
+**190.811 transactions/s**. Both runs clear G1's 200 accepted
+transactions/s target. Neither approaches G2's 1,000 transactions/s target.
 
-## Smoke post-check
+## Correctness and operations checks
 
-| Check | Result |
-|-------|--------|
-| `smoke-two-nodes.sh` | **OK** (peer tip matched root after capacity suites) |
+- Root-only settlement authorization: passed.
+- Two-node Kafka synchronization and catch-up: passed after every final trial.
+- Concurrent peer settlement protection: role gate plus JVM and PostgreSQL
+  advisory locks, with durable unique transaction-ID fencing.
+- PostgreSQL backup/restore drill: passed.
+- API security probes: unauthenticated client request `401`; client key on
+  settlement `401`; service key on empty settlement `204`.

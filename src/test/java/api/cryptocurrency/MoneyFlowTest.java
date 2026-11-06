@@ -16,7 +16,6 @@ import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +47,6 @@ public class MoneyFlowTest extends BaseTest {
     BigDecimal walletsAmount = BigDecimal.ZERO;
     Long totalWallets = 100L;
     Long minerInterationCount = 0L;
-    Long transactionNonce = 0L;
 
     String srcUid;
     Wallet srcWallet;
@@ -89,9 +87,6 @@ public class MoneyFlowTest extends BaseTest {
                 .when().post("/M1n3/7r4N54C710nZ")
                 .then()
                 .statusCode(HttpStatus.SC_OK);
-
-        //wait bus.send("blockAddedPostActions"...) to reach BlockService and persist the changes in transacted wallets
-        TimeUnit.SECONDS.sleep(10);
 
         Wallet savedSrcWallet = walletRepository.getByKey(srcWallet.publicKey);
         Wallet savedDestWallet = walletRepository.getByKey(destWallet.publicKey);
@@ -141,15 +136,13 @@ public class MoneyFlowTest extends BaseTest {
                     walletsAmount = walletsAmount.add(cmd.amount);
                     totalAmount = totalAmount.subtract(cmd.amount);
                 }
-                if (miner.mineTransactions()) {
+                if (miner.mineTransactions() != null) {
                     minerInterationCount++;
-                    transactionNonce++;
                 }
             }
             //let's ensure one last running of the miner to guarantee there is no left transactions behind in the pool
-            if (miner.mineTransactions()) {
+            if (miner.mineTransactions() != null) {
                 minerInterationCount++;
-                transactionNonce++;
             }
         } catch (RuntimeException re) { //Means no more transaction to mine, all good
             assertEquals("no valid transactions found", re.getMessage());
@@ -159,9 +152,6 @@ public class MoneyFlowTest extends BaseTest {
         assertEquals(new BigDecimal(10000L), walletsAmount,
                 "the destination wallets must have received all the money from the origin wallet");
 
-        //wait bus.send("blockAddedPostActions"...) to reach BlockService and persist the changes in transacted wallets
-        TimeUnit.SECONDS.sleep(10);
-
         Wallet savedRewardWallet = walletRepository.getByKey(rewardWallet.publicKey);
         assertEquals(new BigDecimal(minerInterationCount), savedRewardWallet.balance,
                 "reward wallet must have the right amount as: +1 per miner interactions");
@@ -169,7 +159,7 @@ public class MoneyFlowTest extends BaseTest {
                 "reward wallet must have not sent any transaction value");
 
         Wallet savedSrcWallet = walletRepository.getByKey(srcWallet.publicKey);
-        assertEquals(transactionNonce, savedSrcWallet.nonce,
+        assertEquals(totalWallets, savedSrcWallet.nonce,
                 "src wallet must have the right amount of executed transactions");
 
         Wallet savedDestWallet;

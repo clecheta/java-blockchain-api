@@ -1,0 +1,48 @@
+{
+  "run_id": "20261106T201850Z",
+  "items": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "design",
+      "metric": "settlement_model",
+      "last_good": null,
+      "first_fail": null,
+      "signal": "Settlement requires explicit mine; pool allows one pending tx per sender; wallet HTTP create starts at balance 0 (funding needs Mongo seed).",
+      "evidence_files": [
+        "src/main/java/api/cryptocurrency/PoolResource.java",
+        "src/main/java/api/cryptocurrency/MineResource.java",
+        "src/main/java/api/cryptocurrency/BlockService.java"
+      ]
+    },
+    {
+      "layer": "infrastructure",
+      "primary": "infrastructure",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 76.7164,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=9400 tx_fail=0 err_rate=0.000; pairs=100 workers=64",
+      "http_status": 0,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T201850Z/suite_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 1,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=1 mine_fail=1 mine_every=500",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261106T201850Z/suite_throughput.json"
+      ]
+    }
+  ]
+}

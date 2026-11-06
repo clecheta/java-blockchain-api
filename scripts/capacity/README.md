@@ -10,7 +10,7 @@ Phase 2 (JMeter/k6 sustained load) is out of scope here — see GitLab api#20 / 
 ## Prerequisites
 
 1. Java 25 + Maven wrapper (project `./mvnw`)
-2. Docker Compose: Mongo + Kafka — `docker compose up -d` from repo root
+2. Docker Compose: PostgreSQL + Kafka — `docker compose up -d` from repo root
 3. Root API on `:8018` — `./mvnw compile quarkus:dev`
 4. Python 3.10+ with deps (prefer `uv` if `python3-venv` / `pip` are missing):
 
@@ -36,11 +36,13 @@ Useful flags:
 | Flag | Default | Meaning |
 |------|---------|---------|
 | `--base-url` | `http://localhost:8018` | Root API |
-| `--mongo-uri` | `mongodb://localhost:27017` | Funded-wallet seeder |
+| `--mongo-uri` | `mongodb://localhost:27017` | Deprecated compatibility flag |
 | `--wallet-hard-cap` | `5000` | Suite B create ceiling |
 | `--wallet-time-budget-s` | `600` | Suite B soft stop |
+| `--wallet-workers` | `32` | Concurrent wallet-create workers |
 | `--throughput-duration-s` | `90` | Suite C window |
 | `--throughput-pairs` | `20` | Concurrent funded senders |
+| `--throughput-workers` | `32` | Concurrent HTTP workers |
 | `--skip-smoke` | off | Skip `smoke-two-nodes.sh` post-check |
 | `--skip-money` / `--skip-wallets` / `--skip-throughput` | off | Skip a suite |
 
@@ -76,4 +78,6 @@ Human reports (filled after a run):
 | B — wallets | Max accounts | Parallel `POST /W4LL37/cRE47E` batches |
 | C — throughput | Max this host can process | N funded senders, concurrent transfers, mine every K txs |
 
-Funding uses `api.network.CapacityWalletSeeder` (test classpath) because HTTP create always starts at balance **0**.
+Funding uses authenticated `POST /W4LL37/fUND` after HTTP wallet creation.
+Set `BANK_CLIENT_API_KEY` and `BANK_SERVICE_API_KEY` when the configured keys
+differ from the local defaults.

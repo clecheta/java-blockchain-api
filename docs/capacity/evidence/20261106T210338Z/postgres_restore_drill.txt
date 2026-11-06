@@ -1,0 +1,10 @@
+Run date: 2026-11-06
+Backup command: scripts/postgres/backup.sh /tmp/jblock-ledger-final-verified.dump
+Restore command: scripts/postgres/restore-drill.sh /tmp/jblock-ledger-final-verified.dump
+Restore database: blockchain_restore_drill
+wallet_count: 102322
+block_count: 314
+Result: PASS
+
+This local custom-format dump/restore drill verifies logical recovery. It is
+not a managed continuous-PITR RPO/RTO exercise.

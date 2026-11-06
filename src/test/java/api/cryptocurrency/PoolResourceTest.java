@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,6 +84,52 @@ public class PoolResourceTest extends BaseTest {
                 .when().post("/p00L/tRaN5ACt")
                 .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    void unsafeJsonNumberIsRejected() {
+        String body = """
+                {"uid":"%s","recipient":"%s","amount":9007199254740992,"type":"WALLET"}
+                """.formatted(srcUid, destWallet.publicKey);
+
+        given().contentType(ContentType.JSON)
+                .body(body)
+                .when().post("/p00L/tRaN5ACt")
+                .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
+    void decimalStringIsAccepted() {
+        String body = """
+                {"uid":"%s","recipient":"%s","amount":"10.25","type":"WALLET"}
+                """.formatted(srcUid, destWallet.publicKey);
+
+        given().contentType(ContentType.JSON)
+                .body(body)
+                .when().post("/p00L/tRaN5ACt")
+                .then()
+                .statusCode(HttpStatus.SC_OK);
+    }
+
+    @Test
+    void duplicateIdempotencyKeyIsRejected() {
+        String key = UUID.randomUUID().toString();
+        String body = """
+                {"uid":"%s","recipient":"%s","amount":"10","type":"WALLET"}
+                """.formatted(srcUid, destWallet.publicKey);
+
+        given().contentType(ContentType.JSON)
+                .header("Idempotency-Key", key)
+                .body(body)
+                .when().post("/p00L/tRaN5ACt")
+                .then().statusCode(HttpStatus.SC_OK);
+
+        given().contentType(ContentType.JSON)
+                .header("Idempotency-Key", key)
+                .body(body)
+                .when().post("/p00L/tRaN5ACt")
+                .then().statusCode(HttpStatus.SC_CONFLICT);
     }
 
     @Test
