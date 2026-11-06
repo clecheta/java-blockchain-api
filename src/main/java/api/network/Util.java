@@ -1,6 +1,6 @@
 package api.network;
 
-import io.quarkus.runtime.configuration.ProfileManager;
+import io.quarkus.runtime.configuration.ConfigUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -11,7 +11,9 @@ import java.net.UnknownHostException;
  */
 public class Util {
 
-    public static final String profile = ProfileManager.getActiveProfile();
+    /** Active Quarkus profile (first entry; defaults to prod). */
+    public static final String profile = ConfigUtils.getProfiles().stream().findFirst().orElse("prod");
+
 
     public static String getHostIp() {
         String hostIp = "";

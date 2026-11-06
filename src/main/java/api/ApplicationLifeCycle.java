@@ -7,14 +7,15 @@ import api.network.Util;
 import api.repository.BlockRepository;
 import api.repository.DatabaseRepository;
 import api.repository.WalletRepository;
+import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 
 /**
@@ -77,11 +78,14 @@ public class ApplicationLifeCycle {
     }
 
     private void loadWallet() {
-        if (rewardEnabled != null && rewardEnabled == true) {
+        if (Boolean.TRUE.equals(rewardEnabled)) {
             try {
                 miner.rewardWallet = walletRepository.getByUid(rewardWallet);
             } catch (RuntimeException re) {
-                LOGGER.error("Reward Wallet: " + re.getMessage());
+                LOGGER.warn("Reward Wallet missing; bootstrapping from config uid: " + re.getMessage());
+                Wallet bootstrap = new Wallet(rewardWallet);
+                walletRepository.add(bootstrap);
+                miner.rewardWallet = bootstrap;
             }
         }
     }

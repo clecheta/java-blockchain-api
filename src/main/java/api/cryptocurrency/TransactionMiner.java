@@ -13,8 +13,8 @@ import com.R07r35cInc.cryptocurrency.Wallet;
 import io.vertx.core.eventbus.EventBus;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.List;
 
 /**

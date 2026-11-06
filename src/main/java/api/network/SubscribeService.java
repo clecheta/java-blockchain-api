@@ -8,13 +8,13 @@ import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
-import io.quarkus.runtime.configuration.ProfileManager;
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import io.smallrye.common.annotation.Blocking;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,8 +25,9 @@ import java.util.List;
 @ApplicationScoped
 public class SubscribeService {
 
-    public static final String profile = ProfileManager.getActiveProfile();
+    public static final String profile = Util.profile;
     private static final Logger LOGGER = Logger.getLogger("SubscribeService");
+
 
     @Inject
     Blockchain blockchain;

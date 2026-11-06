@@ -11,8 +11,8 @@ import com.mongodb.client.model.Indexes;
 import org.bson.Document;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * @author Cleber Lecheta

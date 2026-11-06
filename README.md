@@ -8,18 +8,18 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, visit https://quarkus.io/.
 
-## JDK (SDKMAN + GraalVM)
+## JDK (SDKMAN + Java 25 LTS)
 
-Use **SDKMAN**, not apt. For this repo (Java 17 + Quarkus native in CI), prefer **GraalVM CE 17** so the same JDK can compile, run `quarkus:dev`, and build `-Pnative` with `native-image`:
+Use **SDKMAN**, not apt. Default toolchain is **Temurin 25 LTS**. For `-Pnative`, switch to **GraalVM CE 25** (bundles `native-image`):
 
 ```shell script
-sdk install java 17.0.9-graalce
-sdk default java 17.0.9-graalce
-# native-image is bundled / installable via: gu install native-image
-sdk install maven 3.9.9
+sdk install java 25.0.5.0+8-tem
+sdk default java 25.0.5.0+8-tem
+sdk install java 25.5.5.0+3-graalce   # optional, for native builds
+sdk install maven 3.9.11
 ```
 
-CI uses `ghcr.io/graalvm/graalvm-ce:22.0.0.2` (JDK 17 lineage). Mandrel 23+ targets newer JDKs — keep CE 17 until Quarkus is upgraded.
+Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
 ## Running the application in dev mode
 
@@ -35,15 +35,16 @@ To start the second node:
 mvn quarkus:dev -Dquarkus-profile=node -Ddebug=5006
 ```
 
-## Kafka cluster
+## Kafka + Mongo (local)
 
-Start the Apache Kafka cluster by running:
+`docker-compose` brings up **Kafka 3.9 (KRaft)** and **Mongo 7** (no ZooKeeper):
 
 ```shell script
-docker-compose up
+docker compose up -d
 ```
 
-MongoDB must also be reachable at `mongodb://localhost:27017` (root loads chains from DB on port `8018`).
+Root (`quarkus:dev`) loads chains from `mongodb://localhost:27017` on port `8018`.  
+`mvn test` uses Quarkus **Dev Services** for Mongo + Kafka (Docker required); no compose needed for the unit/IT suite.
 
 ## Two-node smoke (incremental sync)
 

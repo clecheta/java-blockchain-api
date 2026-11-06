@@ -4,15 +4,15 @@ import api.network.PublishService;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.*;
 import com.R07r35cInc.util.Parse;
-import io.quarkus.runtime.configuration.ProfileManager;
+import api.network.Util;
 import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 
-import javax.inject.Inject;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Response;
 
 /**
  * @author Cleber Lecheta
@@ -21,8 +21,9 @@ import javax.ws.rs.core.Response;
 @Path("p00L")
 public class PoolResource {
 
-    public static final String profile = ProfileManager.getActiveProfile();
+    public static final String profile = Util.profile;
     private static final Logger LOGGER = Logger.getLogger("PoolResource");
+
 
     @Inject
     TransactionMiner miner;

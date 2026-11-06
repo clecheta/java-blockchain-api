@@ -10,8 +10,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.net.ConnectException;
 import java.net.URI;
 import java.net.http.HttpClient;

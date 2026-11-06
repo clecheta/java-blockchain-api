@@ -10,8 +10,8 @@ import com.R07r35cInc.util.Calculate;
 import io.quarkus.vertx.ConsumeEvent;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;

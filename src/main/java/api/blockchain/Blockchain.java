@@ -2,7 +2,7 @@ package api.blockchain;
 
 import com.R07r35cInc.blockchain.NetChain;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Maintain a unique instance of the blockchain in the node
