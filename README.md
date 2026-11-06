@@ -21,68 +21,64 @@ sdk install maven 3.9.11
 
 Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
-## Running the application in dev mode
+## Test locally (two nodes)
 
-You can run the master node in dev mode (with live coding) using:
-
-```shell script
-./mvnw compile quarkus:dev
-```
-
-To start the second node:
+Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, and the sibling `java-blockchain` library.
 
 ```shell script
-mvn quarkus:dev -Dquarkus-profile=node -Ddebug=5006
-```
+# 0) library (once)
+mvn -f ../java-blockchain/pom.xml install -DskipTests
 
-## Kafka + Mongo (local)
-
-`docker-compose` brings up **Kafka 3.9 (KRaft)** and **Mongo 7** (no ZooKeeper):
-
-```shell script
+# 1) Kafka + Mongo
 docker compose up -d
-```
 
-Root (`quarkus:dev`) loads chains from `mongodb://localhost:27017` on port `8018`.  
-`mvn test` uses Quarkus **Dev Services** for Mongo + Kafka (Docker required); no compose needed for the unit/IT suite.
-
-## Two-node smoke (incremental sync)
-
-Kafka peers sync **one mined tip block** per message (not the full chain). Distinct consumer groups: root `18`, node `81`.
-
-```shell script
-# 1) infra
-docker-compose up -d
-# ensure Mongo is up on :27017
-
-# 2) install library (from java-blockchain repo)
-# mvn -f ../java-blockchain/pom.xml install -DskipTests
-
-# 3) root + peer
+# 2) root  → http://localhost:8018   (terminal 1)
 ./mvnw compile quarkus:dev
+
+# 3) peer  → http://localhost:8081   (terminal 2)
 ./mvnw quarkus:dev -Dquarkus.profile=node -Ddebug=5006
 
-# 4) full HTTP smoke (seed funded wallet → transact → mine → peer tip/hash)
+# 4) create alice + bob and print what to paste (terminal 3)
+./scripts/init-local-wallets.sh
+
+# 5) optional automated check (transact → mine → peer tip sync)
 ./scripts/smoke-two-nodes.sh
 ```
 
-The script does **not** use the UI. Strategy / alternatives: GitLab **api#41**.
+| | Root | Peer |
+|---|---|---|
+| HTTP | `:8018` | `:8081` |
+| Kafka group | `18` | `81` |
+| Ready | `/q/health/ready` | `/q/health/ready` |
 
-Catch-up endpoints (root):
+### Glossary (read this once)
 
-- `POST /CrYP70/Ch41N/from/{number}`
-- `POST /Ch41N/from/{number}`
+| Term | What it is | Where you paste it |
+|---|---|---|
+| **uid** | Private id of the wallet that **pays** | Conduct Transaction → *uid (sender)* |
+| **address** | Public key of a wallet | Conduct Transaction → *recipient (address)* |
+| **recipient** | Always an **address**, never a uid | same as above |
+| **amount** | How much to send | Conduct Transaction → *amount* |
+| **type** | Always `WALLET` in these tests | sent automatically by the UI / curl |
 
-## Running the webapp in dev mode
+Do **not** mix them: Alice pays with her **uid**; Bob receives on his **address**.
 
-```shell script
-cd src/main/webapp
-npm run dev
-```
+Home page Address/Balance is the **miner** wallet — ignore it for transfers. Starting the nodes does **not** create user wallets; step 4 does.
 
-This launches the web client at http://localhost:1234.
+### How to test after `init-local-wallets.sh`
 
-For this to work correctly in development, you may need to change the fetch base URL in each component. Components default to `${document.location.origin}`, which is intended for the production build.
+The script prints Alice/Bob and two options. Short path in the browser:
+
+1. Open http://localhost:8018/conduct-transaction  
+2. Paste **Alice uid** → field *uid (sender)*  
+3. Paste **Bob address** → field *recipient (address)*  
+4. Amount e.g. `20` → Submit  
+5. Open **Transaction Pool** → mine  
+6. Open **Blocks** (or peer `:8081`) to see the new tip  
+
+If the root log shows `PoolResource … wrong usage`, the request is missing `uid` / `recipient` / `amount` / `type`.
+
+Unit/IT suite (`./mvnw test`) uses Quarkus Dev Services for Mongo + Kafka — no compose required.
 
 ## Creating a native executable
 
@@ -108,13 +104,12 @@ Then run the native executable with:
 
 ## Health checks
 
-Define a health check in the Dockerfile that probes the SmallRye Health endpoints:
+Root node (same paths on peer `:8081`):
 
-- http://localhost:8080/q/health
-- http://localhost:8080/q/health/live
-- http://localhost:8080/q/health/ready
-
-For a human-readable health UI, open: http://localhost:8080/q/health-ui/
+- http://localhost:8018/q/health
+- http://localhost:8018/q/health/live
+- http://localhost:8018/q/health/ready
+- http://localhost:8018/q/health-ui/
 
 ## License
 

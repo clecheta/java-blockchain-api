@@ -6,8 +6,8 @@ class App extends Component {
     state = { walletInfo: {} };
 
     componentDidMount() {
-        fetch(`${document.location.origin}/W4LL37/1Nf0`, {method: 'POST'})
-        // fetch(`http://localhost:8018/W4LL37/1Nf0`, {method: 'POST'}) 
+        fetch(`${document.location.origin}/CrYP70/1Nf0`, {method: 'POST'})
+        // fetch(`http://localhost:8018/CrYP70/1Nf0`, {method: 'POST'}) 
             .then(response => response.json())
             .then(json => this.setState({ walletInfo: json }));
     }
@@ -20,7 +20,7 @@ class App extends Component {
                 <img className='logo' src={logo}></img>
                 <br/>
                 <div>
-                    Welcome <a href="https://www.youtube.com/watch?v=s4CRvAPzxjI" target="_self">Through the Blood of The Lamb!</a>
+                    <a href="https://www.youtube.com/watch?v=NIlwtFesggM" target="_blank" rel="noopener noreferrer">Through the Blood of The Lamb!</a>
                 </div>
                 <br/>
                 <div><Link to={'/blocks'}>Blocks</Link></div>
