@@ -2,6 +2,8 @@ package api.cryptocurrency;
 
 import api.cryptocurrency.model.CryptoBlockAddedCommand;
 import api.network.PublishService;
+import api.repository.BlockRepository;
+import api.repository.model.ChainTypeEnum;
 import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.blockchain.CryptoChain;
 import com.R07r35cInc.cryptocurrency.Transaction;
@@ -35,6 +37,9 @@ public class TransactionMiner {
     @Inject
     EventBus bus;
 
+    @Inject
+    BlockRepository blockRepository;
+
     @ConfigProperty(name = "mining.reward.enabled")
     private Boolean rewardEnabled;
 
@@ -55,18 +60,22 @@ public class TransactionMiner {
         }
 
         //3. add a block consisting of these transactions to the blockchain
-        Block<List<Transaction>> addedBlock = this.cryptoChain.addBlock(validTransactions);
-        if (addedBlock == null || addedBlock.getData().size()==0) {
+        Block<List<Tx>> addedBlock = this.cryptoChain.addBlock(validTransactions);
+        if (addedBlock == null || addedBlock.getData() == null || addedBlock.getData().size() == 0) {
             return false;
         }
 
-        //TODO: add a bus callback function and proceed in the flow only if succeed in storage
-        bus.send("blockAddedPostActions", new CryptoBlockAddedCommand(addedBlock)); //use Vert.X EventBus to not block the process
+        //4. persist tip sync before Kafka so catch-up from Mongo/root cannot miss the block
+        blockRepository.add(addedBlock, ChainTypeEnum.CRYPTO);
 
-        //4. broadcast the updated cryptochain
-        publisher.broadcastCryptochain(this.cryptoChain);
+        //5. wallet updates async (block already persisted)
+        bus.send("blockAddedPostActions", new CryptoBlockAddedCommand(addedBlock, true));
 
-        //5. clear the pool @See ClearTransactionPoolTest
+        //6. broadcast the mined tip only (incremental sync)
+        long height = this.cryptoChain.getChain().size() - 1L;
+        publisher.broadcastCryptoBlock(addedBlock, height);
+
+        //7. clear the pool @See ClearTransactionPoolTest
         this.transactionPool.clear();
 
         return true;

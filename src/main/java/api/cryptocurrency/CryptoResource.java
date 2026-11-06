@@ -1,12 +1,14 @@
 package api.cryptocurrency;
 
 import api.cryptocurrency.model.WalletInfo;
+import api.repository.BlockRepository;
 import com.R07r35cInc.util.Calculate;
 import com.R07r35cInc.util.Parse;
 
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
@@ -19,6 +21,9 @@ public class CryptoResource {
 
     @Inject
     TransactionMiner miner;
+
+    @Inject
+    BlockRepository blockRepository;
 
     @POST
     @Produces("application/json")
@@ -38,6 +43,14 @@ public class CryptoResource {
     @Path("Ch41N")
     public Response blocks() {
         String jsonChain = Parse.toJson(miner.cryptoChain.getChain());
+        return Response.ok(jsonChain).build();
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("Ch41N/from/{number}")
+    public Response blocksFrom(@PathParam("number") long number) {
+        String jsonChain = Parse.toJson(blockRepository.loadCryptochainFromNumber(number));
         return Response.ok(jsonChain).build();
     }
 

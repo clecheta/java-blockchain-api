@@ -2,10 +2,11 @@ package api.network;
 
 import api.blockchain.Blockchain;
 import api.cryptocurrency.TransactionMiner;
-import com.R07r35cInc.blockchain.CryptoChain;
-import com.R07r35cInc.blockchain.NetChain;
+import api.network.model.ChainBlockMessage;
+import api.network.model.CryptoBlockMessage;
+import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
-import com.R07r35cInc.cryptocurrency.Transaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.util.Parse;
 import io.quarkus.runtime.configuration.ProfileManager;
 import io.smallrye.reactive.messaging.annotations.Blocking;
@@ -14,6 +15,8 @@ import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Cleber Lecheta
@@ -31,17 +34,36 @@ public class SubscribeService {
     @Inject
     TransactionMiner miner;
 
+    @Inject
+    PeerSyncService peerSyncService;
+
     @Incoming("blockchain-in")
     @Blocking
-    /** Replaces this chain if receive a valid blockchain message */
-    public void replaceBlockchain(NetChain blockchain) {
-        LOGGER.infof("Blockchain come from _%s", blockchain.origin);
-        if (blockchain.isValidForReplacement(Util.getHostName())) {
-            try {
-                this.blockchain.chain.replaceChain(blockchain.getChain());
-            } catch (RuntimeException re) {
-                LOGGER.error(re.getMessage());
+    /** Append tip block or catch up when gap detected */
+    public void onChainBlock(ChainBlockMessage message) {
+        if (message == null || message.block == null) {
+            return;
+        }
+        LOGGER.infof("Chain block #%d come from _%s", message.block.getNumber(), message.origin);
+        if (!Boolean.TRUE.equals(message.isValidForReplacement(Util.getHostName()))) {
+            return;
+        }
+        try {
+            List chain = blockchain.chain.getChain();
+            Block tip = (Block) chain.get(chain.size() - 1);
+            if (message.block.getNumber() > tip.getNumber() + 1
+                    || !tip.getHash().equals(message.block.getPreviousHash())) {
+                LOGGER.warnf("Gap on blockchain (local tip #%d, incoming #%d) — catch-up",
+                        tip.getNumber(), message.block.getNumber());
+                peerSyncService.catchUpBlockchain(tip.getNumber() + 1);
+                return;
             }
+            blockchain.chain.appendValidatedBlock(message.block);
+        } catch (RuntimeException re) {
+            LOGGER.error(re.getMessage());
+            List chain = blockchain.chain.getChain();
+            Block tip = (Block) chain.get(chain.size() - 1);
+            peerSyncService.catchUpBlockchain(tip.getNumber() + 1);
         }
     }
 
@@ -59,17 +81,34 @@ public class SubscribeService {
 
     @Incoming("cryptochain-in")
     @Blocking
-    /** Replaces this chain if receive a valid blockchain message */
-    public void replaceCryptochain(CryptoChain cryptoChain) {
-        LOGGER.infof("Cryptochain come from _%s", cryptoChain.origin);
-        if (cryptoChain.isValidForReplacement(Util.getHostName())) {
-            try {
-                if (miner.cryptoChain.replaceChain(cryptoChain.getChain())) {
-                    miner.transactionPool.clearBlockchainTransactions(cryptoChain.getChain());
-                }
-            } catch (RuntimeException re) {
-                LOGGER.error(re.getMessage());
+    /** Append tip crypto block or catch up when gap detected */
+    public void onCryptoBlock(CryptoBlockMessage message) {
+        if (message == null || message.block == null) {
+            return;
+        }
+        LOGGER.infof("Cryptochain block #%d come from _%s", message.block.getNumber(), message.origin);
+        if (!Boolean.TRUE.equals(message.isValidForReplacement(Util.getHostName()))) {
+            return;
+        }
+        try {
+            List<Block<List<Tx>>> local = miner.cryptoChain.getChain();
+            Block<List<Tx>> tip = local.get(local.size() - 1);
+            if (message.block.getNumber() > tip.getNumber() + 1
+                    || !tip.getHash().equals(message.block.getPreviousHash())) {
+                LOGGER.warnf("Gap on cryptochain (local tip #%d, incoming #%d) — catch-up",
+                        tip.getNumber(), message.block.getNumber());
+                peerSyncService.catchUpCryptochain(tip.getNumber() + 1);
+                return;
             }
+            if (miner.cryptoChain.appendValidatedBlock(message.block)) {
+                miner.transactionPool.clearBlockchainTransactions(
+                        Collections.singletonList(message.block));
+            }
+        } catch (RuntimeException re) {
+            LOGGER.error(re.getMessage());
+            List<Block<List<Tx>>> local = miner.cryptoChain.getChain();
+            Block<List<Tx>> tip = local.get(local.size() - 1);
+            peerSyncService.catchUpCryptochain(tip.getNumber() + 1);
         }
     }
 

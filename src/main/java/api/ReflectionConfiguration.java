@@ -22,7 +22,11 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
         Input.class,
         Tx.class,
         Transaction.class,
-        PayTypeTransaction.class
+        PayTypeTransaction.class,
+        com.R07r35cInc.cryptocurrency.RewardTransaction.class,
+        // network incremental DTOs
+        api.network.model.CryptoBlockMessage.class,
+        api.network.model.ChainBlockMessage.class
 })
 public class ReflectionConfiguration {
 

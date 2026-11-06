@@ -4,7 +4,6 @@ import api.cryptocurrency.model.CryptoBlockAddedCommand;
 import api.repository.BlockRepository;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.RewardTransaction;
-import com.R07r35cInc.cryptocurrency.Transaction;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import com.R07r35cInc.util.Calculate;
@@ -51,13 +50,15 @@ public class BlockService {
             throw new RuntimeException("error adding block to the chain, nothing to do.");
         }
 
-        List<Transaction> transactionList = cmd.addedBlock.getData();
+        List<Tx> transactionList = cmd.addedBlock.getData();
         if (transactionList.size() == 0) {
             throw new RuntimeException("block missing transactions something really went wrong!");
         }
 
-        //Persist the just mined block in the database
-        blockRepository.add(cmd.addedBlock, CryptoBlockAddedCommand.chain);
+        // Persist only when miner did not already write the block (legacy / non-mine paths)
+        if (!cmd.blockAlreadyPersisted) {
+            blockRepository.add(cmd.addedBlock, CryptoBlockAddedCommand.chain);
+        }
 
         //Update involved wallets balance according to the transactions made
         for (Tx transaction : transactionList) {

@@ -8,6 +8,19 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, visit https://quarkus.io/.
 
+## JDK (SDKMAN + GraalVM)
+
+Use **SDKMAN**, not apt. For this repo (Java 17 + Quarkus native in CI), prefer **GraalVM CE 17** so the same JDK can compile, run `quarkus:dev`, and build `-Pnative` with `native-image`:
+
+```shell script
+sdk install java 17.0.9-graalce
+sdk default java 17.0.9-graalce
+# native-image is bundled / installable via: gu install native-image
+sdk install maven 3.9.9
+```
+
+CI uses `ghcr.io/graalvm/graalvm-ce:22.0.0.2` (JDK 17 lineage). Mandrel 23+ targets newer JDKs — keep CE 17 until Quarkus is upgraded.
+
 ## Running the application in dev mode
 
 You can run the master node in dev mode (with live coding) using:
@@ -29,6 +42,33 @@ Start the Apache Kafka cluster by running:
 ```shell script
 docker-compose up
 ```
+
+MongoDB must also be reachable at `mongodb://localhost:27017` (root loads chains from DB on port `8018`).
+
+## Two-node smoke (incremental sync)
+
+Kafka peers sync **one mined tip block** per message (not the full chain). Distinct consumer groups: root `18`, node `81`.
+
+```shell script
+# 1) infra
+docker-compose up -d
+# ensure Mongo is up on :27017
+
+# 2) install library (from java-blockchain repo)
+# mvn -f ../java-blockchain/pom.xml install -DskipTests
+
+# 3) root + peer
+./mvnw compile quarkus:dev
+./mvnw quarkus:dev -Dquarkus.profile=node -Ddebug=5006
+
+# 4) create wallets / pool a tx on root, then mine and assert peer tip
+./scripts/smoke-two-nodes.sh
+```
+
+Catch-up endpoints (root):
+
+- `POST /CrYP70/Ch41N/from/{number}`
+- `POST /Ch41N/from/{number}`
 
 ## Running the webapp in dev mode
 

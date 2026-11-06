@@ -1,14 +1,17 @@
 package api.network;
 
-import com.R07r35cInc.blockchain.CryptoChain;
-import com.R07r35cInc.blockchain.NetChain;
+import api.network.model.ChainBlockMessage;
+import api.network.model.CryptoBlockMessage;
+import com.R07r35cInc.blockchain.Block;
 import com.R07r35cInc.cryptocurrency.PayTypeTransaction;
+import com.R07r35cInc.cryptocurrency.Tx;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * @author Cleber Lecheta
@@ -20,7 +23,7 @@ public class PublishService {
     @Inject
     @Broadcast
     @Channel("blockchain-to-kafka")
-    Emitter<NetChain> blockchainEmitter;
+    Emitter<ChainBlockMessage> blockchainEmitter;
 
     @Inject
     @Broadcast
@@ -30,20 +33,20 @@ public class PublishService {
     @Inject
     @Broadcast
     @Channel("cryptochain-to-kafka")
-    Emitter<CryptoChain> cryptochainEmitter;
+    Emitter<CryptoBlockMessage> cryptochainEmitter;
 
-    public void broadcastChain(NetChain blockchain) {
-        blockchain.origin = Util.getHostName();
-        blockchainEmitter.send(blockchain);
+    public void broadcastChainBlock(Block block, long senderHeight) {
+        ChainBlockMessage message = new ChainBlockMessage(Util.getHostName(), block, senderHeight);
+        blockchainEmitter.send(message);
     }
 
     public void broadcastTransaction(PayTypeTransaction transaction) {
         transactionEmitter.send(transaction);
     }
 
-    public void broadcastCryptochain(CryptoChain cryptoChain) {
-        cryptoChain.origin = Util.getHostName();
-        cryptochainEmitter.send(cryptoChain);
+    public void broadcastCryptoBlock(Block<List<Tx>> block, long senderHeight) {
+        CryptoBlockMessage message = new CryptoBlockMessage(Util.getHostName(), block, senderHeight);
+        cryptochainEmitter.send(message);
     }
 
 }
