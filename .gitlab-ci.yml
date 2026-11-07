@@ -41,8 +41,9 @@ integration:
     - name: apache/kafka-native:3.8.1
       alias: kafka
   script:
+    # JBlock is public on GitLab Packages — do not pass Job-Token (cross-project 401).
     - >
-      mvn test -s ci_settings.xml
+      mvn test
       -Dquarkus.datasource.devservices.enabled=false
       -Dquarkus.mongodb.devservices.enabled=false
       -Dquarkus.kafka.devservices.enabled=false
@@ -58,7 +59,7 @@ graalvm.native:
   image: ghcr.io/graalvm/native-image-community:25.0.0
   needs: ["integration"]
   script:
-    - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
+    - ./mvnw package -Pnative -DskipTests=true
   artifacts:
     paths:
       - target/*-runner
@@ -69,7 +70,7 @@ jvm.package:
   image: maven:3.9.11-eclipse-temurin-25
   needs: ["integration"]
   script:
-    - mvn package -s ci_settings.xml -DskipTests
+    - mvn package -DskipTests
   artifacts:
     paths:
       - target/quarkus-app/

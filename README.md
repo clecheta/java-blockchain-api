@@ -21,7 +21,7 @@ sdk install maven 3.9.11
 
 Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
-CI resolves the `JBlock` library from the [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages). The `integration` job runs Quarkus tests against Postgres, MongoDB, and Kafka services (Dev Services disabled). The package stage builds and pushes a JVM image to this project's Container Registry.
+CI resolves the `JBlock` library anonymously from the public [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages) (do not send `CI_JOB_TOKEN` to that other project — it returns 401). On version bumps, publish JBlock first so `0.x.y` exists before the API pipeline runs. The `integration` job runs Quarkus tests against Postgres, MongoDB, and Kafka services (Dev Services disabled). The package stage builds and pushes a JVM image to this project's Container Registry.
 
 ## Test locally (two nodes)
 

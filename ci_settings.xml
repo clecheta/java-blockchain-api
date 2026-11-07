@@ -1,16 +1,9 @@
+<!--
+  Intentionally empty: the API only *consumes* the public JBlock Package Registry
+  (gitlab.com project 59165869). Sending CI_JOB_TOKEN as Job-Token to that other
+  project returns 401 and Maven reports "Could not find artifact".
+  Keep this file for a future API-side mvn deploy if needed.
+-->
 <settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
-  <servers>
-    <server>
-      <id>gitlab-maven</id>
-      <configuration>
-        <httpHeaders>
-          <property>
-            <name>Job-Token</name>
-            <value>${env.CI_JOB_TOKEN}</value>
-          </property>
-        </httpHeaders>
-      </configuration>
-    </server>
-  </servers>
 </settings>
