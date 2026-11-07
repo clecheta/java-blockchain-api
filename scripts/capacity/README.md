@@ -7,7 +7,26 @@ Results classify each cliff as **architecture**, **source code**, or
 **infrastructure** — and the isolation matrix further splits infrastructure into
 **host / PostgreSQL / Kafka**.
 
-Phase 2 (JMeter/k6 sustained load) is out of scope here — see GitLab api#20 / api#43.
+Required account-volume stages (5M/150 billion, 10M/300 billion, 50M/600 billion, 100M/1.1 trillion) run to completion on this machine. Saturation is allowed; stopping short is not. Spec: [`docs/capacity/SPEC.md`](../../docs/capacity/SPEC.md). GitLab api#43.
+
+### V5 volume stage (operator full run)
+
+```bash
+# from java-blockchain-api/
+.venv-capacity/bin/python scripts/capacity/run_volume_stage.py
+```
+
+| Flag | Default | Meaning |
+|------|---------|---------|
+| `--accounts` | `5000000` | Synthetic + real wallets that must be present |
+| `--moved` | `150000000000` | Cumulative settled units (fund → transact → mine) |
+| `--tx-amount` | `1000000` | Units per transfer (150,000 settles at default) |
+| `--pairs` | `200` | Funded ECDSA sender/destination pairs |
+| `--workers` | `128` | Concurrent HTTP workers |
+| `--mine-every` | `500` | Accepts between root settlement calls |
+
+Stop reasons: `target_reached` or `correctness_failed` only. Soft proof of the
+same loop: `--accounts 200 --moved 1000000 --tx-amount 100000 --pairs 4`.
 
 ## Prerequisites
 

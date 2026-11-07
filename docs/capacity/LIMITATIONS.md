@@ -64,11 +64,18 @@ Evidence: [`isolation-5m-20261107T154100Z`](evidence/isolation-5m-20261107T15410
 | Restore drill at 5M | ok (~25 s) | PostgreSQL OK locally | Managed PITR still open |
 | Boot restart + hydrate | root ready ~9 ms; peer ~6 s with restart | Boot confounder mitigated | Keep `trust-persisted-chain` |
 
-**Plan read:** the volume-diagnosis objective at **5M** is met on this laptop after
-the Mongo removal cutover. Answer to “code vs PG vs Kafka?” locally remains
-**mostly source code**. G2 (1,000 accepted tx/s) is still open. Next stages on a
-sized host: **10M → 50M → 100M accounts** with high/realistic transfer amounts.
-Tracked on [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20)
+**Plan read:** the row-count diagnosis at **5M accounts** is met on this laptop
+after the Mongo removal cutover. That run did **not** move the required
+**150 billion** ledger units. Answer to “code vs PG vs Kafka?” on the row
+matrix remains **mostly source code**. G2 (1,000 accepted tx/s) is still open.
+
+The account-volume stages are still open and are **not** deferred to a larger
+host. Each stage runs on this machine until both targets are reached. Long
+runtime and 90–100% hardware use are allowed. Stopping early is a failure.
+Required movement: **5M / 150 billion**, **10M / 300 billion**, **50M / 600
+billion**, **100M / 1.1 trillion**. Drivers: existing harness, extra local
+nodes, JMeter (or k6 / Gatling). Spec: [SPEC.md](SPEC.md). Tracked on
+[api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20)
 and [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43).
 
 ## Architecture
@@ -130,9 +137,11 @@ the cliff includes **Kafka publish coupling**, not reservation SoT.
 
 - **G1 passed:** 100,000-wallet hard-cap sweep and >200 authenticated accepts/s.
 - **G2 remains open:** 1,000 accepts/s and managed PITR not proven on this host.
-- **Account ladder still open:** evolve evidence **5M → 10M → 50M → 100M**
-  with high/real value amounts; local proof remains 100k HTTP + 1M isolation
-  matrix.
+- **Account-volume stages still open.** 5M account rows are evidenced. None of
+  the required movement is evidenced. Finish each stage locally:
+  **5M accounts / 150 billion moved**, **10M / 300 billion**, **50M / 600
+  billion**, **100M / 1.1 trillion**. Duration and full hardware use do not
+  waive a stage.
 
 These are host-specific engineering results, not evidence that the API is a
 regulated digital-bank backend.

@@ -10,6 +10,43 @@
 | Funding | HTTP create + `POST /W4LL37/fUND` (create always starts at 0) |
 | Post-check | `scripts/smoke-two-nodes.sh` at comfortable load (not part of ceiling search) |
 
+## Account-volume stages (required)
+
+These stages run to completion on the local machine. Ceiling suites A–C do not
+replace them. Pass/fail for a stage ignores wall-clock time and host saturation.
+
+| Stage | Accounts present | Cumulative ledger units registered and moved |
+|-------|------------------|-----------------------------------------------|
+| V5 | 5,000,000 | 150,000,000,000 |
+| V10 | 10,000,000 | 300,000,000,000 |
+| V50 | 50,000,000 | 600,000,000,000 |
+| V100 | 100,000,000 | 1,100,000,000,000 |
+
+**Registered and moved:** sum of amounts funded, transferred, and settled while
+that account population is present. Bulk `ledger_wallet` inserts and unmoved
+balances do not count.
+
+**Pass:** both targets reached; no negative balances; settled movement equals
+accepted movement for the exercised funds; destination balances match.
+
+**Fail:** process abort, correctness break, or a stop before either target.
+A time budget, a p95 comfort stop, or 90–100% CPU, memory, or disk use is not
+a fail and is not a pass. Do not shrink the target.
+
+**Driver for V5:** `scripts/capacity/run_volume_stage.py`. Defaults settle
+150,000 transfers of 1,000,000 while 5,000,000 wallet rows are present.
+Synthetic bulk rows provide the account population; ECDSA wallets run
+fund → transact → mine. Stop reasons are only `target_reached` or
+`correctness_failed`. Duration and host saturation are ignored.
+
+Later stages may add local API nodes (PostgreSQL stays the source of truth;
+root stays the only settlement writer) or JMeter / k6 / Gatling as the HTTP
+driver with the same balance check.
+
+Evidence so far: 5,000,000 account rows in
+`evidence/isolation-5m-20261107T154100Z/`. Movement of 150 billion is not run;
+the V5 command is ready for an operator-owned full run.
+
 ## Suites
 
 ### A — Money ceiling

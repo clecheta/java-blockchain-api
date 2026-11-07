@@ -1,0 +1,55 @@
+{
+  "suite": "V_volume_stage",
+  "ok": true,
+  "stop_reason": "target_reached",
+  "elapsed_s": 0.7940375489997678,
+  "accept_window_s": 0.586756780045107,
+  "accounts_target": 200,
+  "accounts_present": 5000210,
+  "moved_target": 1000000,
+  "settled_volume": 1000000,
+  "accepted_transfers": 10,
+  "accepted_volume": 1000000,
+  "tx_amount": 100000,
+  "pairs": 4,
+  "workers": 4,
+  "mine_every": 10,
+  "seed_balance_per_sender": 300000,
+  "tx_fail_retries": 0,
+  "fund_topups": 0,
+  "mine_ok": 1,
+  "mine_fail": 0,
+  "tx_latency": {
+    "count": 10,
+    "p50_ms": 6.137350486824289,
+    "p95_ms": 9.13815043750219,
+    "p99_ms": 9.282891697948799,
+    "max_ms": 9.31907701306045,
+    "min_ms": 5.381089984439313
+  },
+  "mine_latency": {
+    "count": 1,
+    "p50_ms": 44.88916299305856,
+    "p95_ms": 44.88916299305856,
+    "p99_ms": 44.88916299305856,
+    "max_ms": 44.88916299305856,
+    "min_ms": 44.88916299305856
+  },
+  "host_samples": [
+    {
+      "ts": 1794073440.5739026,
+      "load1": 1.05,
+      "load5": 0.79,
+      "load15": 0.59,
+      "mem_available_kib": 12722800
+    }
+  ],
+  "correctness": {
+    "wallet_count": 5000210,
+    "negative_balance_rows": 0,
+    "destination_balance_sum": "1000000"
+  },
+  "populate": null,
+  "errors": [],
+  "note": "Synthetic bulk rows establish account population pressure. Settled volume is measured on ECDSA fund \u2192 transact \u2192 mine path. Duration and host saturation are not stop conditions."
+}

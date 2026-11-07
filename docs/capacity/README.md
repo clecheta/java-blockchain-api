@@ -23,9 +23,63 @@ Without measured ceilings we guess. Historical stress intent lived on [api#20](h
 | Phase | Tool | Answers |
 |-------|------|---------|
 | **1 (this guide)** | Python battery in `scripts/capacity/` | *Where does it break?* last-good / first-fail + failure layer |
-| **2 (later)** | JMeter / k6 / Gatling | *How does it behave while healthy?* SLA latency at a known-safe load |
+| **Volume stages (required)** | `scripts/capacity/run_volume_stage.py` (V5 first); extra local nodes / JMeter later if needed | *Did this account count and this moved volume both finish, correctly?* |
+| **2 (SLA, separate)** | JMeter / k6 / Gatling | *How does it behave while healthy?* latency at a known-safe load |
 
-Do **not** replace Phase 1 with “only JMeter.” Settlement here is stateful (seed → transact → mine → verify balance); HTTP RPS alone misses ledger cliffs.
+Do **not** replace the correctness check with “only JMeter.” Settlement here is stateful (seed → transact → mine → verify balance); HTTP RPS alone misses ledger cliffs. JMeter is allowed as a driver when the Python workers cannot finish a volume stage.
+
+### Required account-volume stages
+
+These four stages are mandatory. Run each one on the **local machine** until both numbers are reached. They are not samples, and host saturation does not waive them.
+
+| Accounts present | Cumulative ledger units registered and moved |
+|------------------|-----------------------------------------------|
+| 5,000,000 | 150,000,000,000 (150 billion) |
+| 10,000,000 | 300,000,000,000 (300 billion) |
+| 50,000,000 | 600,000,000,000 (600 billion) |
+| 100,000,000 | 1,100,000,000,000 (1.1 trillion) |
+
+**Registered and moved** means the sum of amounts that are funded, transferred, and settled while that account population is present. Inserting wallet rows, or parking a balance that never moves, does not pass the stage.
+
+The 5,000,000-row isolation matrix ([`evidence/isolation-5m-20261107T154100Z/`](evidence/isolation-5m-20261107T154100Z/)) proved account rows only. The 150 billion movement has not been run.
+
+#### Completion rule
+
+- The run continues until the account count and the moved volume are both reached and balances check out (no negative balances; settled movement matches accepted movement).
+- Long runtime is allowed.
+- A slow machine is allowed.
+- Using 90–100% of CPU, memory, and disk is allowed.
+- Time budgets, p95 comfort stops, and host saturation are not stop conditions for these stages, and they are not a pass.
+- The stage fails if the process aborts, correctness breaks, or the run stops short of either target. Do not lower the target to finish sooner.
+
+#### How to finish the stage
+
+V5 harness (operator-owned full run; saturates the machine until both targets close):
+
+```bash
+# from java-blockchain-api/ with Postgres + Kafka + root API on :8018
+python3 scripts/capacity/run_volume_stage.py
+```
+
+Defaults: `--accounts 5000000`, `--moved 150000000000`, `--tx-amount 1000000`
+(150,000 settled transfers of 1,000,000), `--pairs 200`, `--workers 128`,
+`--mine-every 500`. Synthetic bulk rows keep the account population present;
+ECDSA wallets carry fund → transact → mine. Evidence lands under
+`docs/capacity/evidence/volume-v5-<utc>/`.
+
+Small proof of the same loop (does not pass V5):
+
+```bash
+python3 scripts/capacity/run_volume_stage.py \
+  --accounts 200 --moved 1000000 --tx-amount 100000 --pairs 4 --workers 4
+```
+
+If one JVM cannot carry a later stage, add local API nodes in parallel
+(PostgreSQL stays the source of truth; root stays the only settlement writer)
+or use JMeter / k6 / Gatling as the HTTP driver with the same balance check.
+
+Ceiling suites (A–C below) still hunt last-good / first-fail. They do not
+substitute for these stages.
 
 ### What we deliberately do *not* claim
 

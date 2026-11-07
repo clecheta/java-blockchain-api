@@ -131,6 +131,25 @@ class ApiClient:
             },
         )
 
+    def fund(
+        self,
+        uid: str,
+        amount: int | str,
+        *,
+        idempotency_key: str | None = None,
+    ) -> HttpResult:
+        key = idempotency_key or f"capacity-fund-{uid}-{uuid.uuid4()}"
+        return self._request(
+            "POST",
+            "/W4LL37/fUND",
+            headers={"X-API-Key": self.service_key},
+            json={
+                "uid": uid.strip('"'),
+                "amount": str(amount),
+                "idempotencyKey": key,
+            },
+        )
+
     def mine(self) -> HttpResult:
         return self._request(
             "POST", "/M1n3/7r4N54C710nZ",

@@ -33,6 +33,18 @@ unsafe integer numbers are rejected.
 | Stop reason | configured hard cap, not a discovered failure |
 | Bulk synthetic populate (isolation 5M) | **5,000,000** `ledger_wallet` rows at ~60.5k rows/s |
 
+## Required account-volume stages
+
+Mandatory local runs. Account rows without settled movement do not pass.
+Completion rule and drivers: [README.md](README.md), [SPEC.md](SPEC.md).
+
+| Stage | Accounts present | Cumulative units registered and moved | Status on 2026-11-07 |
+|-------|------------------|---------------------------------------|----------------------|
+| V5 | 5,000,000 | 150,000,000,000 | Rows evidenced. **Movement not run.** |
+| V10 | 10,000,000 | 300,000,000,000 | Not run |
+| V50 | 50,000,000 | 600,000,000,000 | Not run |
+| V100 | 100,000,000 | 1,100,000,000,000 | Not run |
+
 ## Isolation matrix at 5M (Postgres-only)
 
 | Cell | Result |

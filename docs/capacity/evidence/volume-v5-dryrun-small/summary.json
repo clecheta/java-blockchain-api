@@ -1,0 +1,11 @@
+{
+  "run_id": "volume-v5-dryrun-small",
+  "ok": true,
+  "stop_reason": "target_reached",
+  "accounts_target": 200,
+  "accounts_present": 5000210,
+  "moved_target": 1000000,
+  "settled_volume": 1000000,
+  "elapsed_s": 0.7940375489997678,
+  "evidence": "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/volume-v5-dryrun-small"
+}
