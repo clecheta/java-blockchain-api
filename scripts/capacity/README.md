@@ -22,7 +22,7 @@ Required account-volume stages (5M/150 billion, 10M/300 billion, 50M/600 billion
 | `--moved` | `150000000000` | Cumulative settled units (fund → transact → mine) |
 | `--tx-amount` | `1000000` | Units per transfer (150,000 settles at default) |
 | `--pairs` | `200` | Funded ECDSA sender/destination pairs |
-| `--workers` | `128` | Concurrent HTTP workers |
+| `--workers` | `64` | Concurrent HTTP workers (≤ Agroal max-size headroom) |
 | `--mine-every` | `500` | Accepts between root settlement calls |
 
 Stop reasons: `target_reached` or `correctness_failed` only. Soft proof of the

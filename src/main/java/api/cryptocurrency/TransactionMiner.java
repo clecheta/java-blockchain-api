@@ -97,10 +97,10 @@ public class TransactionMiner {
 
         // PostgreSQL is the durable pending source. Accepts committed after
         // this ordered query stay pending for the next bounded batch.
+        // Hot path trusts the accept-time journal + settlement fence; ECDSA
+        // re-verify stays off this TX (forensic rebuilds validate separately).
         List<Tx> poolTransactions = new ArrayList<>(
-                pendingTransactions.loadOldest(maxBatchSize).stream()
-                        .filter(Transaction::isValidTransaction)
-                        .toList());
+                pendingTransactions.loadOldest(maxBatchSize));
         if (poolTransactions.isEmpty()) {
             return null;
         }

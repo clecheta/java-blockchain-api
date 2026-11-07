@@ -34,6 +34,8 @@ services:
       POSTGRES_DB: blockchain
       POSTGRES_USER: blockchain
       POSTGRES_PASSWORD: blockchain
+    # Root Agroal max-size=96 + peer 48 need headroom above default 100.
+    command: ["postgres", "-c", "max_connections=200"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U blockchain -d blockchain"]
       interval: 5s

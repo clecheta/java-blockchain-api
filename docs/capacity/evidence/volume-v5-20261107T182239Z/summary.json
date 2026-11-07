@@ -1,0 +1,11 @@
+{
+  "run_id": "volume-v5-20261107T182239Z",
+  "ok": true,
+  "stop_reason": "target_reached",
+  "accounts_target": 5000000,
+  "accounts_present": 5001010,
+  "moved_target": 150000000000,
+  "settled_volume": 150000000000,
+  "elapsed_s": 418.2502195870038,
+  "evidence": "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/volume-v5-20261107T182239Z"
+}

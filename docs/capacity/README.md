@@ -62,7 +62,7 @@ python3 scripts/capacity/run_volume_stage.py
 ```
 
 Defaults: `--accounts 5000000`, `--moved 150000000000`, `--tx-amount 1000000`
-(150,000 settled transfers of 1,000,000), `--pairs 200`, `--workers 128`,
+(150,000 settled transfers of 1,000,000), `--pairs 200`, `--workers 64`,
 `--mine-every 500`. Synthetic bulk rows keep the account population present;
 ECDSA wallets carry fund → transact → mine. Evidence lands under
 `docs/capacity/evidence/volume-v5-<utc>/`.

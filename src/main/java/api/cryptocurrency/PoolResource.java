@@ -6,7 +6,6 @@ import api.repository.PendingTransactionRepository;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.*;
 import com.R07r35cInc.util.Parse;
-import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import io.micrometer.core.annotation.Timed;
@@ -94,10 +93,39 @@ public class PoolResource {
             }
             return Response.ok(transaction).build();
         } catch (RuntimeException re) {
-            LOGGER.error(re.getMessage());
-            return Response.status(HttpStatus.SC_BAD_REQUEST,
-                    re.getMessage()).build(); //FIXME
+            String message = rootMessage(re);
+            LOGGER.error(message, re);
+            if (isAcquisitionTimeout(message)) {
+                return Response.status(Response.Status.SERVICE_UNAVAILABLE)
+                        .entity(message)
+                        .build();
+            }
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(message == null ? "bad request" : message)
+                    .build();
         }
+    }
+
+    static boolean isAcquisitionTimeout(String message) {
+        if (message == null) {
+            return false;
+        }
+        String lower = message.toLowerCase();
+        return lower.contains("acquisition timeout")
+                || lower.contains("unable to acquire jdbc connection")
+                || lower.contains("sorry, acquisition timeout");
+    }
+
+    private static String rootMessage(Throwable error) {
+        Throwable current = error;
+        String message = current.getMessage();
+        while (current.getCause() != null) {
+            current = current.getCause();
+            if (current.getMessage() != null && !current.getMessage().isBlank()) {
+                message = current.getMessage();
+            }
+        }
+        return message;
     }
 
     @POST

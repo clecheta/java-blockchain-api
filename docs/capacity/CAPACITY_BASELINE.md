@@ -40,10 +40,25 @@ Completion rule and drivers: [README.md](README.md), [SPEC.md](SPEC.md).
 
 | Stage | Accounts present | Cumulative units registered and moved | Status on 2026-11-07 |
 |-------|------------------|---------------------------------------|----------------------|
-| V5 | 5,000,000 | 150,000,000,000 | Rows evidenced. **Movement not run.** |
+| V5 | 5,000,000 | 150,000,000,000 | **Passed** — [`volume-v5-20261107T182239Z`](evidence/volume-v5-20261107T182239Z/) |
 | V10 | 10,000,000 | 300,000,000,000 | Not run |
 | V50 | 50,000,000 | 600,000,000,000 | Not run |
 | V100 | 100,000,000 | 1,100,000,000,000 | Not run |
+
+### V5 movement (passed)
+
+| Field | Value |
+|-------|-------|
+| Evidence (canonical) | [`volume-v5-20261107T182239Z`](evidence/volume-v5-20261107T182239Z/) |
+| Prior failed attempt | [`volume-v5-20261107T180717Z`](evidence/volume-v5-20261107T180717Z/) (~6.1B then JDBC acquisition timeout) |
+| Accounts present | 5,001,010 |
+| Accepted / settled | 150,000 transfers / **150,000,000,000** units |
+| Elapsed | ~418 s |
+| Negatives | 0 |
+| Destination balance sum | 150,000,000,000 |
+| Accept latency | p50 75.1 ms; p95 175.1 ms; p99 236.0 ms |
+| Mine latency | p50 774 ms; p95 3.27 s (300 successful mines) |
+| Workers / pool | 64 workers; Agroal `max-size=96`; 0 acquisition timeouts |
 
 ## Isolation matrix at 5M (Postgres-only)
 

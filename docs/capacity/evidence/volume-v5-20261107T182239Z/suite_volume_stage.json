@@ -1,0 +1,188 @@
+{
+  "suite": "V_volume_stage",
+  "ok": true,
+  "stop_reason": "target_reached",
+  "elapsed_s": 418.2502195870038,
+  "accept_window_s": 414.3721032929607,
+  "accounts_target": 5000000,
+  "accounts_present": 5001010,
+  "moved_target": 150000000000,
+  "settled_volume": 150000000000,
+  "accepted_transfers": 150000,
+  "accepted_volume": 150000000000,
+  "tx_amount": 1000000,
+  "pairs": 200,
+  "workers": 64,
+  "mine_every": 500,
+  "seed_balance_per_sender": 750000000,
+  "tx_fail_retries": 0,
+  "fund_topups": 0,
+  "mine_ok": 300,
+  "mine_fail": 0,
+  "tx_latency": {
+    "count": 150000,
+    "p50_ms": 75.13490301789716,
+    "p95_ms": 175.09874669776755,
+    "p99_ms": 236.04313640680638,
+    "max_ms": 561.0552539583296,
+    "min_ms": 6.880805012769997
+  },
+  "mine_latency": {
+    "count": 300,
+    "p50_ms": 774.4751845020801,
+    "p95_ms": 3266.916811375996,
+    "p99_ms": 5819.564163548052,
+    "max_ms": 6829.185020993464,
+    "min_ms": 109.48158300016075
+  },
+  "host_samples": [
+    {
+      "ts": 1794075903.248114,
+      "load1": 6.6,
+      "load5": 4.01,
+      "load15": 2.08,
+      "mem_available_kib": 12078700
+    },
+    {
+      "ts": 1794075908.4492555,
+      "load1": 6.95,
+      "load5": 4.13,
+      "load15": 2.13,
+      "mem_available_kib": 12070584
+    },
+    {
+      "ts": 1794075913.6091309,
+      "load1": 7.28,
+      "load5": 4.25,
+      "load15": 2.18,
+      "mem_available_kib": 12078816
+    },
+    {
+      "ts": 1794075918.7905412,
+      "load1": 7.01,
+      "load5": 4.24,
+      "load15": 2.19,
+      "mem_available_kib": 12098220
+    },
+    {
+      "ts": 1794075923.882979,
+      "load1": 6.77,
+      "load5": 4.24,
+      "load15": 2.2,
+      "mem_available_kib": 12087772
+    },
+    {
+      "ts": 1794075929.0525022,
+      "load1": 6.55,
+      "load5": 4.23,
+      "load15": 2.21,
+      "mem_available_kib": 12130156
+    },
+    {
+      "ts": 1794075934.192847,
+      "load1": 6.75,
+      "load5": 4.31,
+      "load15": 2.25,
+      "mem_available_kib": 12129456
+    },
+    {
+      "ts": 1794075939.4960814,
+      "load1": 7.25,
+      "load5": 4.46,
+      "load15": 2.3,
+      "mem_available_kib": 11923844
+    },
+    {
+      "ts": 1794075944.7787442,
+      "load1": 7.15,
+      "load5": 4.48,
+      "load15": 2.32,
+      "mem_available_kib": 11958636
+    },
+    {
+      "ts": 1794075949.7908845,
+      "load1": 7.14,
+      "load5": 4.52,
+      "load15": 2.35,
+      "mem_available_kib": 12043424
+    },
+    {
+      "ts": 1794075954.96735,
+      "load1": 7.2,
+      "load5": 4.58,
+      "load15": 2.38,
+      "mem_available_kib": 12035436
+    },
+    {
+      "ts": 1794075960.0501842,
+      "load1": 7.19,
+      "load5": 4.62,
+      "load15": 2.41,
+      "mem_available_kib": 12040812
+    },
+    {
+      "ts": 1794075965.257428,
+      "load1": 7.25,
+      "load5": 4.68,
+      "load15": 2.44,
+      "mem_available_kib": 12020648
+    },
+    {
+      "ts": 1794075970.2843251,
+      "load1": 7.15,
+      "load5": 4.7,
+      "load15": 2.45,
+      "mem_available_kib": 12037640
+    },
+    {
+      "ts": 1794075975.3360715,
+      "load1": 7.54,
+      "load5": 4.82,
+      "load15": 2.51,
+      "mem_available_kib": 12045964
+    },
+    {
+      "ts": 1794075980.6221042,
+      "load1": 7.02,
+      "load5": 4.76,
+      "load15": 2.5,
+      "mem_available_kib": 12034116
+    },
+    {
+      "ts": 1794075985.7256155,
+      "load1": 6.94,
+      "load5": 4.78,
+      "load15": 2.52,
+      "mem_available_kib": 12063720
+    },
+    {
+      "ts": 1794075990.791065,
+      "load1": 6.62,
+      "load5": 4.75,
+      "load15": 2.52,
+      "mem_available_kib": 12040236
+    },
+    {
+      "ts": 1794075996.0574696,
+      "load1": 6.81,
+      "load5": 4.82,
+      "load15": 2.56,
+      "mem_available_kib": 11988236
+    },
+    {
+      "ts": 1794076001.2723298,
+      "load1": 7.15,
+      "load5": 4.92,
+      "load15": 2.6,
+      "mem_available_kib": 11958460
+    }
+  ],
+  "correctness": {
+    "wallet_count": 5001010,
+    "negative_balance_rows": 0,
+    "destination_balance_sum": "150000000000"
+  },
+  "populate": null,
+  "errors": [],
+  "note": "Synthetic bulk rows establish account population pressure. Settled volume is measured on ECDSA fund \u2192 transact \u2192 mine path. Duration and host saturation are not stop conditions."
+}

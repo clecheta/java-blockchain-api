@@ -65,16 +65,27 @@ Evidence: [`isolation-5m-20261107T154100Z`](evidence/isolation-5m-20261107T15410
 | Boot restart + hydrate | root ready ~9 ms; peer ~6 s with restart | Boot confounder mitigated | Keep `trust-persisted-chain` |
 
 **Plan read:** the row-count diagnosis at **5M accounts** is met on this laptop
-after the Mongo removal cutover. That run did **not** move the required
-**150 billion** ledger units. Answer to “code vs PG vs Kafka?” on the row
+after the Mongo removal cutover. Answer to “code vs PG vs Kafka?” on the row
 matrix remains **mostly source code**. G2 (1,000 accepted tx/s) is still open.
 
-The account-volume stages are still open and are **not** deferred to a larger
-host. Each stage runs on this machine until both targets are reached. Long
-runtime and 90–100% hardware use are allowed. Stopping early is a failure.
-Required movement: **5M / 150 billion**, **10M / 300 billion**, **50M / 600
-billion**, **100M / 1.1 trillion**. Drivers: existing harness, extra local
-nodes, JMeter (or k6 / Gatling). Spec: [SPEC.md](SPEC.md). Tracked on
+### Failure-layer verdict (V5 movement)
+
+Failed attempt: [`volume-v5-20261107T180717Z`](evidence/volume-v5-20261107T180717Z/)
+(~6.1B then JDBC acquisition timeout with ECDSA inside accept TX).
+
+Passed run: [`volume-v5-20261107T182239Z`](evidence/volume-v5-20261107T182239Z/)
+after signing outside the lock window, Agroal `max-size=96`, `503` on
+acquisition timeout, harness retry, and settlement without in-TX ECDSA verify.
+
+| Cliff / cell | Measured | Primary layer | Next change |
+|--------------|----------|---------------|-------------|
+| V5 5M / 150B | **ok** — 150k accepts settled; 0 negatives; ~418 s | Mitigated | Keep sign-outside-TX; watch mine p95 |
+| Prior abort under 128 workers | acquisition timeout | Source + config | Do not put ECDSA back inside accept TX |
+| Accept p95 (passed V5) | ~175 ms at 64 workers | Source code still dominates TPS | Hot-path / G2 work remains |
+| Mine p95 (passed V5) | ~3.3 s | Settlement batch cost | Freshness vs batch size |
+
+Remaining volume stages on this machine: **10M / 300B**, **50M / 600B**,
+**100M / 1.1T**. Spec: [SPEC.md](SPEC.md). Tracked on
 [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20)
 and [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43).
 
@@ -93,9 +104,12 @@ and [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43).
 
 | Finding | Measured signal | Implication |
 |---------|-----------------|-------------|
-| Synchronous ECDSA signing and validation | ~512 accepts/s best escalated mine-every | CPU grows per transfer |
-| Request-thread idempotency and reservation | accept p95 ~223 ms under 128 workers | Pool/row-lock contention |
-| Settlement block construction | mine p95 multi-second under load | Batch size alone can worsen freshness |
+| ECDSA sign inside accept TX + row lock | V5: JDBC acquisition timeout under 128 workers | Sign outside TX; keep lock only for recheck + reserve |
+| Agroal `max-size=40` vs high worker count | ~198 acquisition timeouts in one V5 run | Raise pool after TX shorten; leave mine headroom |
+| Empty `400` on pool/timeout errors | Harness `error: ""`; abort as correctness | Entity body + `503` for acquisition timeout |
+| Synchronous ECDSA on accept/settle path | ~512 accepts/s best escalated mine-every | CPU grows per transfer |
+| Settlement re-verify ECDSA inside mine TX | mine p95 multi-second under V5 | Trust pending journal on hot path; verify off TX |
+| Request-thread idempotency and reservation | accept p95 ~223 ms under 128 workers | Multiple JDBC round-trips per accept |
 | Same-wallet velocity / reservation | Suite D accepted subset without negatives | Controls reject excess correctly |
 | Legacy RESTEasy Classic/Mutiny | build deprecation warning | Migrate to Quarkus REST and re-benchmark |
 
@@ -137,9 +151,9 @@ the cliff includes **Kafka publish coupling**, not reservation SoT.
 
 - **G1 passed:** 100,000-wallet hard-cap sweep and >200 authenticated accepts/s.
 - **G2 remains open:** 1,000 accepts/s and managed PITR not proven on this host.
-- **Account-volume stages still open.** 5M account rows are evidenced. None of
-  the required movement is evidenced. Finish each stage locally:
-  **5M accounts / 150 billion moved**, **10M / 300 billion**, **50M / 600
+- **V5 volume stage passed:** 5M accounts present and **150 billion** settled
+  ([`volume-v5-20261107T182239Z`](evidence/volume-v5-20261107T182239Z/)).
+- **Later volume stages still open:** **10M / 300 billion**, **50M / 600
   billion**, **100M / 1.1 trillion**. Duration and full hardware use do not
   waive a stage.
 

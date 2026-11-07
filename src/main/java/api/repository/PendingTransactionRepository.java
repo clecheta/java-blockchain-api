@@ -7,6 +7,7 @@ import com.R07r35cInc.cryptocurrency.TransactionCommand;
 import com.R07r35cInc.cryptocurrency.Tx;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import com.R07r35cInc.util.Parse;
+import io.quarkus.narayana.jta.QuarkusTransaction;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,13 +32,41 @@ public class PendingTransactionRepository {
     @Inject
     EntityManager entityManager;
 
-    @Transactional
+    /**
+     * Sign outside the database transaction, then take a short pessimistic
+     * lock only for balance recheck, pending insert, and reserved_balance.
+     */
     public PayTypeTransaction reserveAndCreate(TransactionCommand command) {
         if (command.amount == null || command.amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Transfer amount must be positive");
         }
 
         String uidHash = Parse.toMD5(command.uid);
+        WalletEntity snapshot = QuarkusTransaction.requiringNew()
+                .call(() -> entityManager.find(WalletEntity.class, uidHash));
+        if (snapshot == null) {
+            throw new IllegalArgumentException("Wallet not found");
+        }
+
+        BigDecimal available = snapshot.balance.subtract(snapshot.reservedBalance);
+        if (command.amount.compareTo(available) > 0) {
+            throw new IllegalArgumentException("Amount exceeds available balance");
+        }
+
+        // ECDSA runs here — no JDBC connection or row lock held.
+        Wallet wallet = snapshot.toDomain();
+        wallet.balance = available;
+        PayTypeTransaction transaction =
+                (PayTypeTransaction) wallet.createTransaction(command);
+
+        return QuarkusTransaction.requiringNew()
+                .call(() -> persistReservation(uidHash, command, transaction));
+    }
+
+    private PayTypeTransaction persistReservation(
+            String uidHash,
+            TransactionCommand command,
+            PayTypeTransaction transaction) {
         WalletEntity source = entityManager.find(
                 WalletEntity.class, uidHash, LockModeType.PESSIMISTIC_WRITE);
         if (source == null) {
@@ -48,11 +77,6 @@ public class PendingTransactionRepository {
         if (command.amount.compareTo(available) > 0) {
             throw new IllegalArgumentException("Amount exceeds available balance");
         }
-
-        Wallet wallet = source.toDomain();
-        wallet.balance = available;
-        PayTypeTransaction transaction =
-                (PayTypeTransaction) wallet.createTransaction(command);
 
         PendingTransactionEntity.fromDomain(transaction, command.amount)
                 .persistAndFlush();

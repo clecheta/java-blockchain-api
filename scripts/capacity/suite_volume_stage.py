@@ -24,12 +24,17 @@ DEFAULT_ACCOUNTS = 5_000_000
 DEFAULT_MOVED = 150_000_000_000
 DEFAULT_TX_AMOUNT = 1_000_000
 DEFAULT_PAIRS = 200
-DEFAULT_WORKERS = 128
+DEFAULT_WORKERS = 64
 DEFAULT_MINE_EVERY = 500
 RETRY_SLEEP_S = 0.5
 INSUFFICIENT_MARKERS = (
     "amount exceeds available balance",
     "insufficient",
+)
+ACQUISITION_MARKERS = (
+    "acquisition timeout",
+    "unable to acquire jdbc connection",
+    "sorry, acquisition timeout",
 )
 
 
@@ -45,6 +50,8 @@ def _is_retryable(status: int, error: str | None) -> bool:
     if status in {0, 429, 502, 503, 504}:
         return True
     text = (error or "").lower()
+    if any(marker in text for marker in ACQUISITION_MARKERS):
+        return True
     return "timeout" in text or "connection" in text or "temporarily" in text
 
 
