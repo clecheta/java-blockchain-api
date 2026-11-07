@@ -40,8 +40,7 @@ Do **not** replace Phase 1 with “only JMeter.” Settlement here is stateful (
 ### Prerequisites
 
 1. Sibling library installed: `mvn -f ../java-blockchain/pom.xml install -DskipTests`
-2. Infra up: `docker compose up -d` (PostgreSQL + Kafka; Mongo remains only
-   for optional migration)
+2. Infra up: `docker compose up -d` (PostgreSQL + Kafka)
 3. Root API: `./mvnw compile quarkus:dev` → `http://localhost:8018` ready (`/q/health/ready`)
 4. Python 3.10+ deps:
 
@@ -138,7 +137,7 @@ Every first-fail should have a **primary** layer. Use [LIMITATIONS.md](LIMITATIO
 |-------|--------|-----------------|
 | **Architecture** | Design/model; changing it redesigns the product | Mine required to settle; one pending tx per sender; create@0; full-chain balance walk; throughput flat while CPU free |
 | **Source code** | Fixable in app/library without changing product shape | Balance mismatch near `Long.MAX_VALUE` / `WalletCodec.longValue()`; wrong balance after mine; bad serializer |
-| **Infrastructure** | Kafka, Mongo, JVM, host, Compose defaults | Broker/serdes errors; ready probe down; OOM; disk; load saturation; timeouts |
+| **Infrastructure** | Kafka, PostgreSQL, JVM, host, Compose defaults | Broker/serdes errors; ready probe down; OOM; disk; load saturation; timeouts |
 
 Secondary layers are allowed (e.g. Kafka reject = infrastructure primary, serializer bug = source secondary).
 
@@ -148,7 +147,7 @@ Ask, in order:
 
 1. **Reliability first?** If Suite A shows wrong balances → treat as **blocker** for ledger-as-bank ambition (usually source or codec path).
 2. **Is the cliff architectural?** If settlement cannot move without redesign (manual mine, one-tx-per-sender) → product decision, not a “tune Kafka” ticket.
-3. **Is the cliff infrastructural?** If Mongo/Kafka/host die first → ops/sizing or datastore work ([api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43)), not a fake API feature.
+3. **Is the cliff infrastructural?** If PostgreSQL/Kafka/host die first → ops/sizing or datastore work ([api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43)), not a fake API feature.
 4. **Did smoke fail after the battery?** Multi-node sync cost may add an infra/architecture constraint even if single-node ceilings look fine.
 
 ### Step D — Update the human reports
@@ -164,7 +163,7 @@ After a serious run:
 - Treating a dry-run (`--wallet-hard-cap 200`) as a production baseline.
 - Comparing runs without matching `machine.json`.
 - Using Suite C RPS alone to “prove” bank scale.
-- Blaming Mongo for an architecture gate (e.g. forgetting to mine).
+- Blaming PostgreSQL for an architecture gate (e.g. forgetting to mine).
 
 ---
 

@@ -38,7 +38,6 @@ Useful flags:
 | Flag | Default | Meaning |
 |------|---------|---------|
 | `--base-url` | `http://localhost:8018` | Root API |
-| `--mongo-uri` | `mongodb://localhost:27017` | Deprecated compatibility flag |
 | `--wallet-hard-cap` | `100000` | Suite B create ceiling |
 | `--wallet-time-budget-s` | `1200` | Suite B soft stop |
 | `--wallet-workers` | `64` | Concurrent wallet-create workers |

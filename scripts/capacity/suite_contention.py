@@ -34,7 +34,6 @@ def _drain(api: ApiClient, max_attempts: int) -> tuple[int, list[dict[str, Any]]
 def run_suite_contention(
     api: ApiClient,
     out_dir: Path,
-    mongo_uri: str,
     *,
     attempts: int = 2_000,
     workers: int = 128,
@@ -49,7 +48,7 @@ def run_suite_contention(
 
     seed_balance = attempts * amount
     source = seed_funded_wallets(
-        1, seed_balance, mongo_uri=mongo_uri)[0]
+        1, seed_balance)[0]
     destination_result = api.create_wallet(
         f"capacity-contention-dest-{time.time_ns()}")
     if not destination_result.ok or not isinstance(destination_result.body, dict):

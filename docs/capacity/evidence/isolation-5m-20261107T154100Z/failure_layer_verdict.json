@@ -1,0 +1,80 @@
+{
+  "run_id": "isolation-5m-20261107T154100Z",
+  "population": 5000000,
+  "cells": {
+    "populate": {
+      "ok": true,
+      "after_count": 5000000,
+      "rows_per_s": 60514.840123654045
+    },
+    "index_health": {
+      "ok": false,
+      "failures": ["settled_by_tx"],
+      "wallet_count": 5000000,
+      "note": "Seq Scan on ledger_settled_transaction with ~108 rows; PK on transaction_id exists. Planner chose seq scan on a tiny fence table — not a missing-index cliff at 5M wallets."
+    },
+    "db_pressure_contention": {
+      "ok": true,
+      "accepted": 500,
+      "settled": 500,
+      "negative_balance": false
+    },
+    "baseline_throughput": {
+      "ok": true,
+      "tx_per_s": 602.9280385164442,
+      "tx_ok": 36199,
+      "tx_fail": 1,
+      "kafka_quiet": false,
+      "stop_reason": "duration"
+    },
+    "restore_drill": {
+      "ok": true,
+      "elapsed_s": 24.81752050796058
+    },
+    "boot_budget_restart": {
+      "ok": true,
+      "root_ready_s": 0.009379288007039577,
+      "peer_ready_s": 6.145531131012831,
+      "restart": true
+    }
+  },
+  "failure_layer_table": [
+    {
+      "cliff": "Accept TPS ~603/s on 5M wallets (baseline)",
+      "layer": "source_code (primary)",
+      "next_change": "Hot-path ECDSA/HTTP/ORM; host upgrade secondary. Wallet keyed lookups remain Index Scan."
+    },
+    {
+      "cliff": "index_health settled_by_tx Seq Scan",
+      "layer": "postgresql_infrastructure (noise on tiny fence table)",
+      "next_change": "PK exists; tighten EXPLAIN gate to ignore seq scan below row threshold. Re-check after settled history grows."
+    },
+    {
+      "cliff": "5M synthetic populate",
+      "layer": "postgresql_infrastructure OK at 5M (~60k rows/s)",
+      "next_change": "Raise stage to 10M → 50M → 100M on sized PG."
+    },
+    {
+      "cliff": "Suite D on 5M ledger",
+      "layer": "architecture OK",
+      "next_change": "Keep durable reservation; no negative balances."
+    },
+    {
+      "cliff": "Restore drill at 5M (~25 s)",
+      "layer": "postgresql_infrastructure OK",
+      "next_change": "Managed PITR still unproven."
+    },
+    {
+      "cliff": "Boot ready after hydrate",
+      "layer": "architecture+code mitigated",
+      "next_change": "Keep trust-persisted-chain; peer restart ~6 s in this cell."
+    }
+  ],
+  "plan_objective_met_locally": {
+    "isolation_matrix_at_5m": true,
+    "g2_1000_tps": false,
+    "primary_volume_tps_layer": "source_code",
+    "mongo_removed": true
+  },
+  "baseline_tx_per_s": 602.9280385164442
+}

@@ -12,12 +12,9 @@ import httpx
 def seed_funded_wallets(
     count: int,
     balance: int | str,
-    mongo_uri: str | None = None,
     timeout_s: float = 300.0,
 ) -> list[dict[str, Any]]:
-    """Create and idempotently fund wallets; keeps the old mongo_uri argument
-    for backwards-compatible callers."""
-    del mongo_uri
+    """Create and idempotently fund wallets via HTTP against PostgreSQL."""
     base_url = os.environ.get("ROOT_URL", "http://localhost:8018").rstrip("/")
     client_api_key = os.environ.get(
         "BANK_CLIENT_API_KEY", "local-client-only-change-me")

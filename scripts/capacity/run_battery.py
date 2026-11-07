@@ -31,7 +31,6 @@ DOCS_EVIDENCE = API_ROOT / "docs" / "capacity" / "evidence"
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Run JBlock API local capacity battery (Phase 1)")
     p.add_argument("--base-url", default="http://localhost:8018")
-    p.add_argument("--mongo-uri", default="mongodb://localhost:27017")
     p.add_argument("--run-id", default=None, help="Evidence directory name (default: UTC timestamp)")
     p.add_argument("--skip-money", action="store_true")
     p.add_argument("--skip-wallets", action="store_true")
@@ -117,7 +116,7 @@ def main() -> int:
 
     print(f"==> Capacity battery run_id={run_id}")
     print(f"    evidence → {out_dir}")
-    print(f"    base_url={args.base_url} mongo={args.mongo_uri}")
+    print(f"    base_url={args.base_url}")
 
     wait_ready(args.base_url)
     write_json(out_dir / "machine.json", machine_fingerprint())
@@ -160,7 +159,6 @@ def main() -> int:
             money = run_suite_money(
                 api,
                 out_dir,
-                args.mongo_uri,
                 volume_chunk=args.money_volume_chunk,
                 volume_chunks=args.money_volume_chunks,
             )
@@ -213,7 +211,6 @@ def main() -> int:
                 tp = run_suite_throughput(
                     api,
                     out_dir,
-                    args.mongo_uri,
                     duration_s=args.throughput_duration_s,
                     wallet_pairs=args.throughput_pairs,
                     workers=args.throughput_workers,
@@ -243,7 +240,6 @@ def main() -> int:
             contention = run_suite_contention(
                 api,
                 out_dir,
-                args.mongo_uri,
                 attempts=args.contention_attempts,
                 workers=args.contention_workers,
             )
@@ -261,7 +257,6 @@ def main() -> int:
                 api,
                 args.peer_url,
                 out_dir,
-                args.mongo_uri,
                 attempts=args.two_node_attempts,
                 workers=args.two_node_workers,
             )

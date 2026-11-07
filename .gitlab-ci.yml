@@ -11,7 +11,7 @@ stages:
   - build
   - package
 
-# Explicit Postgres/Mongo/Kafka services. %test pins URLs (no Dev Services / Testcontainers).
+# Explicit Postgres + Kafka services. %test pins URLs (no Dev Services / Testcontainers).
 # TEST_* hosts are app-only (avoid clobbering Kafka broker KAFKA_* service env).
 integration:
   stage: test
@@ -22,7 +22,6 @@ integration:
     POSTGRES_USER: blockchain
     POSTGRES_PASSWORD: blockchain
     TEST_DB_HOST: postgres
-    TEST_MONGO_HOST: blockchain_db
     TEST_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     KAFKA_NODE_ID: "1"
     KAFKA_PROCESS_ROLES: broker,controller
@@ -38,8 +37,6 @@ integration:
   services:
     - name: postgres:16
       alias: postgres
-    - name: mongo:7.0
-      alias: blockchain_db
     - name: apache/kafka-native:3.8.1
       alias: kafka
   before_script:
@@ -47,12 +44,6 @@ integration:
       for i in $(seq 1 30); do
         (echo > /dev/tcp/postgres/5432) >/dev/null 2>&1 && echo "postgres ready" && break
         echo "waiting for postgres ($i)..."
-        sleep 2
-      done
-    - |
-      for i in $(seq 1 30); do
-        (echo > /dev/tcp/blockchain_db/27017) >/dev/null 2>&1 && echo "mongo ready" && break
-        echo "waiting for mongo ($i)..."
         sleep 2
       done
     - |

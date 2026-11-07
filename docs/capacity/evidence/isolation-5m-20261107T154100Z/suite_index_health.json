@@ -1,0 +1,46 @@
+{
+  "suite": "index_health",
+  "ok": false,
+  "wallet_count": 5000000,
+  "seq_scan_fail_above_rows": 10000,
+  "failures": [
+    "settled_by_tx"
+  ],
+  "plans": {
+    "wallet_by_uid_hash": "                                                            QUERY PLAN                                                             \n-----------------------------------------------------------------------------------------------------------------------------------\n Index Scan using ledger_wallet_pkey on ledger_wallet  (cost=0.56..8.57 rows=1 width=90) (actual time=0.054..0.054 rows=1 loops=1)\n   Index Cond: ((uid_hash)::text = '802d95462451ef8afa8ff8f67508fbdc'::text)\n   Buffers: shared hit=4 read=1\n Planning:\n   Buffers: shared hit=127 read=3 dirtied=3\n Planning Time: 0.990 ms\n Execution Time: 0.092 ms\n(7 rows)\n\n",
+    "wallet_by_public_key": "                                                                            QUERY PLAN                                                                             \n-------------------------------------------------------------------------------------------------------------------------------------------------------------------\n Index Scan using ledger_wallet_public_key_key on ledger_wallet  (cost=0.56..8.57 rows=1 width=90) (actual time=0.044..0.045 rows=1 loops=1)\n   Index Cond: (public_key = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEd/eBIntU59CBC2i3YYLmJ4HC3WdT18LRXEAD2rMF6S50yk5PI3u9LOoYf8khrI+RJEZJzC9/tv/vuiBzksihew=='::text)\n   Buffers: shared hit=2 read=3\n Planning:\n   Buffers: shared hit=130\n Planning Time: 0.574 ms\n Execution Time: 0.102 ms\n(7 rows)\n\n",
+    "pending_by_created": "                                                            QUERY PLAN                                                            \n----------------------------------------------------------------------------------------------------------------------------------\n Limit  (cost=0.01..0.02 rows=1 width=848) (actual time=0.035..0.036 rows=0 loops=1)\n   Buffers: shared hit=6\n   ->  Sort  (cost=0.01..0.02 rows=1 width=848) (actual time=0.034..0.035 rows=0 loops=1)\n         Sort Key: created_at, transaction_id\n         Sort Method: quicksort  Memory: 25kB\n         Buffers: shared hit=6\n         ->  Seq Scan on ledger_pending_transaction  (cost=0.00..0.00 rows=1 width=848) (actual time=0.003..0.003 rows=0 loops=1)\n Planning:\n   Buffers: shared hit=161 read=10 dirtied=2\n Planning Time: 0.619 ms\n Execution Time: 0.059 ms\n(11 rows)\n\n",
+    "settled_by_tx": "                                                     QUERY PLAN                                                      \n---------------------------------------------------------------------------------------------------------------------\n Seq Scan on ledger_settled_transaction  (cost=0.00..3.35 rows=1 width=89) (actual time=0.028..0.028 rows=0 loops=1)\n   Filter: (transaction_id = '00000000-0000-0000-0000-000000000001'::uuid)\n   Rows Removed by Filter: 108\n   Buffers: shared read=2\n Planning:\n   Buffers: shared hit=81 read=3 dirtied=2\n Planning Time: 0.699 ms\n Execution Time: 0.089 ms\n(8 rows)\n\n"
+  },
+  "postgres": {
+    "ts": 1794066143.8486657,
+    "wallet_count": 5000000,
+    "pending_count": 0,
+    "block_count": 13,
+    "ledger_wallet_bytes": 1367638016,
+    "active_connections": 10,
+    "wait_events": [
+      "Client:ClientRead=9",
+      "none:none=1"
+    ],
+    "ledger_wallet_ungranted_locks": 0
+  },
+  "limitations": [
+    {
+      "layer": "infrastructure",
+      "primary": "infrastructure",
+      "secondary": [
+        "architecture"
+      ],
+      "suite": "index_health",
+      "metric": "hot_lookup_plan",
+      "last_good": null,
+      "first_fail": "settled_by_tx",
+      "signal": "seq_scan_or_missing on ['settled_by_tx']; wallet_rows=5000000",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-5m-20261107T154100Z/suite_index_health.json"
+      ]
+    }
+  ]
+}

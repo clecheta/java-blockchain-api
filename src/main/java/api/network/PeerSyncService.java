@@ -23,7 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HTTP bootstrap and runtime catch-up against the root node (or local Mongo on root).
+ * HTTP bootstrap and runtime catch-up against the root/settler node.
+ * On the settler, catch-up reads PostgreSQL; peers call the settler over HTTP.
  *
  * @author Cleber Lecheta
  * https://encontreiJesus.com

@@ -6,7 +6,6 @@ import api.network.PeerSyncService;
 import api.network.Util;
 import api.repository.BlockRepository;
 import api.repository.DatabaseRepository;
-import api.repository.LedgerMigrationService;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.Wallet;
 import io.quarkus.runtime.ShutdownEvent;
@@ -44,9 +43,6 @@ public class ApplicationLifeCycle {
     DatabaseRepository databaseRepository;
 
     @Inject
-    LedgerMigrationService ledgerMigration;
-
-    @Inject
     PeerSyncService peerSyncService;
 
     @ConfigProperty(name = "mining.reward.wallet")
@@ -60,8 +56,6 @@ public class ApplicationLifeCycle {
 
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
-
-        ledgerMigration.migrateIfEnabled();
 
         //load chain from database
         loadFromDatabase();

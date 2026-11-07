@@ -1,0 +1,14 @@
+{
+  "suite": "restore_drill",
+  "ok": true,
+  "elapsed_s": 24.81752050796058,
+  "dump": "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-5m-20261107T154100Z/ledger-capacity.dump",
+  "expected_wallets": 5000202,
+  "observed_wallet_count_hint": 5000202,
+  "live_wallet_count": 5000202,
+  "backup_returncode": 0,
+  "restore_returncode": 0,
+  "backup_stderr_tail": "",
+  "restore_stdout_tail": " wallet_count \n--------------\n      5000202\n(1 row)\n\n block_count \n-------------\n          87\n(1 row)\n\nRestore drill passed in database blockchain_restore_drill\n",
+  "restore_stderr_tail": ""
+}

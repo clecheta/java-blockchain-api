@@ -35,7 +35,6 @@ def run_suite_two_node_accept(
     root: ApiClient,
     peer_url: str,
     out_dir: Path,
-    mongo_uri: str,
     *,
     attempts: int = 2_000,
     workers: int = 128,
@@ -48,7 +47,7 @@ def run_suite_two_node_accept(
 
     seed_balance = attempts * amount
     source = seed_funded_wallets(
-        1, seed_balance, mongo_uri=mongo_uri)[0]
+        1, seed_balance)[0]
     destination_result = root.create_wallet(
         f"capacity-two-node-dest-{time.time_ns()}")
     if not destination_result.ok or not isinstance(destination_result.body, dict):

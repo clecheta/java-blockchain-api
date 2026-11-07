@@ -21,7 +21,7 @@ sdk install maven 3.9.11
 
 Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
-CI resolves the `JBlock` library anonymously from the public [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages) (do not send `CI_JOB_TOKEN` to that other project — it returns 401). On version bumps, publish JBlock first so `0.x.y` exists before the API pipeline runs. Quarkus `%test` **disables Dev Services** and uses explicit Postgres/Mongo/Kafka URLs (`docker compose` locally; GitLab service aliases via `TEST_DB_HOST` / `TEST_MONGO_HOST` / `TEST_KAFKA_BOOTSTRAP_SERVERS` in CI). The package stage builds and pushes a JVM image to this project's Container Registry.
+CI resolves the `JBlock` library anonymously from the public [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages) (do not send `CI_JOB_TOKEN` to that other project — it returns 401). On version bumps, publish JBlock first so `0.x.y` exists before the API pipeline runs. Quarkus `%test` **disables Dev Services** and uses explicit Postgres + Kafka URLs (`docker compose` locally; GitLab service aliases via `TEST_DB_HOST` / `TEST_KAFKA_BOOTSTRAP_SERVERS` in CI). The package stage builds and pushes a JVM image to this project's Container Registry.
 
 ## Test locally (two nodes)
 
@@ -29,10 +29,10 @@ Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, 
 
 ```shell script
 # 0) library — only needed for unpushed java-blockchain changes
-#    (otherwise Maven pulls JBlock 0.1.0 from GitLab Packages)
+#    (otherwise Maven pulls JBlock 0.2.1 from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
-# 1) Postgres + Kafka + Mongo (required for ./mvnw test and quarkus:dev)
+# 1) Postgres + Kafka (required for ./mvnw test and quarkus:dev)
 docker compose up -d
 # 1b) unit/integration tests
 ./mvnw test
@@ -83,7 +83,7 @@ The script prints Alice/Bob and two options. Short path in the browser:
 
 If the root log shows `PoolResource … wrong usage`, the request is missing `uid` / `recipient` / `amount` / `type`.
 
-Unit/IT suite (`./mvnw test`) uses Quarkus Dev Services for Mongo + Kafka — no compose required.
+Unit/IT suite (`./mvnw test`) pins Postgres + Kafka URLs (Dev Services off). Run `docker compose up -d` first.
 
 ## Creating a native executable
 
@@ -104,7 +104,7 @@ If you do not have GraalVM installed, you can build the native executable in a c
 Then run the native executable with:
 
 ```shell script
-./target/api.blockchain-0.1.0-runner
+./target/api.blockchain-0.2.0-runner
 ```
 
 ## Capacity testing (ledger plane)

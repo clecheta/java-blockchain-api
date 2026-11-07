@@ -5,7 +5,7 @@ import io.quarkus.test.junit.QuarkusTestProfile;
 import java.util.Map;
 
 /**
- * Keeps Quarkus profile {@code test} so %test JDBC/Mongo/Kafka URLs apply.
+ * Keeps Quarkus profile {@code test} so %test JDBC/Kafka URLs apply.
  * Only toggles bank security — never re-enable Dev Services (CI has no Docker).
  */
 public class SecurityEnabledTestProfile implements QuarkusTestProfile {

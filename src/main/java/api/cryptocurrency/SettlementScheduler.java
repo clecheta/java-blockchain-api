@@ -1,5 +1,6 @@
 package api.cryptocurrency;
 
+import api.repository.PendingTransactionRepository;
 import io.quarkus.scheduler.Scheduled;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
@@ -12,6 +13,8 @@ import static io.quarkus.scheduler.Scheduled.ConcurrentExecution.SKIP;
 /**
  * Portable fallback scheduler. Production may invoke the same settlement
  * service from EventBridge Scheduler, Cloud Scheduler, or Azure Logic Apps.
+ * Gates on durable pending count so a settler restart still drains
+ * {@code ledger_pending_transaction} when the in-memory pool is empty.
  */
 @ApplicationScoped
 public class SettlementScheduler {
@@ -21,6 +24,9 @@ public class SettlementScheduler {
     @Inject
     TransactionMiner miner;
 
+    @Inject
+    PendingTransactionRepository pendingTransactions;
+
     @ConfigProperty(name = "mining.settlement.enabled", defaultValue = "false")
     boolean enabled;
 
@@ -29,7 +35,7 @@ public class SettlementScheduler {
 
     @Scheduled(cron = "${mining.settlement.cron:disabled}", concurrentExecution = SKIP)
     void settle() {
-        if (!enabled || miner.transactionPool.size() < minPoolSize) {
+        if (!enabled || pendingTransactions.count() < minPoolSize) {
             return;
         }
         if (miner.mineTransactions() == null) {

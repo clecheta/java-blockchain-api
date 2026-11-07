@@ -1,4 +1,4 @@
-# Local harness: Kafka 3.8 KRaft + Mongo 7 + Postgres 17.
+# Local harness: Kafka 3.8 KRaft + Postgres 17.
 # Required for `./mvnw test` — %test does not use Dev Services (see application.properties).
 
 services:
@@ -25,16 +25,6 @@ services:
       timeout: 5s
       retries: 12
       start_period: 15s
-
-  mongo:
-    image: mongo:7.0
-    ports:
-      - "27017:27017"
-    healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
 
   postgres:
     image: postgres:17-alpine

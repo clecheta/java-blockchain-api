@@ -1,0 +1,167 @@
+{
+  "run_id": "isolation-5m-20261107T154100Z",
+  "decision_rules": [
+    {
+      "id": "host_infrastructure",
+      "if": "Cliff vanishes on a larger host with same PG schema/code",
+      "primary_layer": "host_infrastructure"
+    },
+    {
+      "id": "postgresql",
+      "if": "Cliff worsens only as ledger_wallet/indexes grow; EXPLAIN seq scans or lock waits spike",
+      "primary_layer": "postgresql_infrastructure"
+    },
+    {
+      "id": "source_code",
+      "if": "Cliff persists on empty/small DB with same workers; CPU in ECDSA/JSON/Hibernate",
+      "primary_layer": "source_code"
+    },
+    {
+      "id": "architecture",
+      "if": "Correctness breaks (overspend, duplicate settle, lost pending) even when TPS is fine",
+      "primary_layer": "architecture"
+    },
+    {
+      "id": "kafka",
+      "if": "Accept TPS fine with skip-transaction-broadcast; collapses with fan-out on",
+      "primary_layer": "kafka_infrastructure"
+    },
+    {
+      "id": "boot_path",
+      "if": "Boot/restart hangs validating full chain after volume",
+      "primary_layer": "architecture+source_code"
+    }
+  ],
+  "cells": {
+    "populate": {
+      "ok": true,
+      "after_count": 5000000,
+      "rows_per_s": 60514.840123654045
+    },
+    "index_health": {
+      "ok": false,
+      "failures": [
+        "settled_by_tx"
+      ],
+      "wallet_count": 5000000
+    },
+    "db_pressure_contention": {
+      "ok": true,
+      "accepted": 500,
+      "settled": 500,
+      "negative_balance": false
+    },
+    "baseline_throughput": {
+      "ok": true,
+      "tx_per_s": 602.9280385164442,
+      "tx_ok": 36199,
+      "tx_fail": 1,
+      "kafka_quiet": false,
+      "stop_reason": "duration"
+    },
+    "restore_drill": {
+      "ok": true,
+      "elapsed_s": 24.81752050796058
+    },
+    "boot_budget": {
+      "ok": true,
+      "root_ready_s": 0.009379288007039577,
+      "peer_ready_s": 6.145531131012831,
+      "restart": true
+    },
+    "empty_db_hot_path": {
+      "ok": null,
+      "instruction": "On a wiped ledger (or fresh compose volume), re-run: run_battery.py --skip-money --skip-wallets --skip-contention --skip-two-node-accept --throughput-duration-s 60.0 --throughput-pairs 100. If tx/s stays near the populated baseline, primary layer is source_code (ECDSA/HTTP/ORM), not PostgreSQL row count."
+    }
+  },
+  "layer_calls": [
+    {
+      "cell": "index_health",
+      "primary_layer": "postgresql_infrastructure",
+      "signal": [
+        "settled_by_tx"
+      ]
+    }
+  ],
+  "planes_before": {
+    "captured_at": "2026-11-07T15:41:00Z",
+    "host": {
+      "ts": 1794066060.2260957,
+      "load1": 0.76,
+      "load5": 1.46,
+      "load15": 1.83,
+      "mem_available_kib": 13894360
+    },
+    "postgres": {
+      "ts": 1794066060.2261865,
+      "wallet_count": 131,
+      "pending_count": 0,
+      "block_count": 13,
+      "ledger_wallet_bytes": 163840,
+      "active_connections": 9,
+      "wait_events": [
+        "Client:ClientRead=8",
+        "none:none=1"
+      ],
+      "ledger_wallet_ungranted_locks": 0
+    },
+    "kafka": {
+      "ts": 1794066060.6601553,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794066060.7202923,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": null,
+      "jblock_settlement_count": null,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "planes_after_throughput": {
+    "captured_at": "2026-11-07T15:44:26Z",
+    "host": {
+      "ts": 1794066266.1577642,
+      "load1": 4.14,
+      "load5": 3.26,
+      "load15": 2.47,
+      "mem_available_kib": 14300148
+    },
+    "postgres": {
+      "ts": 1794066266.1578274,
+      "wallet_count": 5000202,
+      "pending_count": 0,
+      "block_count": 87,
+      "ledger_wallet_bytes": 1375444992,
+      "active_connections": 41,
+      "wait_events": [
+        "Client:ClientRead=40",
+        "none:none=1"
+      ],
+      "ledger_wallet_ungranted_locks": 0
+    },
+    "kafka": {
+      "ts": 1794066266.7011554,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794066266.759926,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": 36700.0,
+      "jblock_settlement_count": 76.0,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "how_to_read": "Compare cells using decision_rules. Do not collapse host/PG/Kafka into a single 'infrastructure' bucket when assigning the next change."
+}

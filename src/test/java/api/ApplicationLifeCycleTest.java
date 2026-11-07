@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Startup wiring with Dev Services Mongo/Kafka — empty DB is a valid baseline.
+ * Startup wiring against compose Postgres + Kafka — empty DB is a valid baseline.
  */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)

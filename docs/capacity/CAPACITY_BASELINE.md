@@ -9,8 +9,9 @@ interpret the battery: [README.md](README.md). Limit classification:
 |-------|-------|
 | Prior G1 secured comparable | [`evidence/20261106T210338Z/`](evidence/20261106T210338Z/) |
 | Escalated secured battery (canonical) | [`evidence/20261107T003922Z/`](evidence/20261107T003922Z/) |
+| Isolation matrix at 5M accounts | [`evidence/isolation-5m-20261107T154100Z/`](evidence/isolation-5m-20261107T154100Z/) |
 | Machine | 13th Gen Intel i7-1355U, 12 threads, ~30 GiB RAM |
-| Runtime | Two Quarkus JVMs, PostgreSQL 17, Kafka, authentication and idempotency enabled, Flyway V3 durable pending |
+| Runtime | Two Quarkus JVMs, PostgreSQL 17, Kafka (Postgres-only ledger; no Mongo), authentication and idempotency enabled, Flyway V3 durable pending |
 
 ## Money
 
@@ -30,6 +31,17 @@ unsafe integer numbers are rejected.
 | One-run create sweep | **100,000** wallets, zero failures |
 | Create latency | p50 86.3 ms; p95 156.5 ms; p99 193.0 ms |
 | Stop reason | configured hard cap, not a discovered failure |
+| Bulk synthetic populate (isolation 5M) | **5,000,000** `ledger_wallet` rows at ~60.5k rows/s |
+
+## Isolation matrix at 5M (Postgres-only)
+
+| Cell | Result |
+|------|--------|
+| Baseline accept TPS | **602.928** tx/s (100 pairs, 60 s; 36,199 ok / 1 fail) |
+| Suite D contention | **ok** — 500 accepted = 500 settled; no negatives |
+| Restore drill | **ok** (~24.8 s) |
+| Boot restart | **ok** — root ready ~9 ms |
+| Index health | wallet keyed Index Scan; `settled_by_tx` Seq Scan on tiny fence table (PK present) |
 
 ## Transfer acceptance and settlement
 

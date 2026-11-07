@@ -102,7 +102,7 @@ def _settle_once(
     }
 
 
-def _try_amount(api: ApiClient, amount: int, mongo_uri: str) -> dict[str, Any]:
+def _try_amount(api: ApiClient, amount: int) -> dict[str, Any]:
     """Seed treasury with amount+buffer, transfer `amount` to fresh dest, mine."""
     # Seed slightly above amount so balance check is meaningful; clamp for Long.MAX
     if amount >= 9_223_372_036_854_775_807:
@@ -113,7 +113,7 @@ def _try_amount(api: ApiClient, amount: int, mongo_uri: str) -> dict[str, Any]:
         send = amount
 
     try:
-        wallets = seed_funded_wallets(1, seed_balance, mongo_uri=mongo_uri)
+        wallets = seed_funded_wallets(1, seed_balance)
     except Exception as exc:  # noqa: BLE001
         return {
             "ok": False,
@@ -168,7 +168,6 @@ def _try_amount(api: ApiClient, amount: int, mongo_uri: str) -> dict[str, Any]:
 
 def _binary_search_ceiling(
     api: ApiClient,
-    mongo_uri: str,
     low_good: int,
     high_fail: int,
     max_steps: int = 12,
@@ -187,7 +186,7 @@ def _binary_search_ceiling(
         if not _wait_ready(api):
             log.append({"amount": mid, "ok": False, "phase": "ready", "error": "not ready"})
             break
-        trial = _try_amount(api, mid, mongo_uri)
+        trial = _try_amount(api, mid)
         log.append(trial)
         if trial.get("ok"):
             last_good = mid
@@ -200,13 +199,12 @@ def _binary_search_ceiling(
 
 def _settled_volume_ramp(
     api: ApiClient,
-    mongo_uri: str,
     chunk: int,
     max_chunks: int,
 ) -> dict[str, Any]:
     """Settle many chunks of `chunk` from one treasury until failure."""
     total_needed = chunk * max_chunks
-    wallets = seed_funded_wallets(1, total_needed, mongo_uri=mongo_uri)
+    wallets = seed_funded_wallets(1, total_needed)
     src = wallets[0]
     dest = _create_dest(api)
     settled = 0
@@ -268,7 +266,6 @@ def _settled_volume_ramp(
 def run_suite_money(
     api: ApiClient,
     out_dir: Path,
-    mongo_uri: str,
     *,
     volume_chunk: int = 1_000,
     volume_chunks: int = 1_000,
@@ -285,7 +282,7 @@ def run_suite_money(
             first_fail = amount
             first_fail_trial = trials[-1]
             break
-        trial = _try_amount(api, amount, mongo_uri)
+        trial = _try_amount(api, amount)
         trials.append(trial)
         if trial.get("ok"):
             last_good = amount
@@ -296,7 +293,7 @@ def run_suite_money(
 
     binary_log: list[dict[str, Any]] = []
     if last_good is not None and first_fail is not None and first_fail > last_good + 1:
-        lg, ff, binary_log = _binary_search_ceiling(api, mongo_uri, last_good, first_fail)
+        lg, ff, binary_log = _binary_search_ceiling(api, last_good, first_fail)
         last_good, first_fail = lg, ff
         trials.extend(binary_log)
 
@@ -305,7 +302,7 @@ def run_suite_money(
     if last_good and last_good >= 10:
         chunk = min(volume_chunk, last_good)
         volume_result = _settled_volume_ramp(
-            api, mongo_uri, chunk=chunk, max_chunks=volume_chunks)
+            api, chunk=chunk, max_chunks=volume_chunks)
 
     limitations: list[dict[str, Any]] = []
     if first_fail_trial is not None:

@@ -2,14 +2,13 @@
 # Full HTTP multi-node smoke (no UI) — api#41 alternative A / best cost-benefit for api#40.
 #
 # Prerequisites:
-#   docker-compose up -d          # Kafka
-#   MongoDB on mongodb://localhost:27017
+#   docker compose up -d          # Postgres + Kafka
 #   Root:  ./mvnw quarkus:dev                          # :8018 group 18
 #   Peer:  ./mvnw quarkus:dev -Dquarkus.profile=node   # :8081 group 81
 #
 # What it does:
 #   1) wait health on both nodes
-#   2) seed funded src wallet in Mongo (HTTP create is always balance 0)
+#   2) create and fund src wallet via HTTP (PostgreSQL ledger)
 #   3) create dest wallet via HTTP
 #   4) pool tx + mine on root
 #   5) assert peer cryptochain tip advanced and tip hash matches root
@@ -18,7 +17,6 @@ set -euo pipefail
 
 ROOT="${ROOT_URL:-http://localhost:8018}"
 PEER="${PEER_URL:-http://localhost:8081}"
-MONGO_URI="${MONGO_URI:-mongodb://localhost:27017}"
 AMOUNT="${SMOKE_AMOUNT:-20}"
 CLIENT_KEY="${BANK_CLIENT_API_KEY:-local-client-only-change-me}"
 SERVICE_KEY="${BANK_SERVICE_API_KEY:-local-development-only-change-me}"

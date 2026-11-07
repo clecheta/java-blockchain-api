@@ -63,7 +63,6 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument("--base-url", default="http://localhost:8018")
     p.add_argument("--peer-url", default="http://localhost:8081")
-    p.add_argument("--mongo-uri", default="mongodb://localhost:27017")
     p.add_argument("--run-id", default=None)
     p.add_argument(
         "--populate-accounts",
@@ -153,7 +152,6 @@ def main() -> int:
             contention = run_suite_contention(
                 api,
                 out_dir,
-                args.mongo_uri,
                 attempts=500,
                 workers=64,
             )
@@ -200,7 +198,6 @@ def main() -> int:
             tp = run_suite_throughput(
                 api,
                 out_dir,
-                args.mongo_uri,
                 duration_s=args.throughput_duration_s,
                 wallet_pairs=args.throughput_pairs,
                 workers=args.throughput_workers,

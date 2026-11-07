@@ -5,9 +5,9 @@
 | Item | Value |
 |------|-------|
 | App | Single root Quarkus JVM on `:8018` |
-| Infra | Docker Compose Mongo 7 + Kafka 3.8 |
+| Infra | Docker Compose PostgreSQL 17 + Kafka 3.8 |
 | Units | Ledger `$` (integer-like amounts), not FX |
-| Funding | `CapacityWalletSeeder` (HTTP create always starts at 0) |
+| Funding | HTTP create + `POST /W4LL37/fUND` (create always starts at 0) |
 | Post-check | `scripts/smoke-two-nodes.sh` at comfortable load (not part of ceiling search) |
 
 ## Suites
@@ -39,8 +39,8 @@ Every cliff is tagged with exactly one **primary** layer:
 | Layer | Meaning |
 |-------|---------|
 | `architecture` | Product/design constraints (mine gate, one tx/sender, full-chain balance walk, create@0) |
-| `source_code` | Fixable in app/library (`WalletCodec` long decode, serializers, balance bugs) |
-| `infrastructure` | Kafka, Mongo, JVM heap, host CPU/RAM/disk, Docker defaults |
+| `source_code` | Fixable in app/library (serializers, balance bugs, hot path) |
+| `infrastructure` | Kafka, PostgreSQL, JVM heap, host CPU/RAM/disk, Docker defaults |
 
 Rules: see `scripts/capacity/lib_classify.py`. Machine-readable: `evidence/<run-id>/limitations.json`.
 

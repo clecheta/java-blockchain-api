@@ -49,13 +49,27 @@ Evidence: [`isolation-1m-20261107T013017Z`](evidence/isolation-1m-20261107T01301
 | Restore drill at 1M | ok (~15 s) | PostgreSQL OK locally | Managed PITR still open |
 | Boot restart + hydrate | ready in tens of ms | Boot confounder mitigated | Keep `trust-persisted-chain` |
 
-**Plan read:** the volume-diagnosis objective at **1M** is met on this laptop.
-Answer to “code vs PG vs Kafka?” locally: **mostly source code**, with a small
-Kafka publish tax. That does **not** close scale. Tests must next evolve on a
-sized host through **5M → 10M → 50M → 100M accounts** while stressing
-**high/realistic transfer amounts** (Suite A/C funding and settlement volume),
-not only unit-sized TPS filler. Mid-market checkpoint ~40M; stretch bar 100M.
-Tracked on [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20).
+### Failure-layer verdict (local 5M matrix)
+
+Evidence: [`isolation-5m-20261107T154100Z`](evidence/isolation-5m-20261107T154100Z/)
+(`isolation_summary.json`, `failure_layer_verdict.json`). Postgres-only cutover
+(no Mongo). Same host class as the 1M matrix.
+
+| Cliff / cell | Measured | Primary layer | Next change |
+|--------------|----------|---------------|-------------|
+| Bulk populate 5M wallets | ~60.5k rows/s; ~83 s insert | PostgreSQL tooling OK | Stage 10M → 50M → 100M on sized PG |
+| Index health at 5M | wallet keyed lookups Index Scan; `settled_by_tx` Seq Scan on ~108-row fence | PG noise on tiny fence table (PK exists) | Tighten EXPLAIN gate; re-check after settled history grows |
+| Suite D on 5M ledger | 500 accepted = 500 settled; no negatives | Architecture OK | Keep durable reservation |
+| Baseline accept TPS | **602.9**/s (100 pairs, 60 s) | **Source code** (primary) | ECDSA/HTTP/ORM hot path; host secondary |
+| Restore drill at 5M | ok (~25 s) | PostgreSQL OK locally | Managed PITR still open |
+| Boot restart + hydrate | root ready ~9 ms; peer ~6 s with restart | Boot confounder mitigated | Keep `trust-persisted-chain` |
+
+**Plan read:** the volume-diagnosis objective at **5M** is met on this laptop after
+the Mongo removal cutover. Answer to “code vs PG vs Kafka?” locally remains
+**mostly source code**. G2 (1,000 accepted tx/s) is still open. Next stages on a
+sized host: **10M → 50M → 100M accounts** with high/realistic transfer amounts.
+Tracked on [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20)
+and [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43).
 
 ## Architecture
 

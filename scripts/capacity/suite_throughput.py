@@ -31,7 +31,6 @@ def _wait_ready(api: ApiClient, attempts: int = 20) -> bool:
 def run_suite_throughput(
     api: ApiClient,
     out_dir: Path,
-    mongo_uri: str,
     *,
     duration_s: float = DEFAULT_DURATION_S,
     wallet_pairs: int = DEFAULT_WALLET_PAIRS,
@@ -65,7 +64,7 @@ def run_suite_throughput(
         return result
 
     # Seed N funded senders; create N HTTP destinations (balance 0).
-    senders = seed_funded_wallets(wallet_pairs, seed_balance, mongo_uri=mongo_uri)
+    senders = seed_funded_wallets(wallet_pairs, seed_balance)
     dests: list[dict[str, Any]] = []
     for i in range(wallet_pairs):
         r = api.create_wallet(f"capacity-tp-dest-{i:04d}-{time.time_ns()}")
