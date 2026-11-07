@@ -126,7 +126,7 @@
     <repositories>
         <repository>
             <id>gitlab-maven</id>
-            <url>https://git.okaut.com/api/v4/projects/17/packages/maven</url>
+            <url>https://gitlab.com/api/v4/projects/59165869/packages/maven</url>
         </repository>
     </repositories>
     <build>

@@ -21,12 +21,15 @@ sdk install maven 3.9.11
 
 Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
+CI resolves the `JBlock` library from the [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages). The `integration` job runs Quarkus tests against Postgres, MongoDB, and Kafka services (Dev Services disabled). The package stage builds and pushes a JVM image to this project's Container Registry.
+
 ## Test locally (two nodes)
 
-Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, and the sibling `java-blockchain` library.
+Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, and the `JBlock` library (from the Package Registry, or a sibling install for unpublished library changes).
 
 ```shell script
-# 0) library (once)
+# 0) library — only needed for unpushed java-blockchain changes
+#    (otherwise Maven pulls JBlock 1.0-SNAPSHOT from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
 # 1) Kafka + Mongo

@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
   DOCKER_DRIVER: overlay
-  SPRING_PROFILES_ACTIVE: gitlab-ci
+  DOCKER_TLS_CERTDIR: "/certs"
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -13,12 +13,15 @@ stages:
   - build
   - package
 
-# Explicit Mongo/Kafka services; Dev Services disabled so CI does not need Docker-in-Docker.
+# Explicit Postgres/Mongo/Kafka services; Dev Services disabled so CI does not need Docker-in-Docker.
 integration:
   stage: test
   image: maven:3.9.11-eclipse-temurin-25
   variables:
     FF_NETWORK_PER_BUILD: 1
+    POSTGRES_DB: blockchain
+    POSTGRES_USER: blockchain
+    POSTGRES_PASSWORD: blockchain
     KAFKA_NODE_ID: "1"
     KAFKA_PROCESS_ROLES: broker,controller
     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://:9093
@@ -31,6 +34,8 @@ integration:
     KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
     CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
   services:
+    - name: postgres:16
+      alias: postgres
     - name: mongo:7.0
       alias: blockchain_db
     - name: apache/kafka-native:3.8.1
@@ -38,16 +43,20 @@ integration:
   script:
     - >
       mvn test -s ci_settings.xml
+      -Dquarkus.datasource.devservices.enabled=false
       -Dquarkus.mongodb.devservices.enabled=false
       -Dquarkus.kafka.devservices.enabled=false
+      -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/blockchain
+      -Dquarkus.datasource.username=blockchain
+      -Dquarkus.datasource.password=blockchain
       -Dquarkus.mongodb.connection-string=mongodb://blockchain_db:27017
       -Dkafka.bootstrap.servers=kafka:9092
       -Dquarkus.http.test-port=0
 
-
 graalvm.native:
   stage: build
   image: ghcr.io/graalvm/native-image-community:25.0.0
+  needs: ["integration"]
   script:
     - ./mvnw package -s ci_settings.xml -Pnative -DskipTests=true
   artifacts:
@@ -55,21 +64,36 @@ graalvm.native:
       - target/*-runner
   allow_failure: true
 
-docker.test:
+jvm.package:
+  stage: build
+  image: maven:3.9.11-eclipse-temurin-25
+  needs: ["integration"]
+  script:
+    - mvn package -s ci_settings.xml -DskipTests
+  artifacts:
+    paths:
+      - target/quarkus-app/
+
+docker.jvm:
   stage: package
-  image:
-    name: docker:dind
-  tags:
-    - dind
+  image: docker:24
+  services:
+    - name: docker:24-dind
+      alias: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  needs: ["jvm.package"]
   before_script:
     - docker info
-    - docker login -u gitlab-ci-token -p $INFRA_TEST_TOKEN $CI_REGISTRY
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
-    - docker build -f src/main/docker/Dockerfile.native -t $CI_REGISTRY/infra/test/api.blockchain:$CI_COMMIT_SHORT_SHA .
-    - docker tag $CI_REGISTRY/infra/test/api.blockchain:$CI_COMMIT_SHORT_SHA $CI_REGISTRY/infra/test/api.blockchain:latest
-    - docker push $CI_REGISTRY/infra/test/api.blockchain:$CI_COMMIT_SHORT_SHA
-    - docker push $CI_REGISTRY/infra/test/api.blockchain:latest
+    - docker build -f src/main/docker/Dockerfile.jvm -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
+    - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   environment:
     name: test
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
