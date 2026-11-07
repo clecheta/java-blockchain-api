@@ -13,8 +13,8 @@ stages:
   - build
   - package
 
-# Explicit Postgres/Mongo/Kafka services. Profile %gitlab-ci overrides %test Dev Services
-# (plain QUARKUS_DATASOURCE_* ENV lost to %test.quarkus.datasource.devservices.enabled=true).
+# Explicit Postgres/Mongo/Kafka services. Maven profile "gitlab-ci" (env.GITLAB_CI)
+# injects Surefire system properties — @QuarkusTest ignores QUARKUS_PROFILE overlays.
 integration:
   stage: test
   image: maven:3.9.11-eclipse-temurin-25
@@ -23,7 +23,6 @@ integration:
     POSTGRES_DB: blockchain
     POSTGRES_USER: blockchain
     POSTGRES_PASSWORD: blockchain
-    QUARKUS_PROFILE: "test,gitlab-ci"
     KAFKA_NODE_ID: "1"
     KAFKA_PROCESS_ROLES: broker,controller
     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://:9093
