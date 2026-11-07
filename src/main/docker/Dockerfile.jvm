@@ -18,23 +18,19 @@
 #
 # Then run the container using :
 #
-# docker run -i --rm -p 8080:8080 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" quarkus/code-with-quarkus-jvm
+# docker run -i --rm -p 8080:8080 -p 5005:5005 \
+#   -e JAVA_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" quarkus/code-with-quarkus-jvm
 #
 ###
 FROM eclipse-temurin:25-jre-jammy
 
-ARG RUN_JAVA_VERSION=1.3.8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
-# Install the run-java script; set up permissions for user `1001`
+# eclipse-temurin JRE images ship without curl/wget, so we launch the fast-jar directly
+# instead of downloading run-java.sh. JVM is container-aware; JAVA_OPTIONS stays overridable.
 RUN mkdir /deployments \
-    && chown 1001 /deployments \
-    && chmod "g+rwX" /deployments \
     && chown 1001:root /deployments \
-    && curl -fsSL https://repo1.maven.org/maven2/io/fabric8/run-java-sh/${RUN_JAVA_VERSION}/run-java-sh-${RUN_JAVA_VERSION}-sh.sh -o /deployments/run-java.sh \
-    && chown 1001 /deployments/run-java.sh \
-    && chmod 540 /deployments/run-java.sh
+    && chmod "g+rwX" /deployments
 
-# Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=1001 target/quarkus-app/lib/ /deployments/lib/
@@ -45,4 +41,4 @@ COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
 EXPOSE 8080
 USER 1001
 
-ENTRYPOINT [ "/deployments/run-java.sh" ]
+ENTRYPOINT [ "sh", "-c", "exec java -XX:MaxRAMPercentage=75 $JAVA_OPTIONS -jar /deployments/quarkus-run.jar" ]

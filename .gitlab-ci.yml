@@ -1,7 +1,5 @@
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  DOCKER_DRIVER: overlay
-  DOCKER_TLS_CERTDIR: "/certs"
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -69,10 +67,14 @@ integration:
 
 graalvm.native:
   stage: build
-  image: ghcr.io/graalvm/native-image-community:25.0.0
+  # The image's ENTRYPOINT is native-image; clear it so the runner can start a shell.
+  image:
+    name: ghcr.io/graalvm/native-image-community:25.0.0
+    entrypoint: [""]
   needs: ["integration"]
   script:
-    - ./mvnw package -Pnative -DskipTests=true
+    # Small SaaS runner has 8 GB RAM: cap the native-image builder heap to avoid OOM kills.
+    - ./mvnw -B package -Pnative -DskipTests=true -Dquarkus.native.native-image-xmx=6g
   artifacts:
     paths:
       - target/*-runner
@@ -91,17 +93,28 @@ jvm.package:
 docker.jvm:
   stage: package
   image: docker:24
+  # docker:24-dind already gets the "docker" alias from its image name.
   services:
-    - name: docker:24-dind
-      alias: docker
+    - docker:24-dind
   variables:
+    # dockerd reads DOCKER_DRIVER; the legacy "overlay" driver was removed in Docker 24
+    # and made dind exit at startup ("Cannot connect to the Docker daemon").
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: "/certs"
     DOCKER_HOST: tcp://docker:2376
     DOCKER_TLS_VERIFY: "1"
-    DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+    DOCKER_CERT_PATH: "/certs/client"
+  cache: []
   needs: ["jvm.package"]
   before_script:
+    - |
+      for i in $(seq 1 30); do
+        docker info >/dev/null 2>&1 && echo "docker ready" && break
+        echo "waiting for docker daemon ($i)..."
+        sleep 2
+      done
     - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
     - docker build -f src/main/docker/Dockerfile.jvm -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
     - docker tag "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" "$CI_REGISTRY_IMAGE:latest"
