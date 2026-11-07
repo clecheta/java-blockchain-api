@@ -1,0 +1,458 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 112.22664272395195,
+  "accept_window_s": 60.150014685001224,
+  "settlement_window_s": 110.82507641398115,
+  "duration_requested_s": 60.0,
+  "stop_reason": "duration",
+  "wallet_pairs": 100,
+  "workers": 64,
+  "mine_every": 500,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 32800,
+  "tx_fail": 0,
+  "mine_ok": 66,
+  "mine_fail": 0,
+  "mine_skipped": 0,
+  "settled_units": 32800,
+  "tx_per_s": 545.3032750161386,
+  "mine_per_s": 0.5955330881384691,
+  "dollars_per_s": 295.96189834760276,
+  "error_rate": 0.0,
+  "tx_latency": {
+    "count": 32800,
+    "p50_ms": 78.37564253713936,
+    "p95_ms": 160.95047729322684,
+    "p99_ms": 208.16121689684195,
+    "max_ms": 315.6628140131943,
+    "min_ms": 7.3848040192388
+  },
+  "mine_latency": {
+    "count": 66,
+    "p50_ms": 1240.1359214854892,
+    "p95_ms": 4363.94649023714,
+    "p99_ms": 5574.018905067345,
+    "max_ms": 6196.57523103524,
+    "min_ms": 303.80324501311406
+  },
+  "host_samples": [
+    {
+      "ts": 1794015037.2310195,
+      "load1": 4.64,
+      "load5": 2.24,
+      "load15": 1.69,
+      "mem_available_kib": 11239972
+    },
+    {
+      "ts": 1794015038.2896726,
+      "load1": 4.64,
+      "load5": 2.24,
+      "load15": 1.69,
+      "mem_available_kib": 11164900
+    },
+    {
+      "ts": 1794015039.331456,
+      "load1": 4.64,
+      "load5": 2.24,
+      "load15": 1.69,
+      "mem_available_kib": 11123124
+    },
+    {
+      "ts": 1794015040.3930254,
+      "load1": 4.51,
+      "load5": 2.26,
+      "load15": 1.69,
+      "mem_available_kib": 11087704
+    },
+    {
+      "ts": 1794015041.4316058,
+      "load1": 4.51,
+      "load5": 2.26,
+      "load15": 1.69,
+      "mem_available_kib": 11030140
+    },
+    {
+      "ts": 1794015042.5740843,
+      "load1": 4.51,
+      "load5": 2.26,
+      "load15": 1.69,
+      "mem_available_kib": 11281704
+    },
+    {
+      "ts": 1794015043.5870368,
+      "load1": 4.51,
+      "load5": 2.26,
+      "load15": 1.69,
+      "mem_available_kib": 11299316
+    },
+    {
+      "ts": 1794015044.6209385,
+      "load1": 4.51,
+      "load5": 2.26,
+      "load15": 1.69,
+      "mem_available_kib": 11446568
+    },
+    {
+      "ts": 1794015045.7507007,
+      "load1": 5.03,
+      "load5": 2.4,
+      "load15": 1.74,
+      "mem_available_kib": 11450788
+    },
+    {
+      "ts": 1794015046.930031,
+      "load1": 5.03,
+      "load5": 2.4,
+      "load15": 1.74,
+      "mem_available_kib": 11436392
+    },
+    {
+      "ts": 1794015048.1213603,
+      "load1": 5.03,
+      "load5": 2.4,
+      "load15": 1.74,
+      "mem_available_kib": 11446708
+    },
+    {
+      "ts": 1794015049.3701358,
+      "load1": 5.03,
+      "load5": 2.4,
+      "load15": 1.74,
+      "mem_available_kib": 11410932
+    },
+    {
+      "ts": 1794015050.4041984,
+      "load1": 5.27,
+      "load5": 2.49,
+      "load15": 1.78,
+      "mem_available_kib": 11240560
+    },
+    {
+      "ts": 1794015051.5013647,
+      "load1": 5.27,
+      "load5": 2.49,
+      "load15": 1.78,
+      "mem_available_kib": 11230284
+    },
+    {
+      "ts": 1794015052.6221404,
+      "load1": 5.27,
+      "load5": 2.49,
+      "load15": 1.78,
+      "mem_available_kib": 11201880
+    },
+    {
+      "ts": 1794015053.7827904,
+      "load1": 5.27,
+      "load5": 2.49,
+      "load15": 1.78,
+      "mem_available_kib": 11209248
+    },
+    {
+      "ts": 1794015054.9748456,
+      "load1": 5.49,
+      "load5": 2.59,
+      "load15": 1.81,
+      "mem_available_kib": 11223972
+    },
+    {
+      "ts": 1794015056.0793035,
+      "load1": 5.49,
+      "load5": 2.59,
+      "load15": 1.81,
+      "mem_available_kib": 11058332
+    },
+    {
+      "ts": 1794015057.1375375,
+      "load1": 5.49,
+      "load5": 2.59,
+      "load15": 1.81,
+      "mem_available_kib": 11331656
+    },
+    {
+      "ts": 1794015058.274049,
+      "load1": 5.49,
+      "load5": 2.59,
+      "load15": 1.81,
+      "mem_available_kib": 11303264
+    },
+    {
+      "ts": 1794015059.356718,
+      "load1": 5.49,
+      "load5": 2.59,
+      "load15": 1.81,
+      "mem_available_kib": 11291124
+    },
+    {
+      "ts": 1794015060.4299366,
+      "load1": 5.53,
+      "load5": 2.64,
+      "load15": 1.83,
+      "mem_available_kib": 11275232
+    },
+    {
+      "ts": 1794015061.540724,
+      "load1": 5.53,
+      "load5": 2.64,
+      "load15": 1.83,
+      "mem_available_kib": 11250756
+    },
+    {
+      "ts": 1794015062.6631105,
+      "load1": 5.53,
+      "load5": 2.64,
+      "load15": 1.83,
+      "mem_available_kib": 11213000
+    },
+    {
+      "ts": 1794015063.7032743,
+      "load1": 5.53,
+      "load5": 2.64,
+      "load15": 1.83,
+      "mem_available_kib": 11189004
+    },
+    {
+      "ts": 1794015064.8981764,
+      "load1": 6.13,
+      "load5": 2.82,
+      "load15": 1.89,
+      "mem_available_kib": 11157684
+    },
+    {
+      "ts": 1794015065.917174,
+      "load1": 6.13,
+      "load5": 2.82,
+      "load15": 1.89,
+      "mem_available_kib": 11134540
+    },
+    {
+      "ts": 1794015067.0221171,
+      "load1": 6.13,
+      "load5": 2.82,
+      "load15": 1.89,
+      "mem_available_kib": 10925104
+    },
+    {
+      "ts": 1794015068.0399466,
+      "load1": 6.13,
+      "load5": 2.82,
+      "load15": 1.89,
+      "mem_available_kib": 11124384
+    },
+    {
+      "ts": 1794015069.073559,
+      "load1": 6.13,
+      "load5": 2.82,
+      "load15": 1.89,
+      "mem_available_kib": 11095632
+    },
+    {
+      "ts": 1794015070.1739748,
+      "load1": 6.12,
+      "load5": 2.87,
+      "load15": 1.92,
+      "mem_available_kib": 11082336
+    },
+    {
+      "ts": 1794015071.310215,
+      "load1": 6.12,
+      "load5": 2.87,
+      "load15": 1.92,
+      "mem_available_kib": 11056488
+    },
+    {
+      "ts": 1794015072.4145668,
+      "load1": 6.12,
+      "load5": 2.87,
+      "load15": 1.92,
+      "mem_available_kib": 11021056
+    },
+    {
+      "ts": 1794015073.4222727,
+      "load1": 6.12,
+      "load5": 2.87,
+      "load15": 1.92,
+      "mem_available_kib": 11012656
+    },
+    {
+      "ts": 1794015074.5150917,
+      "load1": 6.12,
+      "load5": 2.87,
+      "load15": 1.92,
+      "mem_available_kib": 11008200
+    },
+    {
+      "ts": 1794015075.643236,
+      "load1": 6.11,
+      "load5": 2.92,
+      "load15": 1.94,
+      "mem_available_kib": 11045684
+    },
+    {
+      "ts": 1794015076.6704059,
+      "load1": 6.11,
+      "load5": 2.92,
+      "load15": 1.94,
+      "mem_available_kib": 11016028
+    },
+    {
+      "ts": 1794015077.6857011,
+      "load1": 6.11,
+      "load5": 2.92,
+      "load15": 1.94,
+      "mem_available_kib": 10872308
+    },
+    {
+      "ts": 1794015078.7983665,
+      "load1": 6.11,
+      "load5": 2.92,
+      "load15": 1.94,
+      "mem_available_kib": 10986016
+    },
+    {
+      "ts": 1794015079.9489534,
+      "load1": 6.34,
+      "load5": 3.02,
+      "load15": 1.98,
+      "mem_available_kib": 10896460
+    },
+    {
+      "ts": 1794015081.0625668,
+      "load1": 6.34,
+      "load5": 3.02,
+      "load15": 1.98,
+      "mem_available_kib": 10927728
+    },
+    {
+      "ts": 1794015082.190124,
+      "load1": 6.34,
+      "load5": 3.02,
+      "load15": 1.98,
+      "mem_available_kib": 10940692
+    },
+    {
+      "ts": 1794015083.2012427,
+      "load1": 6.34,
+      "load5": 3.02,
+      "load15": 1.98,
+      "mem_available_kib": 10875492
+    },
+    {
+      "ts": 1794015084.285848,
+      "load1": 6.34,
+      "load5": 3.02,
+      "load15": 1.98,
+      "mem_available_kib": 10868532
+    },
+    {
+      "ts": 1794015085.3944273,
+      "load1": 6.71,
+      "load5": 3.16,
+      "load15": 2.03,
+      "mem_available_kib": 10869008
+    },
+    {
+      "ts": 1794015086.4790096,
+      "load1": 6.71,
+      "load5": 3.16,
+      "load15": 2.03,
+      "mem_available_kib": 10857880
+    },
+    {
+      "ts": 1794015087.6409528,
+      "load1": 6.71,
+      "load5": 3.16,
+      "load15": 2.03,
+      "mem_available_kib": 10948756
+    },
+    {
+      "ts": 1794015088.7296367,
+      "load1": 6.71,
+      "load5": 3.16,
+      "load15": 2.03,
+      "mem_available_kib": 10928432
+    },
+    {
+      "ts": 1794015089.7860122,
+      "load1": 6.71,
+      "load5": 3.16,
+      "load15": 2.03,
+      "mem_available_kib": 10924228
+    },
+    {
+      "ts": 1794015090.8136394,
+      "load1": 6.49,
+      "load5": 3.17,
+      "load15": 2.04,
+      "mem_available_kib": 10904008
+    },
+    {
+      "ts": 1794015091.9091375,
+      "load1": 6.49,
+      "load5": 3.17,
+      "load15": 2.04,
+      "mem_available_kib": 10902516
+    },
+    {
+      "ts": 1794015092.9711285,
+      "load1": 6.49,
+      "load5": 3.17,
+      "load15": 2.04,
+      "mem_available_kib": 10886904
+    },
+    {
+      "ts": 1794015094.0953116,
+      "load1": 6.49,
+      "load5": 3.17,
+      "load15": 2.04,
+      "mem_available_kib": 10936528
+    },
+    {
+      "ts": 1794015095.1860266,
+      "load1": 7.02,
+      "load5": 3.33,
+      "load15": 2.1,
+      "mem_available_kib": 10917808
+    },
+    {
+      "ts": 1794015096.312191,
+      "load1": 7.02,
+      "load5": 3.33,
+      "load15": 2.1,
+      "mem_available_kib": 10911780
+    }
+  ],
+  "errors": [],
+  "rounds": 328,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 545.3033,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=32800 tx_fail=0 err_rate=0.000; pairs=100 workers=64",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-1m-20261107T013017Z/cell_baseline_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 66,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=66 mine_fail=0 mine_every=500",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-1m-20261107T013017Z/cell_baseline_throughput.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "run_id": "isolation-20261107T012705Z",
+  "decision_rules": [
+    {
+      "id": "host_infrastructure",
+      "if": "Cliff vanishes on a larger host with same PG schema/code",
+      "primary_layer": "host_infrastructure"
+    },
+    {
+      "id": "postgresql",
+      "if": "Cliff worsens only as ledger_wallet/indexes grow; EXPLAIN seq scans or lock waits spike",
+      "primary_layer": "postgresql_infrastructure"
+    },
+    {
+      "id": "source_code",
+      "if": "Cliff persists on empty/small DB with same workers; CPU in ECDSA/JSON/Hibernate",
+      "primary_layer": "source_code"
+    },
+    {
+      "id": "architecture",
+      "if": "Correctness breaks (overspend, duplicate settle, lost pending) even when TPS is fine",
+      "primary_layer": "architecture"
+    },
+    {
+      "id": "kafka",
+      "if": "Accept TPS fine with skip-transaction-broadcast; collapses with fan-out on",
+      "primary_layer": "kafka_infrastructure"
+    },
+    {
+      "id": "boot_path",
+      "if": "Boot/restart hangs validating full chain after volume",
+      "primary_layer": "architecture+source_code"
+    }
+  ],
+  "cells": {
+    "index_health": {
+      "ok": true,
+      "failures": [],
+      "wallet_count": 101630
+    },
+    "db_pressure_contention": {
+      "ok": true,
+      "accepted": 500,
+      "settled": 500,
+      "negative_balance": false
+    },
+    "baseline_throughput": {
+      "ok": true,
+      "tx_per_s": 746.6180404148204,
+      "tx_ok": 10000,
+      "tx_fail": 1770,
+      "kafka_quiet": false,
+      "stop_reason": "error_rate"
+    },
+    "restore_drill": {
+      "ok": true,
+      "elapsed_s": 9.868101710977498
+    },
+    "empty_db_hot_path": {
+      "ok": null,
+      "instruction": "On a wiped ledger (or fresh compose volume), re-run: run_battery.py --skip-money --skip-wallets --skip-contention --skip-two-node-accept --throughput-duration-s 20.0 --throughput-pairs 10. If tx/s stays near the populated baseline, primary layer is source_code (ECDSA/HTTP/ORM), not PostgreSQL row count."
+    }
+  },
+  "layer_calls": [],
+  "planes_before": {
+    "captured_at": "2026-11-07T01:27:05Z",
+    "host": {
+      "ts": 1794014825.1756003,
+      "load1": 1.49,
+      "load5": 1.0,
+      "load15": 1.28,
+      "mem_available_kib": 10154052
+    },
+    "postgres": {
+      "ts": 1794014825.1756556,
+      "wallet_count": 101630,
+      "pending_count": 0,
+      "block_count": 477,
+      "ledger_wallet_bytes": 82182144,
+      "active_connections": 33,
+      "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+    },
+    "kafka": {
+      "ts": 1794014825.5307152,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794014825.5786295,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": 235210.0,
+      "jblock_settlement_count": 482.0,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "planes_after_throughput": {
+    "captured_at": "2026-11-07T01:27:40Z",
+    "host": {
+      "ts": 1794014860.1361337,
+      "load1": 2.87,
+      "load5": 1.42,
+      "load15": 1.41,
+      "mem_available_kib": 10344700
+    },
+    "postgres": {
+      "ts": 1794014860.1362314,
+      "wallet_count": 101652,
+      "pending_count": 0,
+      "block_count": 498,
+      "ledger_wallet_bytes": 82198528,
+      "active_connections": 57,
+      "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+    },
+    "kafka": {
+      "ts": 1794014860.5076354,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794014860.5653656,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": 247480.0,
+      "jblock_settlement_count": 505.0,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "how_to_read": "Compare cells using decision_rules. Do not collapse host/PG/Kafka into a single 'infrastructure' bucket when assigning the next change."
+}

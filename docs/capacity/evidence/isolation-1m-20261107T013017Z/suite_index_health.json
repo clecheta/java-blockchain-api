@@ -1,0 +1,23 @@
+{
+  "suite": "index_health",
+  "ok": true,
+  "wallet_count": 1000000,
+  "seq_scan_fail_above_rows": 10000,
+  "failures": [],
+  "plans": {
+    "wallet_by_uid_hash": "                                                             QUERY PLAN                                                             \n------------------------------------------------------------------------------------------------------------------------------------\n Index Scan using ledger_wallet_pkey on ledger_wallet  (cost=0.42..8.44 rows=1 width=134) (actual time=0.020..0.021 rows=1 loops=1)\n   Index Cond: ((uid_hash)::text = 'ace32861ea5d61a42dbd2682ee37123a'::text)\n   Buffers: shared hit=4\n Planning:\n   Buffers: shared hit=130 read=4 dirtied=3\n Planning Time: 0.441 ms\n Execution Time: 0.044 ms\n(7 rows)\n\n",
+    "wallet_by_public_key": "                                                                            QUERY PLAN                                                                             \n-------------------------------------------------------------------------------------------------------------------------------------------------------------------\n Index Scan using ledger_wallet_public_key_key on ledger_wallet  (cost=0.55..8.57 rows=1 width=134) (actual time=0.068..0.068 rows=1 loops=1)\n   Index Cond: (public_key = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMubyjLMZ7Hauf3NeySn803ZR3nTKo58i6Um4d7wjhvUZJwcYVyzAImbYa4XfyHGbxoBLMCM1mJufaqapdAKnFw=='::text)\n   Buffers: shared hit=2 read=3\n Planning:\n   Buffers: shared hit=134\n Planning Time: 1.280 ms\n Execution Time: 0.232 ms\n(7 rows)\n\n",
+    "pending_by_created": "                                                            QUERY PLAN                                                            \n----------------------------------------------------------------------------------------------------------------------------------\n Limit  (cost=0.01..0.02 rows=1 width=848) (actual time=0.052..0.053 rows=0 loops=1)\n   Buffers: shared hit=6\n   ->  Sort  (cost=0.01..0.02 rows=1 width=848) (actual time=0.051..0.052 rows=0 loops=1)\n         Sort Key: created_at, transaction_id\n         Sort Method: quicksort  Memory: 25kB\n         Buffers: shared hit=6\n         ->  Seq Scan on ledger_pending_transaction  (cost=0.00..0.00 rows=1 width=848) (actual time=0.005..0.005 rows=0 loops=1)\n Planning:\n   Buffers: shared hit=156 read=9 dirtied=1\n Planning Time: 1.131 ms\n Execution Time: 0.091 ms\n(11 rows)\n\n",
+    "settled_by_tx": "                                                                         QUERY PLAN                                                                          \n-------------------------------------------------------------------------------------------------------------------------------------------------------------\n Index Scan using ledger_settled_transaction_pkey on ledger_settled_transaction  (cost=0.42..8.44 rows=1 width=89) (actual time=0.033..0.033 rows=0 loops=1)\n   Index Cond: (transaction_id = '00000000-0000-0000-0000-000000000001'::uuid)\n   Buffers: shared read=3\n Planning:\n   Buffers: shared hit=110 read=4 dirtied=2\n Planning Time: 0.865 ms\n Execution Time: 0.108 ms\n(7 rows)\n\n"
+  },
+  "postgres": {
+    "ts": 1794015031.3650274,
+    "wallet_count": 1000000,
+    "pending_count": 0,
+    "block_count": 498,
+    "ledger_wallet_bytes": 286736384,
+    "active_connections": 16,
+    "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+  },
+  "limitations": []
+}

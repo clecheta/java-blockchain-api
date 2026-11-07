@@ -1,0 +1,44 @@
+{
+  "suite": "D_contention",
+  "elapsed_s": 4.308135901985224,
+  "attempts": 500,
+  "workers": 64,
+  "amount": 1,
+  "seed_balance": 500,
+  "pre_settled": 0,
+  "accepted": 500,
+  "rejected": 0,
+  "settled": 500,
+  "statuses": {
+    "200": 500
+  },
+  "latency": {
+    "count": 500,
+    "p50_ms": 118.66113703581505,
+    "p95_ms": 229.919210411026,
+    "p99_ms": 299.77402456162963,
+    "max_ms": 398.6500090104528,
+    "min_ms": 7.776700018439442
+  },
+  "source_balance": "0",
+  "expected_balance": "0",
+  "negative_balance": false,
+  "settlement_errors": [],
+  "ok": true,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "D_contention",
+      "metric": "same_wallet_reservation",
+      "last_good": 500,
+      "first_fail": null,
+      "signal": "attempts=500 accepted=500 rejected=0 settled=500 balance=0 expected=0",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-20261107T012705Z/suite_contention.json"
+      ]
+    }
+  ]
+}

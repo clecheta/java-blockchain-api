@@ -3,7 +3,9 @@
 **Human guide (why / how to run / how to evaluate):** [`docs/capacity/README.md`](../../docs/capacity/README.md)
 
 Local ceiling hunt for ledger `$` volume, wallet count, and host throughput.
-Results classify each cliff as **architecture**, **source code**, or **infrastructure**.
+Results classify each cliff as **architecture**, **source code**, or
+**infrastructure** — and the isolation matrix further splits infrastructure into
+**host / PostgreSQL / Kafka**.
 
 Phase 2 (JMeter/k6 sustained load) is out of scope here — see GitLab api#20 / api#43.
 
@@ -49,6 +51,9 @@ Useful flags:
 | `--peer-url` | `http://localhost:8081` | Peer for Suite E |
 | `--skip-smoke` | off | Skip `smoke-two-nodes.sh` post-check |
 | `--skip-money` / `--skip-wallets` / `--skip-throughput` / `--skip-contention` / `--skip-two-node-accept` | off | Skip a suite |
+| `--populate-accounts N` | `0` | Bulk synthetic `ledger_wallet` rows (fat PG; not ECDSA HTTP creates) |
+| `--require-wallet-count N` | `0` | Abort if wallet table is below N before behavioral suites |
+| `--run-index-health` | off | EXPLAIN gate on hot wallet/pending/settled lookups |
 
 Faster local dry-run:
 
@@ -83,6 +88,29 @@ Human reports (filled after a run):
 | C — throughput | Max this host can process | N funded senders, concurrent transfers, mine-every sweep |
 | D — contention | Same-wallet overspend under load | Parallel accepts against one funded sender |
 | E — two-node accept | Shared durable reservation across nodes | Concurrent accepts on root + peer |
+
+### Isolation matrix (failure-layer diagnosis)
+
+```bash
+.venv-capacity/bin/python scripts/capacity/run_isolation_matrix.py \
+  --populate-accounts 50000 \
+  --throughput-duration-s 45 --throughput-pairs 40
+```
+
+Cells: bulk populate → index health → DB-pressure contention → baseline
+throughput → restore drill → boot budget. Optional Kafka-quiet cell:
+
+1. Restart root with `-Dledger.diagnostic.skip-transaction-broadcast=true`
+2. Re-run with `--kafka-quiet --skip-populate`
+
+Compare `isolation_summary.json` cells using the decision table in
+[`docs/capacity/LIMITATIONS.md`](../../docs/capacity/LIMITATIONS.md).
+
+**Required evolution (sized host):** after local 1M diagnosis, raise
+`--populate-accounts` / stage evidence through **5M → 10M → 50M → 100M**
+and pair each stage with **high/realistic transfer amounts** in Suites A/C
+(large decimal-string values and settled volume), not only `amount=1`
+micro-transfers. Dormant rows alone do not pass a stage.
 
 Funding uses authenticated `POST /W4LL37/fUND` after HTTP wallet creation.
 Set `BANK_CLIENT_API_KEY` and `BANK_SERVICE_API_KEY` when the configured keys

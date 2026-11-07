@@ -1,0 +1,27 @@
+{
+  "suite": "populate_accounts",
+  "ok": true,
+  "target_count": 101700,
+  "before_count": 101652,
+  "after_count": 101700,
+  "inserted_requested": 48,
+  "elapsed_s": 0.5936617340194061,
+  "rows_per_s": 80.85390754851932,
+  "batches": [
+    {
+      "start": 101652,
+      "n": 48,
+      "elapsed_s": 0.059951215982437134
+    }
+  ],
+  "postgres": {
+    "ts": 1794014877.371715,
+    "wallet_count": 101700,
+    "pending_count": 0,
+    "block_count": 498,
+    "ledger_wallet_bytes": 82198528,
+    "active_connections": 57,
+    "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+  },
+  "note": "Synthetic bulk rows for PostgreSQL volume pressure; not API-created ECDSA wallets. Use Suite B for real create-path measurement."
+}

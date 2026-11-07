@@ -1,0 +1,60 @@
+{
+  "run_id": "isolation-1m-20261107T013017Z",
+  "population": 1000000,
+  "cells": {
+    "populate": {
+      "ok": true,
+      "after_count": 1000000,
+      "rows_per_s": 69353.81859241922
+    },
+    "index_health": {
+      "ok": true,
+      "failures": [],
+      "wallet_count": 1000000
+    },
+    "db_pressure_contention": {
+      "ok": true,
+      "accepted": 500,
+      "settled": 500,
+      "negative_balance": false
+    },
+    "baseline_throughput": {
+      "ok": true,
+      "tx_per_s": 545.3032750161386,
+      "tx_ok": 32800,
+      "tx_fail": 0,
+      "kafka_quiet": false,
+      "stop_reason": "duration"
+    },
+    "kafka_quiet_throughput": {
+      "ok": true,
+      "tx_per_s": 626.3693591660474,
+      "tx_ok": 37600,
+      "tx_fail": 0,
+      "kafka_quiet": true,
+      "stop_reason": "duration"
+    },
+    "restore_drill": {
+      "ok": true,
+      "elapsed_s": 15.346943009993993
+    },
+    "boot_budget_restart": {
+      "ok": true,
+      "root_ready_s": 0.023653651995118707,
+      "peer_ready_s": 0.008155171002727002,
+      "restart": true
+    },
+    "empty_db_hot_path": {
+      "ok": null,
+      "note": "Not wiped in this run; TPS at 1M (~545) is in the same band as prior smaller-DB runs (~512\u2013747), pointing to source_code not row-count."
+    }
+  },
+  "layer_calls": [
+    {
+      "cell": "baseline_vs_kafka_quiet",
+      "primary_layer": "source_code primary; kafka secondary",
+      "signal": "baseline=545.3 kafka_quiet=626.4 delta_pct=14.9"
+    }
+  ],
+  "how_to_read": "Compare cells using LIMITATIONS failure-layer verdict. Do not collapse host/PG/Kafka."
+}

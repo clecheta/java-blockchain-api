@@ -1,0 +1,47 @@
+{
+  "suite": "boot_budget",
+  "ok": true,
+  "restart": false,
+  "ready_budget_s": 120.0,
+  "root_ready_s": 0.02038438804447651,
+  "peer_ready_s": 0.008369926013983786,
+  "elapsed_s": 0.4507152260048315,
+  "notes": [],
+  "planes": {
+    "captured_at": "2026-11-07T01:27:56Z",
+    "host": {
+      "ts": 1794014876.7590466,
+      "load1": 2.38,
+      "load5": 1.39,
+      "load15": 1.4,
+      "mem_available_kib": 10176340
+    },
+    "postgres": {
+      "ts": 1794014876.7591496,
+      "wallet_count": 101652,
+      "pending_count": 0,
+      "block_count": 498,
+      "ledger_wallet_bytes": 82198528,
+      "active_connections": 57,
+      "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+    },
+    "kafka": {
+      "ts": 1794014877.1081476,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794014877.1579542,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": 247480.0,
+      "jblock_settlement_count": 505.0,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "layer_hint": null
+}

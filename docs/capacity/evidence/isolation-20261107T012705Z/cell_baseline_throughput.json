@@ -1,0 +1,572 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 29.56089924200205,
+  "accept_window_s": 13.393729402043391,
+  "settlement_window_s": 29.47774046001723,
+  "duration_requested_s": 20.0,
+  "stop_reason": "error_rate",
+  "wallet_pairs": 10,
+  "workers": 16,
+  "mine_every": 500,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 10000,
+  "tx_fail": 1770,
+  "mine_ok": 20,
+  "mine_fail": 0,
+  "mine_skipped": 0,
+  "settled_units": 10000,
+  "tx_per_s": 746.6180404148204,
+  "mine_per_s": 0.6784780545553494,
+  "dollars_per_s": 339.23902727767467,
+  "error_rate": 0.1503823279524214,
+  "tx_latency": {
+    "count": 11770,
+    "p50_ms": 7.794219010975212,
+    "p95_ms": 11.682469211518764,
+    "p99_ms": 14.861766102840182,
+    "max_ms": 26.023572019767016,
+    "min_ms": 2.1957599674351513
+  },
+  "mine_latency": {
+    "count": 20,
+    "p50_ms": 1515.074815513799,
+    "p95_ms": 2180.6101168534956,
+    "p99_ms": 2477.699373765499,
+    "max_ms": 2551.9716879935004,
+    "min_ms": 452.23506103502586
+  },
+  "host_samples": [
+    {
+      "ts": 1794014830.6537037,
+      "load1": 1.53,
+      "load5": 1.02,
+      "load15": 1.29,
+      "mem_available_kib": 10273672
+    },
+    {
+      "ts": 1794014831.6577446,
+      "load1": 1.53,
+      "load5": 1.02,
+      "load15": 1.29,
+      "mem_available_kib": 10278708
+    },
+    {
+      "ts": 1794014832.6620362,
+      "load1": 1.53,
+      "load5": 1.02,
+      "load15": 1.29,
+      "mem_available_kib": 10293132
+    },
+    {
+      "ts": 1794014833.6725087,
+      "load1": 1.53,
+      "load5": 1.02,
+      "load15": 1.29,
+      "mem_available_kib": 10299996
+    },
+    {
+      "ts": 1794014834.678631,
+      "load1": 1.53,
+      "load5": 1.02,
+      "load15": 1.29,
+      "mem_available_kib": 10329292
+    },
+    {
+      "ts": 1794014835.6856487,
+      "load1": 2.37,
+      "load5": 1.2,
+      "load15": 1.34,
+      "mem_available_kib": 10313072
+    },
+    {
+      "ts": 1794014836.688436,
+      "load1": 2.37,
+      "load5": 1.2,
+      "load15": 1.34,
+      "mem_available_kib": 10300268
+    },
+    {
+      "ts": 1794014837.692428,
+      "load1": 2.37,
+      "load5": 1.2,
+      "load15": 1.34,
+      "mem_available_kib": 10305224
+    },
+    {
+      "ts": 1794014838.6961753,
+      "load1": 2.37,
+      "load5": 1.2,
+      "load15": 1.34,
+      "mem_available_kib": 10315400
+    },
+    {
+      "ts": 1794014839.6981957,
+      "load1": 2.37,
+      "load5": 1.2,
+      "load15": 1.34,
+      "mem_available_kib": 10316668
+    },
+    {
+      "ts": 1794014840.7076962,
+      "load1": 2.82,
+      "load5": 1.31,
+      "load15": 1.38,
+      "mem_available_kib": 10313432
+    },
+    {
+      "ts": 1794014841.7094545,
+      "load1": 2.82,
+      "load5": 1.31,
+      "load15": 1.38,
+      "mem_available_kib": 10305136
+    },
+    {
+      "ts": 1794014842.7172496,
+      "load1": 2.82,
+      "load5": 1.31,
+      "load15": 1.38,
+      "mem_available_kib": 10310880
+    },
+    {
+      "ts": 1794014843.7217581,
+      "load1": 2.82,
+      "load5": 1.31,
+      "load15": 1.38,
+      "mem_available_kib": 10307820
+    }
+  ],
+  "errors": [
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0048217400326393545,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830591016675-2"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0065285880118608475,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830577170393-0"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006280939967837185,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830605167796-5"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0072447709972038865,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830586903714-1"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00663881201762706,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830609449971-6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00649495399557054,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830613874962-7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00801563001004979,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830595352267-3"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006703873979859054,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830624589176-9"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.007241064973641187,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830620115861-8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.008032284036744386,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830600251656-4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00632888701511547,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830577170393-0"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00607819197466597,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830591016675-2"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00508522498421371,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830613874962-7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.007011697976849973,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830586903714-1"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006389753019902855,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830600251656-4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006254134001210332,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830609449971-6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005058009992353618,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830620115861-8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005151943012606353,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830624589176-9"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.007682778988964856,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830595352267-3"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006959902006201446,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830605167796-5"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0028829220100305974,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830591016675-2"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0032173619838431478,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830595352267-3"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0029796019662171602,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830613874962-7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005179719999432564,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830577170393-0"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0057431309833191335,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830586903714-1"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005942305957432836,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830600251656-4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0055769809987396,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830605167796-5"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0042155960109084845,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830620115861-8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005160761997103691,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830609449971-6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00420711503829807,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830624589176-9"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005711378005798906,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830600251656-4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0062120340298861265,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830595352267-3"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0068574780016206205,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830586903714-1"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006733736023306847,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830591016675-2"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005544249026570469,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830605167796-5"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.008531717001460493,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830577170393-0"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005658095004037023,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830613874962-7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006665674038231373,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830609449971-6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005863758036866784,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830620115861-8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.00455106096342206,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830624589176-9"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0034010819508694112,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830577170393-0"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.004690473957452923,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830591016675-2"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.0048359360080212355,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830600251656-4"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.004701906000263989,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830613874962-7"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.007197375001851469,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830586903714-1"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006354262004606426,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830605167796-5"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.004723447025753558,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830620115861-8"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.006754694040864706,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830609449971-6"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.004733873007353395,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830624589176-9"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 429,
+      "elapsed_s": 0.005238245998043567,
+      "error": "Transfer velocity limit exceeded",
+      "uid": "capacity-funded-1794014830595352267-3"
+    }
+  ],
+  "rounds": 1176,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": null,
+      "first_fail": 746.618,
+      "signal": "stop=error_rate; tx_ok=10000 tx_fail=1770 err_rate=0.150; pairs=10 workers=16",
+      "http_status": 429,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-20261107T012705Z/cell_baseline_throughput.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 20,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=20 mine_fail=0 mine_every=500",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/isolation-20261107T012705Z/cell_baseline_throughput.json"
+      ]
+    }
+  ]
+}

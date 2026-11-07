@@ -1,0 +1,55 @@
+{
+  "suite": "boot_budget",
+  "ok": true,
+  "restart": true,
+  "ready_budget_s": 180.0,
+  "root_ready_s": 0.023653651995118707,
+  "peer_ready_s": 0.008155171002727002,
+  "elapsed_s": 5.743391409981996,
+  "notes": [
+    "kill 1481893267: [Errno 3] No such process",
+    "kill 1481938266: [Errno 3] No such process",
+    "restarted packaged root+peer"
+  ],
+  "planes": {
+    "captured_at": "2026-11-07T01:35:47Z",
+    "host": {
+      "ts": 1794015347.498385,
+      "load1": 2.39,
+      "load5": 3.12,
+      "load15": 2.3,
+      "mem_available_kib": 9719468
+    },
+    "postgres": {
+      "ts": 1794015347.4985366,
+      "wallet_count": 1000402,
+      "pending_count": 0,
+      "block_count": 641,
+      "ledger_wallet_bytes": 294232064,
+      "active_connections": 51,
+      "wait_events": [
+        "Client:ClientRead=50",
+        "none:none=1"
+      ],
+      "ledger_wallet_ungranted_locks": 0
+    },
+    "kafka": {
+      "ts": 1794015348.0424283,
+      "role": "fan_out_not_sot",
+      "topics": [],
+      "topics_ok": false
+    },
+    "app": {
+      "ts": 1794015348.1098437,
+      "base_url": "http://localhost:8018",
+      "ready_ok": true,
+      "ready_status": 200,
+      "metrics_ok": true,
+      "jblock_transfer_accept_count": 37600.0,
+      "jblock_settlement_count": 76.0,
+      "agroal_active_count": null,
+      "agroal_waiting_count": null
+    }
+  },
+  "layer_hint": null
+}

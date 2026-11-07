@@ -9,6 +9,8 @@ import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.List;
@@ -35,12 +37,22 @@ public class PublishService {
     @Channel("cryptochain-to-kafka")
     Emitter<CryptoBlockMessage> cryptochainEmitter;
 
+    /**
+     * Diagnostic-only: skip outbound transaction fan-out so capacity isolation
+     * can separate ledger accept cost from Kafka publish cost.
+     */
+    @ConfigProperty(name = "ledger.diagnostic.skip-transaction-broadcast", defaultValue = "false")
+    boolean skipTransactionBroadcast;
+
     public void broadcastChainBlock(Block block, long senderHeight) {
         ChainBlockMessage message = new ChainBlockMessage(Util.getHostName(), block, senderHeight);
         blockchainEmitter.send(message);
     }
 
     public void broadcastTransaction(PayTypeTransaction transaction) {
+        if (skipTransactionBroadcast) {
+            return;
+        }
         transactionEmitter.send(transaction);
     }
 

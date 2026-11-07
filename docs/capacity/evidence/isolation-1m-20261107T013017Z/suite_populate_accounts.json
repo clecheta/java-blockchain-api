@@ -1,0 +1,112 @@
+{
+  "suite": "populate_accounts",
+  "ok": true,
+  "target_count": 1000000,
+  "before_count": 101700,
+  "after_count": 1000000,
+  "inserted_requested": 898300,
+  "elapsed_s": 12.95242024800973,
+  "rows_per_s": 69353.81859241922,
+  "batches": [
+    {
+      "start": 101700,
+      "n": 50000,
+      "elapsed_s": 0.6670353569788858
+    },
+    {
+      "start": 151700,
+      "n": 50000,
+      "elapsed_s": 0.6472046229755506
+    },
+    {
+      "start": 201700,
+      "n": 50000,
+      "elapsed_s": 0.6996373679721728
+    },
+    {
+      "start": 251700,
+      "n": 50000,
+      "elapsed_s": 0.6325726630166173
+    },
+    {
+      "start": 301700,
+      "n": 50000,
+      "elapsed_s": 0.6425346110481769
+    },
+    {
+      "start": 351700,
+      "n": 50000,
+      "elapsed_s": 0.6428237160434946
+    },
+    {
+      "start": 401700,
+      "n": 50000,
+      "elapsed_s": 0.7237014179700054
+    },
+    {
+      "start": 451700,
+      "n": 50000,
+      "elapsed_s": 0.6230732430121861
+    },
+    {
+      "start": 501700,
+      "n": 50000,
+      "elapsed_s": 0.6521354650030844
+    },
+    {
+      "start": 551700,
+      "n": 50000,
+      "elapsed_s": 0.718246245989576
+    },
+    {
+      "start": 601700,
+      "n": 50000,
+      "elapsed_s": 0.7323756449623033
+    },
+    {
+      "start": 651700,
+      "n": 50000,
+      "elapsed_s": 0.8025582429836504
+    },
+    {
+      "start": 701700,
+      "n": 50000,
+      "elapsed_s": 0.7241531509789638
+    },
+    {
+      "start": 751700,
+      "n": 50000,
+      "elapsed_s": 0.7621902209939435
+    },
+    {
+      "start": 801700,
+      "n": 50000,
+      "elapsed_s": 0.7222821670002304
+    },
+    {
+      "start": 851700,
+      "n": 50000,
+      "elapsed_s": 0.7077165590017103
+    },
+    {
+      "start": 901700,
+      "n": 50000,
+      "elapsed_s": 0.7001954629668035
+    },
+    {
+      "start": 951700,
+      "n": 48300,
+      "elapsed_s": 0.651677270012442
+    }
+  ],
+  "postgres": {
+    "ts": 1794015030.6565664,
+    "wallet_count": 1000000,
+    "pending_count": 0,
+    "block_count": 498,
+    "ledger_wallet_bytes": 286736384,
+    "active_connections": 16,
+    "error": "RuntimeError: psql failed (1): ERROR:  aggregate functions are not allowed in GROUP BY\nLINE 1: ...) || ':' || coalesce(wait_event,'none') || '=' || count(*)::...\n                                                             ^"
+  },
+  "note": "Synthetic bulk rows for PostgreSQL volume pressure; not API-created ECDSA wallets. Use Suite B for real create-path measurement."
+}

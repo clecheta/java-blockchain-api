@@ -15,11 +15,14 @@ sys.path.insert(0, str(HERE))
 from lib_classify import architecture_notes_from_design, classify_failure  # noqa: E402
 from lib_http import ApiClient  # noqa: E402
 from lib_metrics import machine_fingerprint, write_json  # noqa: E402
+from lib_planes import sample_planes, wallet_count  # noqa: E402
 from suite_contention import run_suite_contention  # noqa: E402
 from suite_money import run_suite_money  # noqa: E402
+from suite_populate_accounts import run_suite_populate_accounts  # noqa: E402
 from suite_throughput import run_suite_throughput  # noqa: E402
 from suite_two_node_accept import run_suite_two_node_accept  # noqa: E402
 from suite_wallets import run_suite_wallets  # noqa: E402
+from suite_index_health import run_suite_index_health  # noqa: E402
 
 API_ROOT = HERE.parents[1]
 DOCS_EVIDENCE = API_ROOT / "docs" / "capacity" / "evidence"
@@ -54,6 +57,23 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--peer-url", default="http://localhost:8081")
     p.add_argument("--two-node-attempts", type=int, default=1_000)
     p.add_argument("--two-node-workers", type=int, default=128)
+    p.add_argument(
+        "--populate-accounts",
+        type=int,
+        default=0,
+        help="Bulk-insert synthetic wallets before suites (0=skip)",
+    )
+    p.add_argument(
+        "--require-wallet-count",
+        type=int,
+        default=0,
+        help="Abort if ledger_wallet count is below N before behavioral suites",
+    )
+    p.add_argument(
+        "--run-index-health",
+        action="store_true",
+        help="Run PostgreSQL EXPLAIN gate after populate / before throughput",
+    )
     return p.parse_args()
 
 
@@ -105,7 +125,36 @@ def main() -> int:
     limitations: list = list(architecture_notes_from_design())
     summary: dict = {"run_id": run_id, "base_url": args.base_url, "suites": {}}
 
+    if args.populate_accounts > 0:
+        print(f"==> Bulk populate accounts → {args.populate_accounts}")
+        pop = run_suite_populate_accounts(out_dir, target_count=args.populate_accounts)
+        summary["suites"]["populate_accounts"] = {
+            "ok": pop.get("ok"),
+            "after_count": pop.get("after_count"),
+            "rows_per_s": pop.get("rows_per_s"),
+        }
+        print(f"    after_count={pop.get('after_count')} rows/s={pop.get('rows_per_s')}")
+
+    if args.require_wallet_count > 0:
+        have = wallet_count()
+        if have < args.require_wallet_count:
+            raise SystemExit(
+                f"require-wallet-count={args.require_wallet_count} but ledger has {have}"
+            )
+        print(f"==> require-wallet-count satisfied ({have})")
+
+    if args.run_index_health:
+        print("==> Index health gate")
+        idx = run_suite_index_health(out_dir)
+        summary["suites"]["index_health"] = {
+            "ok": idx.get("ok"),
+            "failures": idx.get("failures"),
+        }
+        limitations.extend(idx.get("limitations") or [])
+        print(f"    ok={idx.get('ok')}")
+
     with ApiClient(args.base_url, timeout_s=120.0) as api:
+        summary["planes_before"] = sample_planes(api)
         if not args.skip_money:
             print("==> Suite A — money ceiling")
             money = run_suite_money(
@@ -248,6 +297,11 @@ def main() -> int:
             print(f"    smoke error: {exc}")
 
     summary["smoke_two_nodes"] = smoke
+    try:
+        with ApiClient(args.base_url, timeout_s=30.0) as api:
+            summary["planes_after"] = sample_planes(api)
+    except Exception as exc:  # noqa: BLE001
+        summary["planes_after"] = {"error": str(exc)}
     write_json(out_dir / "limitations.json", {"run_id": run_id, "items": limitations})
     write_json(out_dir / "summary.json", summary)
 

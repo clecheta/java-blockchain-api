@@ -113,7 +113,8 @@ Read artifacts in this order:
 1. evidence/<run-id>/summary.json          → quick numbers
 2. CAPACITY_BASELINE.md                    → human table of ceilings (update after each serious run)
 3. evidence/<run-id>/limitations.json      → machine-tagged cliffs
-4. LIMITATIONS.md                          → where limits sit (architecture / source / infrastructure)
+4. LIMITATIONS.md                          → where limits sit (architecture / source / host|PostgreSQL|Kafka)
+5. scripts/capacity/run_isolation_matrix.py → controlled cells to assign the failure layer
 5. suite_*.json                            → deep dive / debugging
 ```
 

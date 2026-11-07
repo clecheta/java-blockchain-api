@@ -27,6 +27,13 @@ Implementation status on 2026-11-07:
   `reserved_balance`, and a prior restore drill with 102,322 wallets.
 - Same-wallet and two-node accept contention suites pass after draining
   leftover pending; peer settlement remains forbidden (`403`).
+- Volume failure-layer diagnosis harness exists:
+  `scripts/capacity/run_isolation_matrix.py` (populate / index / DB-pressure /
+  throughput / restore / boot) plus boot hydrate-from-ledger and optional
+  Kafka-quiet accept (`ledger.diagnostic.skip-transaction-broadcast`).
+  Local **1M** matrix is done; harness evidence must still climb
+  **5M → 10M → 50M → 100M** accounts on a sized environment with
+  **high/realistic amounts** (not only unit TPS transfers). See api#20.
 - G2 remains open because the local result is below 1,000 accepted
   transactions/s and managed-environment PITR has not been exercised.
 - P3 bootstrap controls are implemented, but G3 remains open because it

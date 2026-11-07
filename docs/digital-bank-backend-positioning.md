@@ -107,21 +107,20 @@ use a **mid-tier Brazilian digital-bank account scale** as the external
 reference — not a laptop hard-cap and not a Big Four retail franchise.
 
 Public reporting for that peer class is on the order of **tens of millions of
-customers / opened accounts**, with recent figures clustered around
-**~35–40 million**. Treat **40 million ledger accounts** as the headline
-success target for this API’s account plane:
+customers / opened accounts** (~35–40 million recently). Treat that as a
+**mid-market checkpoint**, then push the capacity ladder further:
 
-| Milestone | Account count | Meaning |
-|-----------|---------------|---------|
-| Proven locally (G1+) | 100,000 | Hard-cap create sweep on one laptop |
-| Roadmap G2/G3 design | 100,000 measured → 1,000,000 design | Engineering gates, not market parity |
-| **Market success bar** | **~40,000,000** | Mid-tier digital-bank account scale; treat the ledger as competitive only when this order of magnitude is credible under production SLOs |
+| Milestone | Account count | Money / value path |
+|-----------|---------------|--------------------|
+| Proven locally (G1+) | 100,000 HTTP create | Lossless amounts; small transfers OK for cliffs |
+| Local diagnosis | 1,000,000 bulk + matrix | Layer attribution (code vs PG vs Kafka) |
+| Sized-host ladder (required next) | **5M → 10M → 50M → 100M** | **High / realistic amounts** (large `BigDecimal` string transfers and settled volume), not only `amount=1` TPS filler |
+| Mid-market checkpoint | ~40,000,000 | Peer-class digital-bank account order of magnitude |
+| Stretch success bar | **~100,000,000** | Account scale + real value throughput under auth, settlement SLOs, restore/PITR |
 
-That bar is about **durable account storage, create/read latency, backup/PITR,
-and multi-node correctness** at tens of millions of rows — not about claiming
-the API is a bank. Throughput gates (accepted transactions/s) remain separate;
-hitting 40 million dormant rows without healthy transfer and settlement
-capacity is still a failed ledger plane.
+Dormant row count alone fails every stage. A stage passes only with
+correctness (no negative balances, multi-node reservation), index/ops health,
+and **meaningful value** movement — not micro-transfer RPS theater.
 
 ## Synthesis
 
@@ -130,5 +129,5 @@ capacity is still a failed ledger plane.
 | Overlap with a digital bank? | Yes — accounts, transfers, ledger. |
 | Is it a digital-bank backend? | **No.** |
 | Best framing? | Private, Java-owned **ledger / cryptochain** prototype or MVP engine. |
-| Account success bar? | **~40 million** accounts (mid-tier digital-bank scale); local proof today is 100,000. |
+| Account ladder? | Evolve tests **5M → 10M → 50M → 100M** with high/real amounts; local proof today is 100k HTTP + 1M diagnosis. |
 | Path upward? | Harden as an **internal ledger plane**; build bank/fintech product concerns elsewhere. |

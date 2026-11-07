@@ -55,6 +55,9 @@ public class ApplicationLifeCycle {
     @ConfigProperty(name = "mining.reward.enabled")
     private Boolean rewardEnabled;
 
+    @ConfigProperty(name = "ledger.boot.trust-persisted-chain", defaultValue = "true")
+    boolean trustPersistedChain;
+
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("Blockchain network node _" + Util.getHostName() + " is starting...");
 
@@ -99,17 +102,29 @@ public class ApplicationLifeCycle {
     private void loadChain() {
         if (peerSyncService.isRoot()) {
             try {
-                blockchain.chain.replaceChain(blockRepository.loadBlockchain());
+                var persisted = blockRepository.loadBlockchain();
+                if (trustPersistedChain) {
+                    // PostgreSQL is SoT; avoid O(history) peer validation on every boot.
+                    blockchain.chain.hydrateFromLedger(persisted);
+                    LOGGER.infof("Blockchain hydrated from ledger (%d blocks)",
+                            persisted.size());
+                } else {
+                    blockchain.chain.replaceChain(persisted);
+                }
             } catch (RuntimeException re) {
                 LOGGER.warn("Blockchain: " + re.getMessage());
             }
 
             try {
-                //FIXME: https://git.okaut.com/Jesus/api.blockchain/-/issues/19
-                // cannot replaceChain as the calculation of balance mismatch
-                // in the next api starts, the wallet change it's address, so even if i save the balance and load it again
-                // calculation will fail as we are talking about different addresses now
-                miner.cryptoChain.replaceChain(blockRepository.loadCryptochain(), BigDecimal.ZERO);
+                var persisted = blockRepository.loadCryptochain();
+                if (trustPersistedChain) {
+                    miner.cryptoChain.hydrateFromLedger(persisted);
+                    LOGGER.infof("Cryptochain hydrated from ledger (%d blocks)",
+                            persisted.size());
+                } else {
+                    // Legacy path: full replaceChain revalidates every transaction.
+                    miner.cryptoChain.replaceChain(persisted, BigDecimal.ZERO);
+                }
             } catch (RuntimeException re) {
                 LOGGER.warn("Cryptochain: " + re.getMessage());
             }

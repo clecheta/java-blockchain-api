@@ -1,0 +1,92 @@
+{
+  "run_id": "isolation-1m-20261107T013017Z",
+  "population": 1000000,
+  "cells": {
+    "populate": {
+      "ok": true,
+      "after_count": 1000000,
+      "rows_per_s": 69353.81859241922
+    },
+    "index_health": {
+      "ok": true,
+      "failures": [],
+      "wallet_count": 1000000
+    },
+    "db_pressure_contention": {
+      "ok": true,
+      "accepted": 500,
+      "settled": 500,
+      "negative_balance": false
+    },
+    "baseline_throughput": {
+      "ok": true,
+      "tx_per_s": 545.3032750161386,
+      "tx_ok": 32800,
+      "tx_fail": 0,
+      "kafka_quiet": false,
+      "stop_reason": "duration"
+    },
+    "kafka_quiet_throughput": {
+      "ok": true,
+      "tx_per_s": 626.3693591660474,
+      "tx_ok": 37600,
+      "tx_fail": 0,
+      "kafka_quiet": true,
+      "stop_reason": "duration"
+    },
+    "restore_drill": {
+      "ok": true,
+      "elapsed_s": 15.346943009993993
+    },
+    "boot_budget_restart": {
+      "ok": true,
+      "root_ready_s": 0.023653651995118707,
+      "peer_ready_s": 0.008155171002727002,
+      "restart": true
+    },
+    "empty_db_hot_path": {
+      "ok": null,
+      "note": "Not wiped in this run; TPS at 1M (~545) is in the same band as prior smaller-DB runs (~512\u2013747), pointing to source_code not row-count."
+    }
+  },
+  "failure_layer_table": [
+    {
+      "cliff": "Accept TPS ~545/s on 1M wallets (baseline)",
+      "layer": "source_code (primary)",
+      "next_change": "Hot-path ECDSA/HTTP/ORM; host upgrade secondary. Not PG seq-scan (index_health ok)."
+    },
+    {
+      "cliff": "Accept TPS ~626/s with Kafka broadcast skipped",
+      "layer": "kafka_infrastructure (secondary)",
+      "next_change": "~15% gain only; fan-out coupling exists but is not the G2 blocker."
+    },
+    {
+      "cliff": "1M synthetic populate + index EXPLAIN",
+      "layer": "postgresql_infrastructure OK at 1M",
+      "next_change": "Raise stage to 10M/40M on sized PG; keep bulk vs API create separate."
+    },
+    {
+      "cliff": "Suite D on 1M ledger",
+      "layer": "architecture OK",
+      "next_change": "Keep durable reservation; no negative balances."
+    },
+    {
+      "cliff": "Restore drill at 1M",
+      "layer": "postgresql_infrastructure OK",
+      "next_change": "Managed PITR still unproven."
+    },
+    {
+      "cliff": "Boot ready after hydrate (no full revalidate)",
+      "layer": "architecture+code mitigated",
+      "next_change": "Keep trust-persisted-chain; forensic rebuilds can disable."
+    }
+  ],
+  "plan_objective_met_locally": {
+    "isolation_matrix_at_1m": true,
+    "forty_million_not_required_by_plan_yet": true,
+    "g2_1000_tps": false,
+    "primary_volume_tps_layer": "source_code"
+  },
+  "baseline_tx_per_s": 545.3032750161386,
+  "kafka_quiet_tx_per_s": 626.3693591660474
+}

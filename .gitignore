@@ -48,3 +48,8 @@ nb-configuration.xml
 .venv-capacity/
 __pycache__/
 *.py[cod]
+
+# Capacity evidence: keep JSON summaries in git; never commit DB dumps or boot logs
+docs/capacity/evidence/**/*.dump
+docs/capacity/evidence/**/*.log
+*.dump
