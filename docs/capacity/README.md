@@ -2,7 +2,7 @@
 
 **Start here.** This page explains why we run capacity tests, how to run them, and how to read the results. Technical detail lives in the linked docs; the harness lives under [`scripts/capacity/`](../../scripts/capacity/).
 
-Related product framing: [Digital bank backend positioning](../digital-bank-backend-positioning.md) — these tests bound a **private ledger / settlement plane**, they do **not** certify a regulated digital bank.
+These tests bound a **private ledger / settlement plane**. They do **not** certify a regulated digital bank.
 
 ---
 
@@ -173,7 +173,6 @@ After a serious run:
 | Doc | Role |
 |-----|------|
 | **[README.md](README.md) (this file)** | Why / how to run / how to evaluate |
-| [IMPROVEMENT_ROADMAP.md](IMPROVEMENT_ROADMAP.md) | G0-G3 capacity and bank-ledger delivery roadmap |
 | [CLOUD_SETTLEMENT_SCHEDULING.md](CLOUD_SETTLEMENT_SCHEDULING.md) | AWS/GCP/Azure scheduling and multi-node fencing |
 | [POSTGRES_LEDGER_RUNBOOK.md](POSTGRES_LEDGER_RUNBOOK.md) | Ledger migration, backup, restore, and fencing |
 | [OPERATIONS_SLOS.md](OPERATIONS_SLOS.md) | Metrics, traces, initial SLOs, and required alerts |

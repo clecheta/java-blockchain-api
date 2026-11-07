@@ -117,9 +117,8 @@ the cliff includes **Kafka publish coupling**, not reservation SoT.
 - **G1 passed:** 100,000-wallet hard-cap sweep and >200 authenticated accepts/s.
 - **G2 remains open:** 1,000 accepts/s and managed PITR not proven on this host.
 - **Account ladder still open:** evolve evidence **5M → 10M → 50M → 100M**
-  with high/real value amounts
-  ([digital-bank positioning](../digital-bank-backend-positioning.md));
-  local proof remains 100k HTTP + 1M isolation matrix.
+  with high/real value amounts; local proof remains 100k HTTP + 1M isolation
+  matrix.
 
 These are host-specific engineering results, not evidence that the API is a
 regulated digital-bank backend.

@@ -24,5 +24,4 @@ We want measured ceilings for treating JBlock API as a **private ledger / settle
 
 ## Related
 
-- [Digital bank backend positioning](../digital-bank-backend-positioning.md)
 - GitLab [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20) (stress intent) → superseded path [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43)
