@@ -104,7 +104,7 @@ If you do not have GraalVM installed, you can build the native executable in a c
 Then run the native executable with:
 
 ```shell script
-./target/api.blockchain-0.2.0-runner
+./target/api.blockchain-0.2.1-runner
 ```
 
 ## Capacity testing (ledger plane)
