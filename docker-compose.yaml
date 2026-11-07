@@ -1,5 +1,5 @@
-# Local harness for api#40 / api#42: Kafka 3.8 KRaft (no ZooKeeper) + Mongo 7.
-# Quarkus Dev Services covers the same stack for `mvn test`.
+# Local harness: Kafka 3.8 KRaft + Mongo 7 + Postgres 17.
+# Required for `./mvnw test` — %test does not use Dev Services (see application.properties).
 
 services:
   kafka:

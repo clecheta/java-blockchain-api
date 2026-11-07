@@ -13,8 +13,8 @@ stages:
   - build
   - package
 
-# Explicit Postgres/Mongo/Kafka services. Maven profile "gitlab-ci" (env.GITLAB_CI)
-# injects Surefire system properties — @QuarkusTest ignores QUARKUS_PROFILE overlays.
+# Explicit Postgres/Mongo/Kafka services. %test pins URLs (no Dev Services / Testcontainers).
+# TEST_* hosts are app-only (avoid clobbering Kafka broker KAFKA_* service env).
 integration:
   stage: test
   image: maven:3.9.11-eclipse-temurin-25
@@ -23,6 +23,9 @@ integration:
     POSTGRES_DB: blockchain
     POSTGRES_USER: blockchain
     POSTGRES_PASSWORD: blockchain
+    TEST_DB_HOST: postgres
+    TEST_MONGO_HOST: blockchain_db
+    TEST_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     KAFKA_NODE_ID: "1"
     KAFKA_PROCESS_ROLES: broker,controller
     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://:9093

@@ -21,7 +21,7 @@ sdk install maven 3.9.11
 
 Platform target: **Quarkus 3.40.1.1 LTS** + **Java 25**. Maven wrapper pins **3.9.11** (Quarkus 3.40 requires Maven ≥ 3.9). CI uses Eclipse Temurin 25 for JVM tests and GraalVM native-image 25 for the native job.
 
-CI resolves the `JBlock` library anonymously from the public [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages) (do not send `CI_JOB_TOKEN` to that other project — it returns 401). On version bumps, publish JBlock first so `0.x.y` exists before the API pipeline runs. The `integration` job runs against GitLab Postgres/Mongo/Kafka services; the Maven profile `gitlab-ci` (auto-activated by `GITLAB_CI`) passes Quarkus JDBC/Mongo/Kafka settings into the Surefire JVM and disables Dev Services (`@QuarkusTest` forces Quarkus profile `test`, so `QUARKUS_PROFILE` overlays do not work). The package stage builds and pushes a JVM image to this project's Container Registry.
+CI resolves the `JBlock` library anonymously from the public [java-blockchain GitLab Package Registry](https://gitlab.com/cleberlecheta/java-blockchain/-/packages) (do not send `CI_JOB_TOKEN` to that other project — it returns 401). On version bumps, publish JBlock first so `0.x.y` exists before the API pipeline runs. Quarkus `%test` **disables Dev Services** and uses explicit Postgres/Mongo/Kafka URLs (`docker compose` locally; GitLab service aliases via `TEST_DB_HOST` / `TEST_MONGO_HOST` / `TEST_KAFKA_BOOTSTRAP_SERVERS` in CI). The package stage builds and pushes a JVM image to this project's Container Registry.
 
 ## Test locally (two nodes)
 
@@ -32,8 +32,10 @@ Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, 
 #    (otherwise Maven pulls JBlock 0.1.0 from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
-# 1) Kafka + Mongo
+# 1) Postgres + Kafka + Mongo (required for ./mvnw test and quarkus:dev)
 docker compose up -d
+# 1b) unit/integration tests
+./mvnw test
 
 # 2) root  → http://localhost:8018   (terminal 1)
 ./mvnw compile quarkus:dev
