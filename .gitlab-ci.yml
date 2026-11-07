@@ -13,8 +13,8 @@ stages:
   - build
   - package
 
-# Explicit Postgres/Mongo/Kafka services. Quarkus config is set via ENV so the
-# Surefire forked JVM inherits it (Maven -Dquarkus.* often does not).
+# Explicit Postgres/Mongo/Kafka services. Profile %gitlab-ci overrides %test Dev Services
+# (plain QUARKUS_DATASOURCE_* ENV lost to %test.quarkus.datasource.devservices.enabled=true).
 integration:
   stage: test
   image: maven:3.9.11-eclipse-temurin-25
@@ -23,15 +23,7 @@ integration:
     POSTGRES_DB: blockchain
     POSTGRES_USER: blockchain
     POSTGRES_PASSWORD: blockchain
-    QUARKUS_DATASOURCE_DEVSERVICES_ENABLED: "false"
-    QUARKUS_MONGODB_DEVSERVICES_ENABLED: "false"
-    QUARKUS_KAFKA_DEVSERVICES_ENABLED: "false"
-    QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://postgres:5432/blockchain"
-    QUARKUS_DATASOURCE_USERNAME: blockchain
-    QUARKUS_DATASOURCE_PASSWORD: blockchain
-    QUARKUS_MONGODB_CONNECTION_STRING: "mongodb://blockchain_db:27017"
-    KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
-    QUARKUS_HTTP_TEST_PORT: "0"
+    QUARKUS_PROFILE: "test,gitlab-ci"
     KAFKA_NODE_ID: "1"
     KAFKA_PROCESS_ROLES: broker,controller
     KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://:9093
