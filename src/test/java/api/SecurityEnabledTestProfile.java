@@ -4,12 +4,11 @@ import io.quarkus.test.junit.QuarkusTestProfile;
 
 import java.util.Map;
 
+/**
+ * Keeps Quarkus profile {@code test} so %test JDBC/Mongo/Kafka URLs apply.
+ * Only toggles bank security — never re-enable Dev Services (CI has no Docker).
+ */
 public class SecurityEnabledTestProfile implements QuarkusTestProfile {
-
-    @Override
-    public String getConfigProfile() {
-        return "security-enabled";
-    }
 
     @Override
     public Map<String, String> getConfigOverrides() {
@@ -19,9 +18,6 @@ public class SecurityEnabledTestProfile implements QuarkusTestProfile {
                 "bank.client.api-key", "test-client-key",
                 "bank.service.api-key", "test-service-key",
                 "quarkus.http.port", "0",
-                "quarkus.http.test-port", "0",
-                "quarkus.datasource.devservices.enabled", "true",
-                "quarkus.mongodb.devservices.enabled", "true",
-                "quarkus.kafka.devservices.enabled", "true");
+                "quarkus.http.test-port", "0");
     }
 }
