@@ -89,11 +89,13 @@ def architecture_notes_from_design() -> list[dict[str, Any]]:
             "metric": "settlement_model",
             "last_good": None,
             "first_fail": None,
-            "signal": "Transfers are accepted into an in-memory pool and settled in scheduled "
-            "PostgreSQL-fenced batches; wallet creation starts at balance 0 and authorized "
-            "funding is a separate service operation.",
+            "signal": "Transfers are accepted into a PostgreSQL pending journal with shared "
+            "reserved_balance, mirrored in a process-local pool, and settled in scheduled "
+            "root-only PostgreSQL-fenced batches; wallet creation starts at balance 0 and "
+            "authorized funding is a separate service operation.",
             "evidence_files": [
                 "src/main/java/api/cryptocurrency/PoolResource.java",
+                "src/main/java/api/repository/PendingTransactionRepository.java",
                 "src/main/java/api/cryptocurrency/MineResource.java",
                 "src/main/java/api/cryptocurrency/BlockService.java",
             ],

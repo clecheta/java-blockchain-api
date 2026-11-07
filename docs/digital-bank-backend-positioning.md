@@ -87,16 +87,41 @@ A **regulated digital bank** would still require a separate product and complian
 
 Start with the [capacity testing guide](./capacity/README.md) (why, how to run, how to evaluate). Measured ceilings: [CAPACITY_BASELINE.md](./capacity/CAPACITY_BASELINE.md). Where limits sit (architecture vs source vs infrastructure): [LIMITATIONS.md](./capacity/LIMITATIONS.md). Harness: `scripts/capacity/` (Phase 1). This does **not** make the API a digital bank; it bounds the ledger plane on a given machine.
 
-The 2026-11-06 reference run passed G1 with a 50,000-wallet create sweep and
-243.961 authenticated accepted transactions/s, and restored a PostgreSQL
-population of 102,322 wallets. It did **not** meet the 1,000
-transactions/s G2 target. The main remaining ledger boundary is durable,
-cross-node pending-balance reservation; the current in-memory pool is not a
-production banking queue.
+The escalated 2026-11-07 secured battery passed G1 with a **100,000**-wallet
+create sweep and a best local accepted throughput of **511.985**
+transactions/s (prior secured comparable: 243.961 tx/s). Durable PostgreSQL
+pending reservations and shared spend fencing are in place; same-wallet and
+two-node accept suites pass without negative balances. It still does **not**
+meet the 1,000 transactions/s G2 target on this laptop. Remaining ledger
+pressure is hot-path CPU/DB work and managed-environment scale/PITR, not
+missing cross-node reservation.
 
 The path from that baseline toward market-grade ledger infrastructure is
 documented in the
 [capacity improvement roadmap](./capacity/IMPROVEMENT_ROADMAP.md).
+
+### Account-scale success benchmark
+
+For “is this ledger plane successful enough to back a real digital-bank product?”,
+use a **mid-tier Brazilian digital-bank account scale** as the external
+reference — not a laptop hard-cap and not a Big Four retail franchise.
+
+Public reporting for that peer class is on the order of **tens of millions of
+customers / opened accounts**, with recent figures clustered around
+**~35–40 million**. Treat **40 million ledger accounts** as the headline
+success target for this API’s account plane:
+
+| Milestone | Account count | Meaning |
+|-----------|---------------|---------|
+| Proven locally (G1+) | 100,000 | Hard-cap create sweep on one laptop |
+| Roadmap G2/G3 design | 100,000 measured → 1,000,000 design | Engineering gates, not market parity |
+| **Market success bar** | **~40,000,000** | Mid-tier digital-bank account scale; treat the ledger as competitive only when this order of magnitude is credible under production SLOs |
+
+That bar is about **durable account storage, create/read latency, backup/PITR,
+and multi-node correctness** at tens of millions of rows — not about claiming
+the API is a bank. Throughput gates (accepted transactions/s) remain separate;
+hitting 40 million dormant rows without healthy transfer and settlement
+capacity is still a failed ledger plane.
 
 ## Synthesis
 
@@ -105,4 +130,5 @@ documented in the
 | Overlap with a digital bank? | Yes — accounts, transfers, ledger. |
 | Is it a digital-bank backend? | **No.** |
 | Best framing? | Private, Java-owned **ledger / cryptochain** prototype or MVP engine. |
+| Account success bar? | **~40 million** accounts (mid-tier digital-bank scale); local proof today is 100,000. |
 | Path upward? | Harden as an **internal ledger plane**; build bank/fintech product concerns elsewhere. |

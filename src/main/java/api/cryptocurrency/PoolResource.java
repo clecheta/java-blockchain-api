@@ -2,6 +2,7 @@ package api.cryptocurrency;
 
 import api.network.PublishService;
 import api.repository.IdempotencyRepository;
+import api.repository.PendingTransactionRepository;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.*;
 import com.R07r35cInc.util.Parse;
@@ -39,6 +40,9 @@ public class PoolResource {
     @Inject
     IdempotencyRepository idempotency;
 
+    @Inject
+    PendingTransactionRepository pendingTransactions;
+
     @ConfigProperty(name = "bank.idempotency.required", defaultValue = "true")
     boolean idempotencyRequired;
 
@@ -72,22 +76,15 @@ public class PoolResource {
             }
 
             //TODO ideally we should use a cmd token from logged user and get the wallet of the logged user by then comparing uid.
-            Wallet srcWallet = walletRepository.getByUid(cmd.uid);
-            Wallet destWallet = walletRepository.getByKey(cmd.recipient);
-            if (srcWallet == null || destWallet == null) {
+            if (!walletRepository.existsByPublicKey(cmd.recipient)) {
                 //Unknown address
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
 
-            PayTypeTransaction transaction;
-            synchronized (miner.transactionPool.senderLock(srcWallet.publicKey)) {
-                // PostgreSQL holds the confirmed materialized balance. Reserve
-                // every pending outgoing amount without rescanning the chain.
-                srcWallet.balance = miner.transactionPool.availableBalance(
-                        srcWallet.publicKey, srcWallet.balance);
-                transaction = (PayTypeTransaction) srcWallet.createTransaction(cmd);
-                miner.transactionPool.setTransaction(transaction);
-            }
+            // PostgreSQL serializes accepts for the same wallet across every
+            // API node and durably journals the signed transaction.
+            PayTypeTransaction transaction = pendingTransactions.reserveAndCreate(cmd);
+            miner.transactionPool.setTransaction(transaction);
 
             publisher.broadcastTransaction(transaction);
 

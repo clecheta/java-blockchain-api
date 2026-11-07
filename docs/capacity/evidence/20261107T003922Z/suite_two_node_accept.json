@@ -1,0 +1,53 @@
+{
+  "suite": "E_two_node_accept",
+  "elapsed_s": 21.006959496007767,
+  "attempts": 1000,
+  "workers": 128,
+  "amount": 1,
+  "seed_balance": 1000,
+  "pre_settled": 0,
+  "accepted": 950,
+  "rejected": 50,
+  "settled": 950,
+  "per_node": {
+    "root": {
+      "accepted": 450,
+      "rejected": 50
+    },
+    "peer": {
+      "accepted": 500,
+      "rejected": 0
+    }
+  },
+  "latency": {
+    "count": 1000,
+    "p50_ms": 291.2483859981876,
+    "p95_ms": 5401.438789855456,
+    "p99_ms": 5479.736701922375,
+    "max_ms": 10180.657392018475,
+    "min_ms": 5.974137980956584
+  },
+  "source_balance": "50",
+  "expected_balance": "50",
+  "negative_balance": false,
+  "peer_settlement_status": 403,
+  "peer_tip_matches_root": true,
+  "settlement_errors": [],
+  "ok": true,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "E_two_node_accept",
+      "metric": "cross_node_reservation",
+      "last_good": 950,
+      "first_fail": null,
+      "signal": "accepted=950 rejected=50 settled=950 peer_mine=403 tip_match=True",
+      "http_status": null,
+      "evidence_files": [
+        "/home/clecheta/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_two_node_accept.json"
+      ]
+    }
+  ]
+}

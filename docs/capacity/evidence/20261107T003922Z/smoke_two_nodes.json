@@ -1,0 +1,6 @@
+{
+  "ok": true,
+  "returncode": 0,
+  "stdout_tail": "==> Multi-node HTTP smoke (root=http://localhost:8018 peer=http://localhost:8081)\n==> Waiting for root health (http://localhost:8018/q/health/ready)\n    root ready\n==> Waiting for peer health (http://localhost:8081/q/health/ready)\n    peer ready\n==> Create and fund source wallet\n    src={\"address\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+fPR3xQta4pJIgDBTMBnQExtmCaxDgD3qIAXYy+HHYDJdVHpenb3ojnyMXGZYAeUc9U1fSy2XVub0I02AgOx6A==\",\"balance\":0,\"uid\":\"smoke-source-1794013239-abcdefgh\"}\n==> Create destination wallet (HTTP)\n    dest={\"address\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvjUbWNCCSrl+HEEExw0PLobdLFX/JOCoWJ26t9uqGhy2Ssifkrb5OdLUN/+YJRtqAzjlM9xseZNRI1QakVxYQw==\",\"balance\":0,\"uid\":\"\\\"smoke-dest-1794013240-abcdefgh\\\"\"}\n==> Peer cryptochain size before: 346\n==> Transact 20 from src \u2192 dest (root pool)\n    tx ok\n==> Mine on root\n    root tip hash=00065da05d420940a78743c6b8cb8d9659a7ad5e621f5269afac8478bdcca2ec\n==> Wait for Kafka peer sync\n==> Peer cryptochain size after: 347\n    peer tip hash=00065da05d420940a78743c6b8cb8d9659a7ad5e621f5269afac8478bdcca2ec\nOK: peer advanced and tip hash matches root (src=MFkwEwYHKoZIzj0C\u2026 \u2192 dest=MFkwEwYHKoZIzj0C\u2026)\n",
+  "stderr_tail": ""
+}

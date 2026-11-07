@@ -17,12 +17,16 @@ Accepted transaction throughput and settlement throughput are reported
 separately. Mining is batch settlement: production schedules it by interval
 and/or pool depth rather than mining every HTTP transfer.
 
-Implementation status on 2026-11-06:
+Implementation status on 2026-11-07:
 
-- G1 passed: 50,000-wallet sweep and 243.961 authenticated accepted
-  transactions/s on the reference host.
+- G1 passed: 100,000-wallet hard-cap sweep and up to **511.985** authenticated
+  accepted transactions/s on the reference host (prior secured comparable
+  243.961 tx/s still recorded for continuity).
 - P2 ledger mechanics passed: PostgreSQL source of truth, advisory locking,
-  unique settlement fencing, and a restore drill with 102,322 wallets.
+  unique settlement fencing, durable pending journal + shared
+  `reserved_balance`, and a prior restore drill with 102,322 wallets.
+- Same-wallet and two-node accept contention suites pass after draining
+  leftover pending; peer settlement remains forbidden (`403`).
 - G2 remains open because the local result is below 1,000 accepted
   transactions/s and managed-environment PITR has not been exercised.
 - P3 bootstrap controls are implemented, but G3 remains open because it

@@ -8,6 +8,7 @@ import com.R07r35cInc.util.Parse;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.persistence.LockModeType;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
@@ -33,6 +34,15 @@ public class WalletRepository {
     public Wallet getByKey(String publicKey) {
         WalletEntity entity = WalletEntity.find("publicKey", publicKey).firstResult();
         return entity == null ? null : entity.toDomain();
+    }
+
+    public boolean existsByPublicKey(String publicKey) {
+        // Prefer existence over COUNT(*) so the accept hot path stops at the
+        // first matching index hit on ledger_wallet.public_key.
+        return WalletEntity
+                .find("SELECT 1 FROM WalletEntity w WHERE w.publicKey = ?1", publicKey)
+                .firstResultOptional()
+                .isPresent();
     }
 
     @Transactional
@@ -103,8 +113,10 @@ public class WalletRepository {
             });
         }
 
-        List<WalletEntity> entities = WalletEntity.list(
-                "publicKey in ?1", deltas.keySet());
+        List<WalletEntity> entities = WalletEntity.find(
+                        "publicKey in ?1", deltas.keySet())
+                .withLock(LockModeType.PESSIMISTIC_WRITE)
+                .list();
         if (entities.size() != deltas.size()) {
             throw new IllegalStateException("Settled block references an unknown wallet");
         }

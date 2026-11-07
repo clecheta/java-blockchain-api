@@ -1,0 +1,176 @@
+{
+  "run_id": "20261107T003922Z",
+  "items": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "design",
+      "metric": "settlement_model",
+      "last_good": null,
+      "first_fail": null,
+      "signal": "Transfers are accepted into an in-memory pool and settled in scheduled PostgreSQL-fenced batches; wallet creation starts at balance 0 and authorized funding is a separate service operation.",
+      "evidence_files": [
+        "src/main/java/api/cryptocurrency/PoolResource.java",
+        "src/main/java/api/cryptocurrency/MineResource.java",
+        "src/main/java/api/cryptocurrency/BlockService.java"
+      ]
+    },
+    {
+      "layer": "infrastructure",
+      "primary": "infrastructure",
+      "secondary": [
+        "architecture"
+      ],
+      "suite": "B_wallets",
+      "metric": "wallet_count",
+      "last_good": 100000,
+      "first_fail": null,
+      "signal": "soft_stop=hard_cap; no hard failure within budget (time_budget_s=1200.0, hard_cap=100000)",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_wallets.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 227.8126,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=42790 tx_fail=1010 err_rate=0.023; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_100.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 87,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=87 mine_fail=0 mine_every=100",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_100.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 282.1314,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=50812 tx_fail=788 err_rate=0.015; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_500.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 102,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=102 mine_fail=0 mine_every=500",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_500.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 230.1998,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=42222 tx_fail=978 err_rate=0.023; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_1000.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 57,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=57 mine_fail=0 mine_every=1000",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_1000.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 511.9848,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=92173 tx_fail=427 err_rate=0.005; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_2000.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 78,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=78 mine_fail=0 mine_every=2000",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_2000.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "D_contention",
+      "metric": "same_wallet_reservation",
+      "last_good": null,
+      "first_fail": 958,
+      "signal": "attempts=1000 accepted=958 rejected=42 settled=2500 balance=1000 expected=42",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_contention.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "E_two_node_accept",
+      "metric": "cross_node_reservation",
+      "last_good": null,
+      "first_fail": 726,
+      "signal": "accepted=726 rejected=274 settled=2500 peer_mine=403 tip_match=True",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_two_node_accept.json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,852 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 222.29786908900132,
+  "accept_window_s": 183.414599226031,
+  "settlement_window_s": 221.264177656034,
+  "duration_requested_s": 180.0,
+  "stop_reason": "duration",
+  "wallet_pairs": 200,
+  "workers": 128,
+  "mine_every": 1000,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 42222,
+  "tx_fail": 978,
+  "mine_ok": 57,
+  "mine_fail": 0,
+  "mine_skipped": 0,
+  "settled_units": 28500,
+  "tx_per_s": 230.19977787028674,
+  "mine_per_s": 0.25761061100730587,
+  "dollars_per_s": 128.80530550365293,
+  "error_rate": 0.02263888888888889,
+  "tx_latency": {
+    "count": 43200,
+    "p50_ms": 110.30466898228042,
+    "p95_ms": 231.06112199602646,
+    "p99_ms": 9956.017406185856,
+    "max_ms": 10249.615768028889,
+    "min_ms": 5.788101989310235
+  },
+  "mine_latency": {
+    "count": 57,
+    "p50_ms": 1128.339827992022,
+    "p95_ms": 3765.3675906010894,
+    "p99_ms": 4533.107719400432,
+    "max_ms": 4562.547989015002,
+    "min_ms": 336.67699299985543
+  },
+  "host_samples": [
+    {
+      "ts": 1794012725.324525,
+      "load1": 2.16,
+      "load5": 3.1,
+      "load15": 3.09,
+      "mem_available_kib": 13063684
+    },
+    {
+      "ts": 1794012726.4367483,
+      "load1": 2.16,
+      "load5": 3.1,
+      "load15": 3.09,
+      "mem_available_kib": 13054320
+    },
+    {
+      "ts": 1794012727.5049634,
+      "load1": 2.16,
+      "load5": 3.1,
+      "load15": 3.09,
+      "mem_available_kib": 13053020
+    },
+    {
+      "ts": 1794012728.6614752,
+      "load1": 2.16,
+      "load5": 3.1,
+      "load15": 3.09,
+      "mem_available_kib": 13054272
+    },
+    {
+      "ts": 1794012729.8220294,
+      "load1": 2.46,
+      "load5": 3.15,
+      "load15": 3.1,
+      "mem_available_kib": 13049048
+    },
+    {
+      "ts": 1794012740.4031708,
+      "load1": 2.16,
+      "load5": 3.06,
+      "load15": 3.08,
+      "mem_available_kib": 12643412
+    },
+    {
+      "ts": 1794012741.4568772,
+      "load1": 2.16,
+      "load5": 3.06,
+      "load15": 3.08,
+      "mem_available_kib": 12647572
+    },
+    {
+      "ts": 1794012742.6290853,
+      "load1": 2.16,
+      "load5": 3.06,
+      "load15": 3.08,
+      "mem_available_kib": 12656396
+    },
+    {
+      "ts": 1794012748.6479483,
+      "load1": 2.15,
+      "load5": 3.04,
+      "load15": 3.07,
+      "mem_available_kib": 12831052
+    },
+    {
+      "ts": 1794012749.8421035,
+      "load1": 2.37,
+      "load5": 3.07,
+      "load15": 3.08,
+      "mem_available_kib": 12849896
+    },
+    {
+      "ts": 1794012750.8441284,
+      "load1": 2.37,
+      "load5": 3.07,
+      "load15": 3.08,
+      "mem_available_kib": 12859404
+    },
+    {
+      "ts": 1794012752.0915523,
+      "load1": 2.37,
+      "load5": 3.07,
+      "load15": 3.08,
+      "mem_available_kib": 12868916
+    },
+    {
+      "ts": 1794012753.128866,
+      "load1": 2.37,
+      "load5": 3.07,
+      "load15": 3.08,
+      "mem_available_kib": 12877152
+    },
+    {
+      "ts": 1794012754.131037,
+      "load1": 2.37,
+      "load5": 3.07,
+      "load15": 3.08,
+      "mem_available_kib": 12888768
+    },
+    {
+      "ts": 1794012755.3889499,
+      "load1": 3.07,
+      "load5": 3.21,
+      "load15": 3.12,
+      "mem_available_kib": 12899652
+    },
+    {
+      "ts": 1794012761.1258528,
+      "load1": 2.82,
+      "load5": 3.15,
+      "load15": 3.11,
+      "mem_available_kib": 12906468
+    },
+    {
+      "ts": 1794012762.362261,
+      "load1": 2.82,
+      "load5": 3.15,
+      "load15": 3.11,
+      "mem_available_kib": 12912080
+    },
+    {
+      "ts": 1794012773.5675423,
+      "load1": 2.61,
+      "load5": 3.1,
+      "load15": 3.09,
+      "mem_available_kib": 12661728
+    },
+    {
+      "ts": 1794012774.7698212,
+      "load1": 2.8,
+      "load5": 3.13,
+      "load15": 3.1,
+      "mem_available_kib": 12679780
+    },
+    {
+      "ts": 1794012780.5196037,
+      "load1": 2.58,
+      "load5": 3.08,
+      "load15": 3.08,
+      "mem_available_kib": 12767164
+    },
+    {
+      "ts": 1794012781.7209096,
+      "load1": 2.58,
+      "load5": 3.08,
+      "load15": 3.08,
+      "mem_available_kib": 12768032
+    },
+    {
+      "ts": 1794012782.7869196,
+      "load1": 2.58,
+      "load5": 3.08,
+      "load15": 3.08,
+      "mem_available_kib": 12755932
+    },
+    {
+      "ts": 1794012788.0479364,
+      "load1": 2.37,
+      "load5": 3.03,
+      "load15": 3.06,
+      "mem_available_kib": 12828780
+    },
+    {
+      "ts": 1794012789.255973,
+      "load1": 2.37,
+      "load5": 3.03,
+      "load15": 3.06,
+      "mem_available_kib": 12844416
+    },
+    {
+      "ts": 1794012790.500913,
+      "load1": 2.82,
+      "load5": 3.11,
+      "load15": 3.09,
+      "mem_available_kib": 12850420
+    },
+    {
+      "ts": 1794012795.9815743,
+      "load1": 2.6,
+      "load5": 3.06,
+      "load15": 3.07,
+      "mem_available_kib": 12882392
+    },
+    {
+      "ts": 1794012806.9581656,
+      "load1": 2.2,
+      "load5": 2.96,
+      "load15": 3.04,
+      "mem_available_kib": 12720724
+    },
+    {
+      "ts": 1794012808.1190367,
+      "load1": 2.2,
+      "load5": 2.96,
+      "load15": 3.04,
+      "mem_available_kib": 12956616
+    },
+    {
+      "ts": 1794012818.5472305,
+      "load1": 1.86,
+      "load5": 2.86,
+      "load15": 3.01,
+      "mem_available_kib": 13039088
+    },
+    {
+      "ts": 1794012819.7123413,
+      "load1": 2.19,
+      "load5": 2.91,
+      "load15": 3.02,
+      "mem_available_kib": 13036848
+    },
+    {
+      "ts": 1794012830.9346704,
+      "load1": 2.01,
+      "load5": 2.85,
+      "load15": 3.0,
+      "mem_available_kib": 12734916
+    },
+    {
+      "ts": 1794012842.090144,
+      "load1": 1.93,
+      "load5": 2.8,
+      "load15": 2.99,
+      "mem_available_kib": 12766476
+    },
+    {
+      "ts": 1794012843.3449967,
+      "load1": 1.93,
+      "load5": 2.8,
+      "load15": 2.99,
+      "mem_available_kib": 12787552
+    },
+    {
+      "ts": 1794012844.3706455,
+      "load1": 1.93,
+      "load5": 2.8,
+      "load15": 2.99,
+      "mem_available_kib": 12805536
+    },
+    {
+      "ts": 1794012845.5850403,
+      "load1": 2.49,
+      "load5": 2.91,
+      "load15": 3.02,
+      "mem_available_kib": 12814600
+    },
+    {
+      "ts": 1794012846.5907109,
+      "load1": 2.49,
+      "load5": 2.91,
+      "load15": 3.02,
+      "mem_available_kib": 12813612
+    },
+    {
+      "ts": 1794012847.5948908,
+      "load1": 2.49,
+      "load5": 2.91,
+      "load15": 3.02,
+      "mem_available_kib": 12824384
+    },
+    {
+      "ts": 1794012853.342071,
+      "load1": 2.37,
+      "load5": 2.87,
+      "load15": 3.01,
+      "mem_available_kib": 12841464
+    },
+    {
+      "ts": 1794012854.5469303,
+      "load1": 2.98,
+      "load5": 2.99,
+      "load15": 3.04,
+      "mem_available_kib": 12844352
+    },
+    {
+      "ts": 1794012859.788963,
+      "load1": 2.74,
+      "load5": 2.94,
+      "load15": 3.03,
+      "mem_available_kib": 12844012
+    },
+    {
+      "ts": 1794012860.9930909,
+      "load1": 2.74,
+      "load5": 2.94,
+      "load15": 3.03,
+      "mem_available_kib": 12835956
+    },
+    {
+      "ts": 1794012862.034872,
+      "load1": 2.74,
+      "load5": 2.94,
+      "load15": 3.03,
+      "mem_available_kib": 12834860
+    },
+    {
+      "ts": 1794012863.0646818,
+      "load1": 2.74,
+      "load5": 2.94,
+      "load15": 3.03,
+      "mem_available_kib": 12833384
+    },
+    {
+      "ts": 1794012864.1386716,
+      "load1": 2.74,
+      "load5": 2.94,
+      "load15": 3.03,
+      "mem_available_kib": 12836876
+    },
+    {
+      "ts": 1794012865.3310587,
+      "load1": 2.85,
+      "load5": 2.96,
+      "load15": 3.03,
+      "mem_available_kib": 12840540
+    },
+    {
+      "ts": 1794012875.5439653,
+      "load1": 2.48,
+      "load5": 2.88,
+      "load15": 3.01,
+      "mem_available_kib": 12850368
+    },
+    {
+      "ts": 1794012876.7321835,
+      "load1": 2.48,
+      "load5": 2.88,
+      "load15": 3.01,
+      "mem_available_kib": 12831312
+    },
+    {
+      "ts": 1794012887.1719844,
+      "load1": 2.1,
+      "load5": 2.78,
+      "load15": 2.97,
+      "mem_available_kib": 12737828
+    },
+    {
+      "ts": 1794012893.0927353,
+      "load1": 2.09,
+      "load5": 2.77,
+      "load15": 2.97,
+      "mem_available_kib": 12686980
+    },
+    {
+      "ts": 1794012894.2381384,
+      "load1": 2.09,
+      "load5": 2.77,
+      "load15": 2.97,
+      "mem_available_kib": 12706020
+    },
+    {
+      "ts": 1794012895.3019338,
+      "load1": 2.32,
+      "load5": 2.81,
+      "load15": 2.98,
+      "mem_available_kib": 12711448
+    },
+    {
+      "ts": 1794012896.5225487,
+      "load1": 2.32,
+      "load5": 2.81,
+      "load15": 2.98,
+      "mem_available_kib": 12722788
+    },
+    {
+      "ts": 1794012902.0080786,
+      "load1": 2.22,
+      "load5": 2.78,
+      "load15": 2.97,
+      "mem_available_kib": 12719128
+    },
+    {
+      "ts": 1794012903.2506807,
+      "load1": 2.22,
+      "load5": 2.78,
+      "load15": 2.97,
+      "mem_available_kib": 12730100
+    }
+  ],
+  "errors": [
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.038465214020107,
+      "error": "",
+      "uid": "capacity-funded-1794012724851667109-150"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.0042893959907815,
+      "error": "",
+      "uid": "capacity-funded-1794012724907063591-164"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.0335318419965915,
+      "error": "",
+      "uid": "capacity-funded-1794012724868422393-154"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.043845732987393,
+      "error": "",
+      "uid": "capacity-funded-1794012724843598697-148"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.045937543967739,
+      "error": "",
+      "uid": "capacity-funded-1794012724839260244-147"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.006645463989116,
+      "error": "",
+      "uid": "capacity-funded-1794012724914773251-166"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.0841965259751305,
+      "error": "",
+      "uid": "capacity-funded-1794012724804806254-137"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.0171420850092545,
+      "error": "",
+      "uid": "capacity-funded-1794012724899932073-162"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.121465285017621,
+      "error": "",
+      "uid": "capacity-funded-1794012724603437552-82"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.099930190015584,
+      "error": "",
+      "uid": "capacity-funded-1794012724785412576-131"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.118576534965541,
+      "error": "",
+      "uid": "capacity-funded-1794012724636711027-91"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.109741332998965,
+      "error": "",
+      "uid": "capacity-funded-1794012724705012970-109"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.104054651979823,
+      "error": "",
+      "uid": "capacity-funded-1794012724759925835-124"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.015457682020497,
+      "error": "",
+      "uid": "capacity-funded-1794012724918025263-167"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.165403535007499,
+      "error": "",
+      "uid": "capacity-funded-1794012724316027482-3"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.162357130961027,
+      "error": "",
+      "uid": "capacity-funded-1794012724344253506-10"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.119471882993821,
+      "error": "",
+      "uid": "capacity-funded-1794012724644257624-93"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.107899094000459,
+      "error": "",
+      "uid": "capacity-funded-1794012724736489475-118"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.062092061038129,
+      "error": "",
+      "uid": "capacity-funded-1794012724880496383-157"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.193565741006751,
+      "error": "",
+      "uid": "capacity-funded-1794012724773500658-128"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.250912879011594,
+      "error": "",
+      "uid": "capacity-funded-1794012724388931990-23"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.220765387988649,
+      "error": "",
+      "uid": "capacity-funded-1794012724667679991-100"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.18183290597517,
+      "error": "",
+      "uid": "capacity-funded-1794012724820586756-142"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.211243919970002,
+      "error": "",
+      "uid": "capacity-funded-1794012724767951312-126"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.219386167998891,
+      "error": "",
+      "uid": "capacity-funded-1794012724717216570-112"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.240512354997918,
+      "error": "",
+      "uid": "capacity-funded-1794012724561560048-70"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.214139086019713,
+      "error": "",
+      "uid": "capacity-funded-1794012724770744048-127"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.315958523016889,
+      "error": "",
+      "uid": "capacity-funded-1794012724621518956-87"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.269670513982419,
+      "error": "",
+      "uid": "capacity-funded-1794012724824319165-143"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.175357044965494,
+      "error": "",
+      "uid": "capacity-funded-1794012724937828036-173"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.219821552047506,
+      "error": "",
+      "uid": "capacity-funded-1794012724903191212-163"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.063743648992386,
+      "error": "",
+      "uid": "capacity-funded-1794012724970931016-183"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.255404933006503,
+      "error": "",
+      "uid": "capacity-funded-1794012724856230361-151"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.072799096989911,
+      "error": "",
+      "uid": "capacity-funded-1794012724965616103-181"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.08489009400364,
+      "error": "",
+      "uid": "capacity-funded-1794012724952411272-177"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.84545252204407,
+      "error": "",
+      "uid": "capacity-funded-1794012724976576830-185"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.833441041002516,
+      "error": "",
+      "uid": "capacity-funded-1794012724990720100-189"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.841064550040755,
+      "error": "",
+      "uid": "capacity-funded-1794012724984464459-187"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.834558757953346,
+      "error": "",
+      "uid": "capacity-funded-1794012725007054993-194"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.197984875994734,
+      "error": "",
+      "uid": "capacity-funded-1794012724764792815-125"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.235686847998295,
+      "error": "",
+      "uid": "capacity-funded-1794012724492991533-51"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.249615768028889,
+      "error": "",
+      "uid": "capacity-funded-1794012724399944601-26"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.191999579954427,
+      "error": "",
+      "uid": "capacity-funded-1794012724802098929-136"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.182784018979874,
+      "error": "",
+      "uid": "capacity-funded-1794012724811174109-139"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.221365895005874,
+      "error": "",
+      "uid": "capacity-funded-1794012724591772936-79"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.221003677987028,
+      "error": "",
+      "uid": "capacity-funded-1794012724610361162-84"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.181991649966221,
+      "error": "",
+      "uid": "capacity-funded-1794012724814723746-140"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.2310099999886,
+      "error": "",
+      "uid": "capacity-funded-1794012724544257901-65"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.212233066966292,
+      "error": "",
+      "uid": "capacity-funded-1794012724684978056-104"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 10.228042224014644,
+      "error": "",
+      "uid": "capacity-funded-1794012724585126256-77"
+    }
+  ],
+  "rounds": 216,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 230.1998,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=42222 tx_fail=978 err_rate=0.023; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_1000.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 57,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=57 mine_fail=0 mine_every=1000",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_1000.json"
+      ]
+    }
+  ]
+}

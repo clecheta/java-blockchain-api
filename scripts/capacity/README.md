@@ -37,14 +37,18 @@ Useful flags:
 |------|---------|---------|
 | `--base-url` | `http://localhost:8018` | Root API |
 | `--mongo-uri` | `mongodb://localhost:27017` | Deprecated compatibility flag |
-| `--wallet-hard-cap` | `5000` | Suite B create ceiling |
-| `--wallet-time-budget-s` | `600` | Suite B soft stop |
-| `--wallet-workers` | `32` | Concurrent wallet-create workers |
-| `--throughput-duration-s` | `90` | Suite C window |
-| `--throughput-pairs` | `20` | Concurrent funded senders |
-| `--throughput-workers` | `32` | Concurrent HTTP workers |
+| `--wallet-hard-cap` | `100000` | Suite B create ceiling |
+| `--wallet-time-budget-s` | `1200` | Suite B soft stop |
+| `--wallet-workers` | `64` | Concurrent wallet-create workers |
+| `--throughput-duration-s` | `180` | Suite C window |
+| `--throughput-pairs` | `200` | Concurrent funded senders |
+| `--throughput-workers` | `128` | Concurrent HTTP workers |
+| `--mine-every-sweep` | `500` | Comma-separated settlement batch triggers (Suite C) |
+| `--contention-attempts` / `--contention-workers` | `1000` / `128` | Suite D same-wallet overspend stress |
+| `--two-node-attempts` / `--two-node-workers` | `1000` / `128` | Suite E dual-node accept stress |
+| `--peer-url` | `http://localhost:8081` | Peer for Suite E |
 | `--skip-smoke` | off | Skip `smoke-two-nodes.sh` post-check |
-| `--skip-money` / `--skip-wallets` / `--skip-throughput` | off | Skip a suite |
+| `--skip-money` / `--skip-wallets` / `--skip-throughput` / `--skip-contention` / `--skip-two-node-accept` | off | Skip a suite |
 
 Faster local dry-run:
 
@@ -76,7 +80,9 @@ Human reports (filled after a run):
 |-------|----------|--------|
 | A — money | Max single transfer + settled volume | Seed treasury → transact → mine → balance check; geometric + binary search |
 | B — wallets | Max accounts | Parallel `POST /W4LL37/cRE47E` batches |
-| C — throughput | Max this host can process | N funded senders, concurrent transfers, mine every K txs |
+| C — throughput | Max this host can process | N funded senders, concurrent transfers, mine-every sweep |
+| D — contention | Same-wallet overspend under load | Parallel accepts against one funded sender |
+| E — two-node accept | Shared durable reservation across nodes | Concurrent accepts on root + peer |
 
 Funding uses authenticated `POST /W4LL37/fUND` after HTTP wallet creation.
 Set `BANK_CLIENT_API_KEY` and `BANK_SERVICE_API_KEY` when the configured keys

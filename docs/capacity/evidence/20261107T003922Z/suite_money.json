@@ -1,0 +1,226 @@
+{
+  "suite": "A_money",
+  "elapsed_s": 17.099931148986798,
+  "last_good_single_amount": 9223372036854775807,
+  "first_fail_single_amount": null,
+  "trials": [
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 122.7459529764019,
+        "p95_ms": 160.22543330909681,
+        "p99_ms": 163.55694267200306,
+        "max_ms": 164.38982001272961,
+        "min_ms": 5.8336289948783815
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 10,
+      "src_uid": "capacity-funded-1794011962146853747-0",
+      "dest_uid": "capacity-wallet-1794011962313-1794011962313157269",
+      "amount_near_long_max": false,
+      "dest_balance": 10,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 17.107705993112177,
+        "p95_ms": 55.07757831946946,
+        "p99_ms": 58.45267808181234,
+        "max_ms": 59.296453022398055,
+        "min_ms": 4.936251032631844
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 1000,
+      "src_uid": "capacity-funded-1794011963125568931-0",
+      "dest_uid": "capacity-wallet-1794011963148-1794011963148708142",
+      "amount_near_long_max": false,
+      "dest_balance": 1000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 17.730650957673788,
+        "p95_ms": 54.0518321620766,
+        "p99_ms": 57.28038160246797,
+        "max_ms": 58.08751896256581,
+        "min_ms": 6.905565038323402
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 10000,
+      "src_uid": "capacity-funded-1794011963748684033-0",
+      "dest_uid": "capacity-wallet-1794011963767-1794011963767358316",
+      "amount_near_long_max": false,
+      "dest_balance": 10000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 21.649124973919243,
+        "p95_ms": 44.71488664275966,
+        "p99_ms": 46.765176568878815,
+        "max_ms": 47.2777490504086,
+        "min_ms": 4.612813994754106
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 100000,
+      "src_uid": "capacity-funded-1794011964370624232-0",
+      "dest_uid": "capacity-wallet-1794011964399-1794011964399204148",
+      "amount_near_long_max": false,
+      "dest_balance": 100000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 15.122362994588912,
+        "p95_ms": 30.062027275562283,
+        "p99_ms": 31.38999743387103,
+        "max_ms": 31.721989973448217,
+        "min_ms": 5.210638977587223
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 1000000,
+      "src_uid": "capacity-funded-1794011964992098950-0",
+      "dest_uid": "capacity-wallet-1794011965011-1794011965011369695",
+      "amount_near_long_max": false,
+      "dest_balance": 1000000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 14.804902020841837,
+        "p95_ms": 41.782361536752425,
+        "p99_ms": 44.18035793816671,
+        "max_ms": 44.77985703852028,
+        "min_ms": 4.68286604154855
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 1000000000,
+      "src_uid": "capacity-funded-1794011965579737847-0",
+      "dest_uid": "capacity-wallet-1794011965596-1794011965596407450",
+      "amount_near_long_max": false,
+      "dest_balance": 1000000000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 13.565292989369482,
+        "p95_ms": 23.595716501586136,
+        "p99_ms": 24.487309702672064,
+        "max_ms": 24.710208002943546,
+        "min_ms": 5.065769015345722
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 1000000000000,
+      "src_uid": "capacity-funded-1794011966178638436-0",
+      "dest_uid": "capacity-wallet-1794011966203-1794011966203196029",
+      "amount_near_long_max": false,
+      "dest_balance": 1000000000000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 14.634263003244996,
+        "p95_ms": 27.937667886726555,
+        "p99_ms": 29.120192765258253,
+        "max_ms": 29.415823984891176,
+        "min_ms": 6.225248973350972
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 10000000000000,
+      "src_uid": "capacity-funded-1794011966766718759-0",
+      "dest_uid": "capacity-wallet-1794011966784-1794011966784914348",
+      "amount_near_long_max": false,
+      "dest_balance": 10000000000000,
+      "kafka_hint": false
+    },
+    {
+      "ok": true,
+      "phase": "settled",
+      "status": 200,
+      "error": null,
+      "latency": {
+        "count": 3,
+        "p50_ms": 14.148474030662328,
+        "p95_ms": 37.30959242093377,
+        "p99_ms": 39.36835850006901,
+        "max_ms": 39.88305001985282,
+        "min_ms": 5.253769981209189
+      },
+      "src_balance": 0,
+      "balance_mismatch": false,
+      "amount": 9223372036854775807,
+      "src_uid": "capacity-funded-1794011967352895666-0",
+      "dest_uid": "capacity-wallet-1794011967375-1794011967375817648",
+      "amount_near_long_max": true,
+      "dest_balance": 9223372036854775807,
+      "kafka_hint": false
+    }
+  ],
+  "binary_trials": [],
+  "settled_volume": {
+    "chunk": 1000,
+    "max_chunks": 1000,
+    "chunks_accepted": 1000,
+    "settled_volume": 1000000,
+    "chunks_ok": 1000,
+    "destination_balance": 1000000,
+    "latency": {
+      "count": 1003,
+      "p50_ms": 8.30419099656865,
+      "p95_ms": 13.160417875042185,
+      "p99_ms": 14.753969822777442,
+      "max_ms": 1326.8724610097706,
+      "min_ms": 4.526548960711807
+    },
+    "failures": [],
+    "ok": true
+  },
+  "limitations": []
+}

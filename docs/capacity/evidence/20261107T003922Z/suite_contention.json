@@ -1,0 +1,45 @@
+{
+  "suite": "D_contention",
+  "elapsed_s": 180.90670674102148,
+  "attempts": 1000,
+  "workers": 128,
+  "amount": 1,
+  "seed_balance": 1000,
+  "pre_settled": 63080,
+  "accepted": 878,
+  "rejected": 122,
+  "settled": 878,
+  "statuses": {
+    "200": 878,
+    "400": 122
+  },
+  "latency": {
+    "count": 1000,
+    "p50_ms": 5108.4373260091525,
+    "p95_ms": 10062.03680325707,
+    "p99_ms": 10221.788210872328,
+    "max_ms": 10349.037035019137,
+    "min_ms": 12.83595897257328
+  },
+  "source_balance": "122",
+  "expected_balance": "122",
+  "negative_balance": false,
+  "settlement_errors": [],
+  "ok": true,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "D_contention",
+      "metric": "same_wallet_reservation",
+      "last_good": 878,
+      "first_fail": null,
+      "signal": "attempts=1000 accepted=878 rejected=122 settled=878 balance=122 expected=122",
+      "http_status": null,
+      "evidence_files": [
+        "/home/clecheta/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_contention.json"
+      ]
+    }
+  ]
+}

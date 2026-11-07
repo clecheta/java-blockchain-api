@@ -13,7 +13,7 @@ Ambition to use this API as a fintech **ledger backend** needs honest answers to
 | Question | Why it matters |
 |----------|----------------|
 | How much ledger `$` can we settle? | Wrong balances, Kafka payload cliffs, or codec truncation are reliability risks before any “bank” narrative. |
-| How many wallets/accounts can we hold? | Account scale is the first product pressure on Mongo + API create path. |
+| How many wallets/accounts can we hold? | Account scale is the first product pressure on the PostgreSQL ledger + API create path. |
 | How much can *this host* process? | Throughput (tx/s, mine cycles/s, `$`/s) separates design limits from “the laptop is saturated.” |
 
 Without measured ceilings we guess. Historical stress intent lived on [api#20](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/20); datastore scale decisions live on [api#43](https://gitlab.com/cleberlecheta/java-blockchain-api/-/issues/43). Capacity evidence feeds those discussions.

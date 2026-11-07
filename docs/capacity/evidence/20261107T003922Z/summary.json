@@ -1,0 +1,60 @@
+{
+  "run_id": "20261107T003922Z",
+  "base_url": "http://localhost:8018",
+  "suites": {
+    "A_money": {
+      "last_good_single_amount": 9223372036854775807,
+      "first_fail_single_amount": null,
+      "settled_volume": 1000000
+    },
+    "B_wallets": {
+      "last_good_wallet_count": 100000,
+      "first_fail_wallet_count": null,
+      "stop_reason": "hard_cap"
+    },
+    "C_throughput_mine_100": {
+      "tx_per_s": 227.81262736200873,
+      "dollars_per_s": 168.47326096393311,
+      "mine_per_s": 0.34253736162332743,
+      "stop_reason": "duration"
+    },
+    "C_throughput_mine_500": {
+      "tx_per_s": 282.13144696624994,
+      "dollars_per_s": 189.31343006418825,
+      "mine_per_s": 0.38002774672414397,
+      "stop_reason": "duration"
+    },
+    "C_throughput_mine_1000": {
+      "tx_per_s": 230.19977787028674,
+      "dollars_per_s": 128.80530550365293,
+      "mine_per_s": 0.25761061100730587,
+      "stop_reason": "duration"
+    },
+    "C_throughput_mine_2000": {
+      "tx_per_s": 511.98480385461966,
+      "dollars_per_s": 169.8044727986102,
+      "mine_per_s": 0.3396089455972204,
+      "stop_reason": "duration"
+    },
+    "D_contention": {
+      "ok": true,
+      "accepted": 878,
+      "settled": 878,
+      "negative_balance": false,
+      "pre_settled": 63080
+    },
+    "E_two_node_accept": {
+      "ok": true,
+      "accepted": 950,
+      "settled": 950,
+      "peer_tip_matches_root": true,
+      "pre_settled": 0
+    }
+  },
+  "smoke_two_nodes": {
+    "ok": true,
+    "returncode": 0,
+    "stdout_tail": "==> Multi-node HTTP smoke (root=http://localhost:8018 peer=http://localhost:8081)\n==> Waiting for root health (http://localhost:8018/q/health/ready)\n    root ready\n==> Waiting for peer health (http://localhost:8081/q/health/ready)\n    peer ready\n==> Create and fund source wallet\n    src={\"address\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE+fPR3xQta4pJIgDBTMBnQExtmCaxDgD3qIAXYy+HHYDJdVHpenb3ojnyMXGZYAeUc9U1fSy2XVub0I02AgOx6A==\",\"balance\":0,\"uid\":\"smoke-source-1794013239-abcdefgh\"}\n==> Create destination wallet (HTTP)\n    dest={\"address\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvjUbWNCCSrl+HEEExw0PLobdLFX/JOCoWJ26t9uqGhy2Ssifkrb5OdLUN/+YJRtqAzjlM9xseZNRI1QakVxYQw==\",\"balance\":0,\"uid\":\"\\\"smoke-dest-1794013240-abcdefgh\\\"\"}\n==> Peer cryptochain size before: 346\n==> Transact 20 from src \u2192 dest (root pool)\n    tx ok\n==> Mine on root\n    root tip hash=00065da05d420940a78743c6b8cb8d9659a7ad5e621f5269afac8478bdcca2ec\n==> Wait for Kafka peer sync\n==> Peer cryptochain size after: 347\n    peer tip hash=00065da05d420940a78743c6b8cb8d9659a7ad5e621f5269afac8478bdcca2ec\nOK: peer advanced and tip hash matches root (src=MFkwEwYHKoZIzj0C\u2026 \u2192 dest=MFkwEwYHKoZIzj0C\u2026)\n",
+    "stderr_tail": ""
+  }
+}

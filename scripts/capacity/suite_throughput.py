@@ -12,11 +12,11 @@ from lib_http import ApiClient
 from lib_metrics import LatencyTracker, Stopwatch, sample_host, write_json
 from lib_seed import seed_funded_wallets
 
-DEFAULT_DURATION_S = 90.0
-DEFAULT_WALLET_PAIRS = 20
+DEFAULT_DURATION_S = 180.0
+DEFAULT_WALLET_PAIRS = 200
 DEFAULT_SEED_BALANCE = 10_000
 DEFAULT_TX_AMOUNT = 1
-MINE_EVERY = 500
+DEFAULT_MINE_EVERY = 500
 ERROR_RATE_STOP = 0.15
 
 
@@ -37,8 +37,12 @@ def run_suite_throughput(
     wallet_pairs: int = DEFAULT_WALLET_PAIRS,
     seed_balance: int = DEFAULT_SEED_BALANCE,
     tx_amount: int = DEFAULT_TX_AMOUNT,
-    workers: int = 8,
+    workers: int = 128,
+    mine_every: int = DEFAULT_MINE_EVERY,
+    evidence_file: str = "suite_throughput.json",
 ) -> dict[str, Any]:
+    if mine_every <= 0:
+        raise ValueError("mine_every must be positive")
     sw = Stopwatch()
     if not _wait_ready(api):
         result = {
@@ -53,11 +57,11 @@ def run_suite_throughput(
                     first_fail=None,
                     signal="API not ready before throughput suite",
                     ready_ok=False,
-                    evidence_files=[str(out_dir / "suite_throughput.json")],
+                    evidence_files=[str(out_dir / evidence_file)],
                 )
             ],
         }
-        write_json(out_dir / "suite_throughput.json", result)
+        write_json(out_dir / evidence_file, result)
         return result
 
     # Seed N funded senders; create N HTTP destinations (balance 0).
@@ -125,42 +129,48 @@ def run_suite_throughput(
     base_url = api.base_url
     deadline = time.perf_counter() + duration_s
     round_idx = 0
+    next_health_check = 0.0
 
     load_started = time.perf_counter()
-    while time.perf_counter() < deadline:
-        if mine_future is not None and mine_future.done():
-            _record_mine(mine_future.result())
-            mine_future = None
+    def _one(pair: tuple[dict[str, Any], dict[str, Any]]) -> dict[str, Any]:
+        src, dest = pair
+        r = api.transact(src["uid"], dest["address"], tx_amount)
+        return {
+            "ok": r.ok,
+            "status": r.status,
+            "elapsed_s": r.elapsed_s,
+            "error": r.error,
+            "uid": src["uid"],
+        }
 
-        if not api.ready().ok:
-            stop_reason = "ready_failed"
-            break
-        host_samples.append(sample_host())
+    # Reuse the HTTP connection pool and worker pool for the entire run.
+    # Creating a client and executor per request round measures the harness,
+    # not the API.
+    with ThreadPoolExecutor(max_workers=min(workers, len(pairs))) as pool:
+        while time.perf_counter() < deadline:
+            if mine_future is not None and mine_future.done():
+                _record_mine(mine_future.result())
+                mine_future = None
 
-        # Multiple pending transfers per sender are intentional: acceptance
-        # throughput and periodic batch settlement are measured separately.
-        batch = [
-            (s, d)
-            for s, d in pairs
-            if remaining.get(s["uid"], 0) >= tx_amount
-        ]
-        if not batch:
-            stop_reason = "funds_exhausted"
-            break
+            now = time.perf_counter()
+            if now >= next_health_check:
+                if not api.ready().ok:
+                    stop_reason = "ready_failed"
+                    break
+                host_samples.append(sample_host())
+                next_health_check = now + 1.0
 
-        def _one(pair: tuple[dict[str, Any], dict[str, Any]]) -> dict[str, Any]:
-            src, dest = pair
-            with ApiClient(base_url, timeout_s=30.0) as c:
-                r = c.transact(src["uid"], dest["address"], tx_amount)
-                return {
-                    "ok": r.ok,
-                    "status": r.status,
-                    "elapsed_s": r.elapsed_s,
-                    "error": r.error,
-                    "uid": src["uid"],
-                }
+            # Multiple pending transfers per sender are intentional: acceptance
+            # throughput and periodic batch settlement are measured separately.
+            batch = [
+                (s, d)
+                for s, d in pairs
+                if remaining.get(s["uid"], 0) >= tx_amount
+            ]
+            if not batch:
+                stop_reason = "funds_exhausted"
+                break
 
-        with ThreadPoolExecutor(max_workers=min(workers, len(batch))) as pool:
             futs = [pool.submit(_one, p) for p in batch]
             for fut in as_completed(futs):
                 item = fut.result()
@@ -174,26 +184,26 @@ def run_suite_throughput(
                     if len(errors) < 50:
                         errors.append({"phase": "transact", **item})
 
-        # Settle a larger batch periodically. Mining every HTTP transfer would
-        # measure settlement latency instead of transfer-accept capacity.
-        if pending_since_mine >= MINE_EVERY and mine_future is None:
-            batch_units = pending_since_mine
-            pending_since_mine = 0
-            mine_future = mine_executor.submit(_mine, batch_units)
+            # Settle a larger batch periodically. Mining every HTTP transfer
+            # would measure settlement latency, not acceptance capacity.
+            if pending_since_mine >= mine_every and mine_future is None:
+                batch_units = pending_since_mine
+                pending_since_mine = 0
+                mine_future = mine_executor.submit(_mine, batch_units)
 
-        total = tx_ok + tx_fail
-        if total >= 40 and (tx_fail / total) > ERROR_RATE_STOP:
-            stop_reason = "error_rate"
-            break
+            total = tx_ok + tx_fail
+            if total >= 40 and (tx_fail / total) > ERROR_RATE_STOP:
+                stop_reason = "error_rate"
+                break
 
-        round_idx += 1
+            round_idx += 1
 
     accept_elapsed = max(time.perf_counter() - load_started, 1e-6)
 
     # Drain the in-flight settlement, then settle leftovers.
     if mine_future is not None:
         _record_mine(mine_future.result())
-    max_drain_attempts = (max(tx_ok - settled_units, 0) // MINE_EVERY) + 2
+    max_drain_attempts = (max(tx_ok - settled_units, 0) // mine_every) + 2
     for _ in range(max_drain_attempts):
         if settled_units >= tx_ok:
             break
@@ -234,7 +244,7 @@ def run_suite_throughput(
             sender_contention=sender_contention,
             mine_required=True,
             kafka_hint="kafka" in err_blob.lower(),
-            evidence_files=[str(out_dir / "suite_throughput.json")],
+            evidence_files=[str(out_dir / evidence_file)],
         )
     ]
     # Always record architecture settlement constraint observed in this suite
@@ -246,11 +256,11 @@ def run_suite_throughput(
             first_fail=None,
             signal=(
                 "Transfers are accepted continuously and settled in periodic batches; "
-                f"observed mine_ok={mine_ok} mine_fail={mine_fail} mine_every={MINE_EVERY}"
+                f"observed mine_ok={mine_ok} mine_fail={mine_fail} mine_every={mine_every}"
             ),
             mine_required=True,
             sender_contention=True,
-            evidence_files=[str(out_dir / "suite_throughput.json")],
+            evidence_files=[str(out_dir / evidence_file)],
         )
     )
 
@@ -263,6 +273,7 @@ def run_suite_throughput(
         "stop_reason": stop_reason,
         "wallet_pairs": wallet_pairs,
         "workers": workers,
+        "mine_every": mine_every,
         "tx_amount": tx_amount,
         "seed_balance": seed_balance,
         "tx_ok": tx_ok,
@@ -282,5 +293,5 @@ def run_suite_throughput(
         "rounds": round_idx,
         "limitations": limitations,
     }
-    write_json(out_dir / "suite_throughput.json", result)
+    write_json(out_dir / evidence_file, result)
     return result

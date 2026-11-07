@@ -3,6 +3,7 @@ package api.cryptocurrency;
 import api.cryptocurrency.model.CryptoBlockAddedCommand;
 import api.network.PublishService;
 import api.repository.BlockRepository;
+import api.repository.PendingTransactionRepository;
 import api.repository.SettlementLease;
 import api.repository.SettledTransactionRepository;
 import api.repository.model.ChainTypeEnum;
@@ -54,6 +55,9 @@ public class TransactionMiner {
     @Inject
     SettledTransactionRepository settledTransactions;
 
+    @Inject
+    PendingTransactionRepository pendingTransactions;
+
     @ConfigProperty(name = "mining.reward.enabled")
     private Boolean rewardEnabled;
 
@@ -91,9 +95,12 @@ public class TransactionMiner {
 
         synchronizeWithLedger();
 
-        // Stable snapshot: accepts that arrive after this point stay pending.
+        // PostgreSQL is the durable pending source. Accepts committed after
+        // this ordered query stay pending for the next bounded batch.
         List<Tx> poolTransactions = new ArrayList<>(
-                this.transactionPool.getValidTransactions(maxBatchSize));
+                pendingTransactions.loadOldest(maxBatchSize).stream()
+                        .filter(Transaction::isValidTransaction)
+                        .toList());
         if (poolTransactions.isEmpty()) {
             return null;
         }
@@ -103,6 +110,7 @@ public class TransactionMiner {
         if (!settledIds.isEmpty()) {
             List<Tx> duplicates = poolTransactions.stream()
                     .filter(tx -> settledIds.contains(tx.getId())).toList();
+            pendingTransactions.removeAndRelease(duplicates);
             this.transactionPool.removeTransactions(duplicates);
             poolTransactions.removeIf(tx -> settledIds.contains(tx.getId()));
         }
@@ -125,6 +133,7 @@ public class TransactionMiner {
         settledTransactions.record(addedBlock.getHash(), poolTransactions);
         blockService.blockAddedPostActions(
                 new CryptoBlockAddedCommand(addedBlock, true));
+        pendingTransactions.removeAndRelease(poolTransactions);
         return new SettlementBatch(addedBlock, List.copyOf(poolTransactions));
     }
 

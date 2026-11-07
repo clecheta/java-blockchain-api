@@ -1,6 +1,7 @@
 package api.cryptocurrency;
 
 import api.BaseTest;
+import api.repository.PendingTransactionRepository;
 import api.repository.WalletRepository;
 import com.R07r35cInc.cryptocurrency.PayTypeEnum;
 import com.R07r35cInc.cryptocurrency.TransactionCommand;
@@ -29,6 +30,9 @@ public class PoolResourceTest extends BaseTest {
 
     @Inject
     WalletRepository walletRepository;
+
+    @Inject
+    PendingTransactionRepository pendingTransactions;
 
     TransactionCommand cmd;
     String srcUid;
@@ -130,6 +134,32 @@ public class PoolResourceTest extends BaseTest {
                 .body(body)
                 .when().post("/p00L/tRaN5ACt")
                 .then().statusCode(HttpStatus.SC_CONFLICT);
+    }
+
+    @Test
+    void acceptedTransactionIsDurablyJournaled() {
+        String transactionId = given().contentType(ContentType.JSON)
+                .body(cmd)
+                .when().post("/p00L/tRaN5ACt")
+                .then().statusCode(HttpStatus.SC_OK)
+                .extract().path("id");
+
+        assertTrue(pendingTransactions.exists(UUID.fromString(transactionId)));
+    }
+
+    @Test
+    void sharedReservationRejectsOverspend() {
+        cmd.amount = new BigDecimal("60");
+
+        given().contentType(ContentType.JSON)
+                .body(cmd)
+                .when().post("/p00L/tRaN5ACt")
+                .then().statusCode(HttpStatus.SC_OK);
+
+        given().contentType(ContentType.JSON)
+                .body(cmd)
+                .when().post("/p00L/tRaN5ACt")
+                .then().statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test

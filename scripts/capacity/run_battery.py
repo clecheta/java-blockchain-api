@@ -15,8 +15,10 @@ sys.path.insert(0, str(HERE))
 from lib_classify import architecture_notes_from_design, classify_failure  # noqa: E402
 from lib_http import ApiClient  # noqa: E402
 from lib_metrics import machine_fingerprint, write_json  # noqa: E402
+from suite_contention import run_suite_contention  # noqa: E402
 from suite_money import run_suite_money  # noqa: E402
 from suite_throughput import run_suite_throughput  # noqa: E402
+from suite_two_node_accept import run_suite_two_node_accept  # noqa: E402
 from suite_wallets import run_suite_wallets  # noqa: E402
 
 API_ROOT = HERE.parents[1]
@@ -31,13 +33,27 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--skip-money", action="store_true")
     p.add_argument("--skip-wallets", action="store_true")
     p.add_argument("--skip-throughput", action="store_true")
+    p.add_argument("--skip-contention", action="store_true")
+    p.add_argument("--skip-two-node-accept", action="store_true")
     p.add_argument("--skip-smoke", action="store_true", help="Skip post-check smoke-two-nodes.sh")
-    p.add_argument("--wallet-time-budget-s", type=float, default=600.0)
-    p.add_argument("--wallet-hard-cap", type=int, default=5000)
-    p.add_argument("--wallet-workers", type=int, default=32)
-    p.add_argument("--throughput-duration-s", type=float, default=90.0)
-    p.add_argument("--throughput-pairs", type=int, default=20)
-    p.add_argument("--throughput-workers", type=int, default=32)
+    p.add_argument("--money-volume-chunk", type=int, default=1_000)
+    p.add_argument("--money-volume-chunks", type=int, default=1_000)
+    p.add_argument("--wallet-time-budget-s", type=float, default=1200.0)
+    p.add_argument("--wallet-hard-cap", type=int, default=100_000)
+    p.add_argument("--wallet-workers", type=int, default=64)
+    p.add_argument("--throughput-duration-s", type=float, default=180.0)
+    p.add_argument("--throughput-pairs", type=int, default=200)
+    p.add_argument("--throughput-workers", type=int, default=128)
+    p.add_argument(
+        "--mine-every-sweep",
+        default="500",
+        help="Comma-separated settlement trigger sizes, for example 100,500,1000,2000",
+    )
+    p.add_argument("--contention-attempts", type=int, default=1_000)
+    p.add_argument("--contention-workers", type=int, default=128)
+    p.add_argument("--peer-url", default="http://localhost:8081")
+    p.add_argument("--two-node-attempts", type=int, default=1_000)
+    p.add_argument("--two-node-workers", type=int, default=128)
     return p.parse_args()
 
 
@@ -92,7 +108,13 @@ def main() -> int:
     with ApiClient(args.base_url, timeout_s=120.0) as api:
         if not args.skip_money:
             print("==> Suite A — money ceiling")
-            money = run_suite_money(api, out_dir, args.mongo_uri)
+            money = run_suite_money(
+                api,
+                out_dir,
+                args.mongo_uri,
+                volume_chunk=args.money_volume_chunk,
+                volume_chunks=args.money_volume_chunks,
+            )
             summary["suites"]["A_money"] = {
                 "last_good_single_amount": money.get("last_good_single_amount"),
                 "first_fail_single_amount": money.get("first_fail_single_amount"),
@@ -125,26 +147,82 @@ def main() -> int:
             )
 
         if not args.skip_throughput:
-            print("==> Suite C — host throughput")
-            tp = run_suite_throughput(
+            mine_sweep = [
+                int(value.strip())
+                for value in args.mine_every_sweep.split(",")
+                if value.strip()
+            ]
+            if not mine_sweep or any(value <= 0 for value in mine_sweep):
+                raise SystemExit("--mine-every-sweep requires positive integers")
+            for mine_every in mine_sweep:
+                print(f"==> Suite C — host throughput (mine_every={mine_every})")
+                evidence_file = (
+                    "suite_throughput.json"
+                    if len(mine_sweep) == 1
+                    else f"suite_throughput_{mine_every}.json"
+                )
+                tp = run_suite_throughput(
+                    api,
+                    out_dir,
+                    args.mongo_uri,
+                    duration_s=args.throughput_duration_s,
+                    wallet_pairs=args.throughput_pairs,
+                    workers=args.throughput_workers,
+                    mine_every=mine_every,
+                    evidence_file=evidence_file,
+                )
+                suite_key = (
+                    "C_throughput"
+                    if len(mine_sweep) == 1
+                    else f"C_throughput_mine_{mine_every}"
+                )
+                summary["suites"][suite_key] = {
+                    "tx_per_s": tp.get("tx_per_s"),
+                    "dollars_per_s": tp.get("dollars_per_s"),
+                    "mine_per_s": tp.get("mine_per_s"),
+                    "stop_reason": tp.get("stop_reason"),
+                }
+                limitations.extend(tp.get("limitations") or [])
+                print(
+                    f"    tx/s={tp.get('tx_per_s'):.3f} "
+                    f"$/s={tp.get('dollars_per_s'):.3f} "
+                    f"stop={tp.get('stop_reason')}"
+                )
+
+        if not args.skip_contention:
+            print("==> Suite D — same-wallet contention")
+            contention = run_suite_contention(
                 api,
                 out_dir,
                 args.mongo_uri,
-                duration_s=args.throughput_duration_s,
-                wallet_pairs=args.throughput_pairs,
-                workers=args.throughput_workers,
+                attempts=args.contention_attempts,
+                workers=args.contention_workers,
             )
-            summary["suites"]["C_throughput"] = {
-                "tx_per_s": tp.get("tx_per_s"),
-                "dollars_per_s": tp.get("dollars_per_s"),
-                "mine_per_s": tp.get("mine_per_s"),
-                "stop_reason": tp.get("stop_reason"),
+            summary["suites"]["D_contention"] = {
+                "ok": contention.get("ok"),
+                "accepted": contention.get("accepted"),
+                "settled": contention.get("settled"),
+                "negative_balance": contention.get("negative_balance"),
             }
-            limitations.extend(tp.get("limitations") or [])
-            print(
-                f"    tx/s={tp.get('tx_per_s'):.3f} $/s={tp.get('dollars_per_s'):.3f} "
-                f"stop={tp.get('stop_reason')}"
+            limitations.extend(contention.get("limitations") or [])
+
+        if not args.skip_two_node_accept:
+            print("==> Suite E — two-node concurrent accepts")
+            two_node = run_suite_two_node_accept(
+                api,
+                args.peer_url,
+                out_dir,
+                args.mongo_uri,
+                attempts=args.two_node_attempts,
+                workers=args.two_node_workers,
             )
+            summary["suites"]["E_two_node_accept"] = {
+                "ok": two_node.get("ok"),
+                "accepted": two_node.get("accepted"),
+                "settled": two_node.get("settled"),
+                "peer_tip_matches_root": two_node.get("peer_tip_matches_root"),
+            }
+            limitations.extend(two_node.get("limitations") or [])
 
     smoke = None
     if not args.skip_smoke:

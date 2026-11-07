@@ -208,31 +208,60 @@ def _settled_volume_ramp(
     total_needed = chunk * max_chunks
     wallets = seed_funded_wallets(1, total_needed, mongo_uri=mongo_uri)
     src = wallets[0]
+    dest = _create_dest(api)
     settled = 0
+    accepted = 0
     lat = LatencyTracker()
     failures: list[dict[str, Any]] = []
     for i in range(max_chunks):
-        dest = _create_dest(api)
         t0 = time.perf_counter()
         tx = api.transact(src["uid"], dest["address"], chunk)
+        lat.add(time.perf_counter() - t0)
         if not tx.ok:
             failures.append({"i": i, "phase": "transact", "error": tx.error, "status": tx.status})
             break
+        accepted += 1
+
+    # Drain bounded settlement batches after the acceptance ramp so this suite
+    # tests aggregate volume without paying one mining round-trip per chunk.
+    for i in range((accepted // 500) + 3):
+        t0 = time.perf_counter()
         mine = api.mine()
         lat.add(time.perf_counter() - t0)
+        if mine.status == 204:
+            break
         if not mine.ok:
             failures.append({"i": i, "phase": "mine", "error": mine.error, "status": mine.status})
             break
-        settled += chunk
-        time.sleep(0.2)
+        count = (
+            int(mine.body.get("transactionCount", 0))
+            if isinstance(mine.body, dict) else 0
+        )
+        settled += count * chunk
+
+    destination_info = api.wallet_info(dest["uid"])
+    destination_balance = (
+        destination_info.body.get("balance")
+        if destination_info.ok and isinstance(destination_info.body, dict)
+        else None
+    )
+    expected = accepted * chunk
+    if destination_balance is None or int(str(destination_balance).split(".")[0]) != expected:
+        failures.append({
+            "phase": "balance_check",
+            "expected": expected,
+            "actual": destination_balance,
+        })
     return {
         "chunk": chunk,
         "max_chunks": max_chunks,
+        "chunks_accepted": accepted,
         "settled_volume": settled,
         "chunks_ok": settled // chunk if chunk else 0,
+        "destination_balance": destination_balance,
         "latency": lat.summary(),
         "failures": failures,
-        "ok": len(failures) == 0,
+        "ok": len(failures) == 0 and settled == expected,
     }
 
 
@@ -240,6 +269,9 @@ def run_suite_money(
     api: ApiClient,
     out_dir: Path,
     mongo_uri: str,
+    *,
+    volume_chunk: int = 1_000,
+    volume_chunks: int = 1_000,
 ) -> dict[str, Any]:
     sw = Stopwatch()
     trials: list[dict[str, Any]] = []
@@ -268,11 +300,12 @@ def run_suite_money(
         last_good, first_fail = lg, ff
         trials.extend(binary_log)
 
-    # Settled volume at a safe chunk (use min(last_good, 100) or 10)
+    # Escalated aggregate volume (1,000 x 1,000 = 1,000,000 by default).
     volume_result: dict[str, Any] | None = None
     if last_good and last_good >= 10:
-        chunk = min(100, last_good)
-        volume_result = _settled_volume_ramp(api, mongo_uri, chunk=chunk, max_chunks=50)
+        chunk = min(volume_chunk, last_good)
+        volume_result = _settled_volume_ramp(
+            api, mongo_uri, chunk=chunk, max_chunks=volume_chunks)
 
     limitations: list[dict[str, Any]] = []
     if first_fail_trial is not None:

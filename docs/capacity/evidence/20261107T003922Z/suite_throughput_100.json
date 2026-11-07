@@ -1,0 +1,880 @@
+{
+  "suite": "C_throughput",
+  "elapsed_s": 255.32589795201784,
+  "accept_window_s": 187.8297989689745,
+  "settlement_window_s": 253.9868923719623,
+  "duration_requested_s": 180.0,
+  "stop_reason": "duration",
+  "wallet_pairs": 200,
+  "workers": 128,
+  "mine_every": 100,
+  "tx_amount": 1,
+  "seed_balance": 10000,
+  "tx_ok": 42790,
+  "tx_fail": 1010,
+  "mine_ok": 87,
+  "mine_fail": 0,
+  "mine_skipped": 0,
+  "settled_units": 42790,
+  "tx_per_s": 227.81262736200873,
+  "mine_per_s": 0.34253736162332743,
+  "dollars_per_s": 168.47326096393311,
+  "error_rate": 0.023059360730593607,
+  "tx_latency": {
+    "count": 43800,
+    "p50_ms": 118.88765197363682,
+    "p95_ms": 315.4655954247561,
+    "p99_ms": 9978.98839914182,
+    "max_ms": 10272.874320973642,
+    "min_ms": 6.2490220298059285
+  },
+  "mine_latency": {
+    "count": 87,
+    "p50_ms": 1024.901636003051,
+    "p95_ms": 3318.350682075834,
+    "p99_ms": 4434.811436514138,
+    "max_ms": 5197.47988297604,
+    "min_ms": 276.2739770114422
+  },
+  "host_samples": [
+    {
+      "ts": 1794012200.7631202,
+      "load1": 7.41,
+      "load5": 5.81,
+      "load15": 3.49,
+      "mem_available_kib": 13603988
+    },
+    {
+      "ts": 1794012202.3014352,
+      "load1": 7.41,
+      "load5": 5.81,
+      "load15": 3.49,
+      "mem_available_kib": 13536324
+    },
+    {
+      "ts": 1794012203.6240838,
+      "load1": 7.41,
+      "load5": 5.81,
+      "load15": 3.49,
+      "mem_available_kib": 13606352
+    },
+    {
+      "ts": 1794012213.9266999,
+      "load1": 6.27,
+      "load5": 5.62,
+      "load15": 3.45,
+      "mem_available_kib": 13247516
+    },
+    {
+      "ts": 1794012215.1966562,
+      "load1": 6.49,
+      "load5": 5.68,
+      "load15": 3.48,
+      "mem_available_kib": 13263952
+    },
+    {
+      "ts": 1794012226.2319973,
+      "load1": 5.49,
+      "load5": 5.49,
+      "load15": 3.44,
+      "mem_available_kib": 13111968
+    },
+    {
+      "ts": 1794012227.4751694,
+      "load1": 5.49,
+      "load5": 5.49,
+      "load15": 3.44,
+      "mem_available_kib": 13198660
+    },
+    {
+      "ts": 1794012228.737001,
+      "load1": 5.49,
+      "load5": 5.49,
+      "load15": 3.44,
+      "mem_available_kib": 13036312
+    },
+    {
+      "ts": 1794012229.8074048,
+      "load1": 6.33,
+      "load5": 5.67,
+      "load15": 3.51,
+      "mem_available_kib": 13033328
+    },
+    {
+      "ts": 1794012240.8970792,
+      "load1": 5.36,
+      "load5": 5.48,
+      "load15": 3.47,
+      "mem_available_kib": 13031052
+    },
+    {
+      "ts": 1794012241.9526556,
+      "load1": 5.36,
+      "load5": 5.48,
+      "load15": 3.47,
+      "mem_available_kib": 13026012
+    },
+    {
+      "ts": 1794012243.001032,
+      "load1": 5.36,
+      "load5": 5.48,
+      "load15": 3.47,
+      "mem_available_kib": 13026372
+    },
+    {
+      "ts": 1794012248.52244,
+      "load1": 4.93,
+      "load5": 5.39,
+      "load15": 3.45,
+      "mem_available_kib": 13010176
+    },
+    {
+      "ts": 1794012249.5458064,
+      "load1": 5.02,
+      "load5": 5.4,
+      "load15": 3.46,
+      "mem_available_kib": 12974140
+    },
+    {
+      "ts": 1794012255.1021302,
+      "load1": 4.69,
+      "load5": 5.32,
+      "load15": 3.45,
+      "mem_available_kib": 12974488
+    },
+    {
+      "ts": 1794012256.1107879,
+      "load1": 4.69,
+      "load5": 5.32,
+      "load15": 3.45,
+      "mem_available_kib": 12972668
+    },
+    {
+      "ts": 1794012257.1434562,
+      "load1": 4.69,
+      "load5": 5.32,
+      "load15": 3.45,
+      "mem_available_kib": 12972444
+    },
+    {
+      "ts": 1794012258.2831504,
+      "load1": 4.69,
+      "load5": 5.32,
+      "load15": 3.45,
+      "mem_available_kib": 12946852
+    },
+    {
+      "ts": 1794012264.077962,
+      "load1": 4.48,
+      "load5": 5.27,
+      "load15": 3.44,
+      "mem_available_kib": 12936900
+    },
+    {
+      "ts": 1794012265.0798552,
+      "load1": 4.84,
+      "load5": 5.33,
+      "load15": 3.47,
+      "mem_available_kib": 12938704
+    },
+    {
+      "ts": 1794012266.1074054,
+      "load1": 4.84,
+      "load5": 5.33,
+      "load15": 3.47,
+      "mem_available_kib": 12937412
+    },
+    {
+      "ts": 1794012276.3185976,
+      "load1": 4.25,
+      "load5": 5.19,
+      "load15": 3.45,
+      "mem_available_kib": 12949796
+    },
+    {
+      "ts": 1794012277.634707,
+      "load1": 4.25,
+      "load5": 5.19,
+      "load15": 3.45,
+      "mem_available_kib": 12947636
+    },
+    {
+      "ts": 1794012278.7262897,
+      "load1": 4.25,
+      "load5": 5.19,
+      "load15": 3.45,
+      "mem_available_kib": 12856128
+    },
+    {
+      "ts": 1794012279.9465866,
+      "load1": 4.47,
+      "load5": 5.22,
+      "load15": 3.47,
+      "mem_available_kib": 12860544
+    },
+    {
+      "ts": 1794012281.0193079,
+      "load1": 4.47,
+      "load5": 5.22,
+      "load15": 3.47,
+      "mem_available_kib": 12837820
+    },
+    {
+      "ts": 1794012286.2633712,
+      "load1": 4.11,
+      "load5": 5.13,
+      "load15": 3.45,
+      "mem_available_kib": 12856700
+    },
+    {
+      "ts": 1794012287.460134,
+      "load1": 4.11,
+      "load5": 5.13,
+      "load15": 3.45,
+      "mem_available_kib": 12856944
+    },
+    {
+      "ts": 1794012288.5071175,
+      "load1": 4.11,
+      "load5": 5.13,
+      "load15": 3.45,
+      "mem_available_kib": 12859216
+    },
+    {
+      "ts": 1794012289.5528362,
+      "load1": 3.94,
+      "load5": 5.08,
+      "load15": 3.44,
+      "mem_available_kib": 12756692
+    },
+    {
+      "ts": 1794012300.2332401,
+      "load1": 3.42,
+      "load5": 4.93,
+      "load15": 3.41,
+      "mem_available_kib": 12826712
+    },
+    {
+      "ts": 1794012301.498289,
+      "load1": 3.42,
+      "load5": 4.93,
+      "load15": 3.41,
+      "mem_available_kib": 12825444
+    },
+    {
+      "ts": 1794012302.6905549,
+      "load1": 3.42,
+      "load5": 4.93,
+      "load15": 3.41,
+      "mem_available_kib": 12821484
+    },
+    {
+      "ts": 1794012303.721843,
+      "load1": 3.42,
+      "load5": 4.93,
+      "load15": 3.41,
+      "mem_available_kib": 12820848
+    },
+    {
+      "ts": 1794012305.0143518,
+      "load1": 4.02,
+      "load5": 5.03,
+      "load15": 3.45,
+      "mem_available_kib": 12825564
+    },
+    {
+      "ts": 1794012306.03996,
+      "load1": 4.02,
+      "load5": 5.03,
+      "load15": 3.45,
+      "mem_available_kib": 12826832
+    },
+    {
+      "ts": 1794012312.0010602,
+      "load1": 3.78,
+      "load5": 4.96,
+      "load15": 3.43,
+      "mem_available_kib": 12789704
+    },
+    {
+      "ts": 1794012317.9717677,
+      "load1": 3.48,
+      "load5": 4.88,
+      "load15": 3.42,
+      "mem_available_kib": 12812892
+    },
+    {
+      "ts": 1794012319.175241,
+      "load1": 3.48,
+      "load5": 4.88,
+      "load15": 3.42,
+      "mem_available_kib": 12813444
+    },
+    {
+      "ts": 1794012320.2114928,
+      "load1": 3.36,
+      "load5": 4.83,
+      "load15": 3.41,
+      "mem_available_kib": 12809420
+    },
+    {
+      "ts": 1794012325.4597664,
+      "load1": 3.09,
+      "load5": 4.75,
+      "load15": 3.39,
+      "mem_available_kib": 12819920
+    },
+    {
+      "ts": 1794012326.667215,
+      "load1": 3.09,
+      "load5": 4.75,
+      "load15": 3.39,
+      "mem_available_kib": 12818996
+    },
+    {
+      "ts": 1794012337.3625302,
+      "load1": 2.77,
+      "load5": 4.63,
+      "load15": 3.36,
+      "mem_available_kib": 12752220
+    },
+    {
+      "ts": 1794012338.60421,
+      "load1": 2.77,
+      "load5": 4.63,
+      "load15": 3.36,
+      "mem_available_kib": 12757880
+    },
+    {
+      "ts": 1794012339.8723254,
+      "load1": 3.03,
+      "load5": 4.65,
+      "load15": 3.38,
+      "mem_available_kib": 12771860
+    },
+    {
+      "ts": 1794012341.122429,
+      "load1": 3.03,
+      "load5": 4.65,
+      "load15": 3.38,
+      "mem_available_kib": 12817192
+    },
+    {
+      "ts": 1794012346.6297247,
+      "load1": 2.94,
+      "load5": 4.61,
+      "load15": 3.37,
+      "mem_available_kib": 12832580
+    },
+    {
+      "ts": 1794012347.8023937,
+      "load1": 2.94,
+      "load5": 4.61,
+      "load15": 3.37,
+      "mem_available_kib": 12831688
+    },
+    {
+      "ts": 1794012349.0367203,
+      "load1": 2.94,
+      "load5": 4.61,
+      "load15": 3.37,
+      "mem_available_kib": 12855636
+    },
+    {
+      "ts": 1794012350.057635,
+      "load1": 2.87,
+      "load5": 4.56,
+      "load15": 3.36,
+      "mem_available_kib": 12852848
+    },
+    {
+      "ts": 1794012360.2356353,
+      "load1": 2.43,
+      "load5": 4.41,
+      "load15": 3.33,
+      "mem_available_kib": 12818804
+    },
+    {
+      "ts": 1794012366.4819355,
+      "load1": 2.23,
+      "load5": 4.34,
+      "load15": 3.31,
+      "mem_available_kib": 12664856
+    },
+    {
+      "ts": 1794012367.6856039,
+      "load1": 2.23,
+      "load5": 4.34,
+      "load15": 3.31,
+      "mem_available_kib": 12659276
+    },
+    {
+      "ts": 1794012368.6854455,
+      "load1": 2.23,
+      "load5": 4.34,
+      "load15": 3.31,
+      "mem_available_kib": 12664368
+    },
+    {
+      "ts": 1794012369.927496,
+      "load1": 2.69,
+      "load5": 4.4,
+      "load15": 3.33,
+      "mem_available_kib": 12669964
+    },
+    {
+      "ts": 1794012375.4330297,
+      "load1": 2.48,
+      "load5": 4.33,
+      "load15": 3.32,
+      "mem_available_kib": 12646788
+    },
+    {
+      "ts": 1794012376.6583805,
+      "load1": 2.48,
+      "load5": 4.33,
+      "load15": 3.32,
+      "mem_available_kib": 12652648
+    },
+    {
+      "ts": 1794012377.906045,
+      "load1": 2.48,
+      "load5": 4.33,
+      "load15": 3.32,
+      "mem_available_kib": 12651136
+    }
+  ],
+  "errors": [
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.097361638036091,
+      "error": "",
+      "uid": "capacity-funded-1794012199866333829-74"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.056728837022092,
+      "error": "",
+      "uid": "capacity-funded-1794012200085277048-120"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.042885203962214,
+      "error": "",
+      "uid": "capacity-funded-1794012200127036438-129"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.104064062994439,
+      "error": "",
+      "uid": "capacity-funded-1794012199944129660-90"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.103791336994618,
+      "error": "",
+      "uid": "capacity-funded-1794012199974980262-97"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.055645176034886,
+      "error": "",
+      "uid": "capacity-funded-1794012200122345811-128"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.132457563013304,
+      "error": "",
+      "uid": "capacity-funded-1794012199701629509-42"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.047587149019819,
+      "error": "",
+      "uid": "capacity-funded-1794012200132283170-130"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.1151824470143765,
+      "error": "",
+      "uid": "capacity-funded-1794012199985109258-99"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.122489475004841,
+      "error": "",
+      "uid": "capacity-funded-1794012199961592880-94"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.080836967972573,
+      "error": "",
+      "uid": "capacity-funded-1794012200107999036-125"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.12951358204009,
+      "error": "",
+      "uid": "capacity-funded-1794012199925601972-86"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.146807513025124,
+      "error": "",
+      "uid": "capacity-funded-1794012199710892703-44"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.141604189993814,
+      "error": "",
+      "uid": "capacity-funded-1794012199930925147-87"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.153153557039332,
+      "error": "",
+      "uid": "capacity-funded-1794012199906033769-82"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.172697153000627,
+      "error": "",
+      "uid": "capacity-funded-1794012199652153275-32"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.157229934993666,
+      "error": "",
+      "uid": "capacity-funded-1794012199880643332-77"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.198976506013423,
+      "error": "",
+      "uid": "capacity-funded-1794012199841175186-69"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.197202707990073,
+      "error": "",
+      "uid": "capacity-funded-1794012199920858750-85"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.220178257965017,
+      "error": "",
+      "uid": "capacity-funded-1794012199685523215-39"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.205576954991557,
+      "error": "",
+      "uid": "capacity-funded-1794012199940046184-89"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.221828002016991,
+      "error": "",
+      "uid": "capacity-funded-1794012199870907495-75"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.244317147007678,
+      "error": "",
+      "uid": "capacity-funded-1794012199628686024-27"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.212190413032658,
+      "error": "",
+      "uid": "capacity-funded-1794012200004761766-103"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.20233035297133,
+      "error": "",
+      "uid": "capacity-funded-1794012200063172217-116"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.230548065039329,
+      "error": "",
+      "uid": "capacity-funded-1794012199910143112-83"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.222189828986302,
+      "error": "",
+      "uid": "capacity-funded-1794012199979676059-98"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.217848606989719,
+      "error": "",
+      "uid": "capacity-funded-1794012200020563501-106"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.260855680971872,
+      "error": "",
+      "uid": "capacity-funded-1794012199578095841-17"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.2209334499784745,
+      "error": "",
+      "uid": "capacity-funded-1794012199998526762-102"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.23956045601517,
+      "error": "",
+      "uid": "capacity-funded-1794012199811222994-63"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.247114992002025,
+      "error": "",
+      "uid": "capacity-funded-1794012199733660505-48"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.24615487002302,
+      "error": "",
+      "uid": "capacity-funded-1794012199738072838-49"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.216524888994172,
+      "error": "",
+      "uid": "capacity-funded-1794012200044133172-112"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.244898967968766,
+      "error": "",
+      "uid": "capacity-funded-1794012199775015311-56"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.250032090989407,
+      "error": "",
+      "uid": "capacity-funded-1794012199722525880-46"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.22279857902322,
+      "error": "",
+      "uid": "capacity-funded-1794012200034005146-109"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.24824298400199,
+      "error": "",
+      "uid": "capacity-funded-1794012199785912644-58"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.2446957569918595,
+      "error": "",
+      "uid": "capacity-funded-1794012199831576497-67"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.194525277998764,
+      "error": "",
+      "uid": "capacity-funded-1794012200103359832-124"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.204673078958876,
+      "error": "",
+      "uid": "capacity-funded-1794012200098290986-123"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.239543536968995,
+      "error": "",
+      "uid": "capacity-funded-1794012200024578476-107"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.236107172968332,
+      "error": "",
+      "uid": "capacity-funded-1794012200040648881-111"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.033223671023734,
+      "error": "",
+      "uid": "capacity-funded-1794012200154141120-135"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.03152819495881,
+      "error": "",
+      "uid": "capacity-funded-1794012200157795083-136"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 5.021328938018996,
+      "error": "",
+      "uid": "capacity-funded-1794012200216199885-149"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.892385514976922,
+      "error": "",
+      "uid": "capacity-funded-1794012200250571553-157"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.891662970010657,
+      "error": "",
+      "uid": "capacity-funded-1794012200270348768-161"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.887289836013224,
+      "error": "",
+      "uid": "capacity-funded-1794012200305450649-169"
+    },
+    {
+      "phase": "transact",
+      "ok": false,
+      "status": 400,
+      "elapsed_s": 9.899418563989457,
+      "error": "",
+      "uid": "capacity-funded-1794012200201205538-146"
+    }
+  ],
+  "rounds": 219,
+  "limitations": [
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "tx_per_s",
+      "last_good": 227.8126,
+      "first_fail": null,
+      "signal": "stop=duration; tx_ok=42790 tx_fail=1010 err_rate=0.023; pairs=200 workers=128",
+      "http_status": 400,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_100.json"
+      ]
+    },
+    {
+      "layer": "architecture",
+      "primary": "architecture",
+      "secondary": [],
+      "suite": "C_throughput",
+      "metric": "settlement_gate",
+      "last_good": 87,
+      "first_fail": null,
+      "signal": "Transfers are accepted continuously and settled in periodic batches; observed mine_ok=87 mine_fail=0 mine_every=100",
+      "http_status": null,
+      "evidence_files": [
+        "/home/git/R07r35cInc/java-blockchain-api/docs/capacity/evidence/20261107T003922Z/suite_throughput_100.json"
+      ]
+    }
+  ]
+}

@@ -33,6 +33,9 @@ public class WalletEntity extends PanacheEntityBase {
     @Column(name = "starting_balance", nullable = false, columnDefinition = "numeric")
     public BigDecimal startingBalance;
 
+    @Column(name = "reserved_balance", nullable = false, columnDefinition = "numeric")
+    public BigDecimal reservedBalance;
+
     @Column(nullable = false)
     public Long nonce;
 
@@ -49,6 +52,7 @@ public class WalletEntity extends PanacheEntityBase {
         entity.privateKey = Parse.encodeHexString(wallet.keyPair.getPrivate().getEncoded());
         entity.balance = wallet.balance;
         entity.startingBalance = wallet.getSTARTING_BALANCE();
+        entity.reservedBalance = BigDecimal.ZERO;
         entity.nonce = wallet.nonce;
         entity.createdAt = Instant.now();
         entity.updatedAt = entity.createdAt;
