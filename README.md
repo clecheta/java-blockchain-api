@@ -29,7 +29,7 @@ Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, 
 
 ```shell script
 # 0) library — only needed for unpushed java-blockchain changes
-#    (otherwise Maven pulls JBlock 1.0-SNAPSHOT from GitLab Packages)
+#    (otherwise Maven pulls JBlock 0.1.0 from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
 # 1) Kafka + Mongo
@@ -102,7 +102,7 @@ If you do not have GraalVM installed, you can build the native executable in a c
 Then run the native executable with:
 
 ```shell script
-./target/api.blockchain-1.0.0-SNAPSHOT-runner
+./target/api.blockchain-0.1.0-runner
 ```
 
 ## Capacity testing (ledger plane)
