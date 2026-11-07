@@ -9,7 +9,7 @@ We want measured ceilings for treating JBlock API as a **private ledger / settle
 1. Maximum ledger `$` volume the API can settle on this host (ceiling hunt).
 2. Maximum wallet/account count (ceiling hunt).
 3. Maximum processing rate this machine can sustain (tx/s, mine cycles/s, `$`/s).
-4. The required account-volume stages, finished locally: 5M accounts with 150 billion moved, 10M with 300 billion, 50M with 600 billion, 100M with 1.1 trillion. Spec: [SPEC.md](SPEC.md).
+4. The required account-volume stages, finished locally: 5M accounts with 150 billion moved (**done** — `evidence/volume-v5-20261107T182239Z/`), then 10M/300 billion, 50M/600 billion, 100M/1.1 trillion. Spec: [SPEC.md](SPEC.md).
 
 ## Success looks like
 

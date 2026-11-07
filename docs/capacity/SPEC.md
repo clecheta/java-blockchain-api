@@ -44,8 +44,9 @@ root stays the only settlement writer) or JMeter / k6 / Gatling as the HTTP
 driver with the same balance check.
 
 Evidence so far: 5,000,000 account rows in
-`evidence/isolation-5m-20261107T154100Z/`. Movement of 150 billion is not run;
-the V5 command is ready for an operator-owned full run.
+`evidence/isolation-5m-20261107T154100Z/`; V5 movement **passed** in
+`evidence/volume-v5-20261107T182239Z/` (150 billion settled, ~418 s). Later
+stages (V10 / V50 / V100) remain open for operator-owned full runs.
 
 ## Suites
 

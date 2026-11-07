@@ -41,7 +41,7 @@ These four stages are mandatory. Run each one on the **local machine** until bot
 
 **Registered and moved** means the sum of amounts that are funded, transferred, and settled while that account population is present. Inserting wallet rows, or parking a balance that never moves, does not pass the stage.
 
-The 5,000,000-row isolation matrix ([`evidence/isolation-5m-20261107T154100Z/`](evidence/isolation-5m-20261107T154100Z/)) proved account rows only. The 150 billion movement has not been run.
+The 5,000,000-row isolation matrix ([`evidence/isolation-5m-20261107T154100Z/`](evidence/isolation-5m-20261107T154100Z/)) proved account rows. The V5 movement stage **passed**: 5M accounts present and 150 billion settled ([`evidence/volume-v5-20261107T182239Z/`](evidence/volume-v5-20261107T182239Z/), ~418 s). Later stages (10M / 50M / 100M) remain open.
 
 #### Completion rule
 
