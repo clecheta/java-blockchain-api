@@ -18,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Startup wiring against compose Postgres + Kafka — empty DB is a valid baseline.
  */
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @QuarkusTest
 @TestProfile(RewardMinerTestProfile.class)
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)

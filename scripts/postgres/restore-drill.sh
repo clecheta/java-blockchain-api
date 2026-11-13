@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 set -euo pipefail
 
 if [[ $# -ne 1 ]]; then

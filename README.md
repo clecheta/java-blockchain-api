@@ -29,7 +29,7 @@ Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, 
 
 ```shell script
 # 0) library — only needed for unpushed java-blockchain changes
-#    (otherwise Maven pulls JBlock 0.2.1 from GitLab Packages)
+#    (otherwise Maven pulls JBlock 0.2.2 from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
 # 1) Postgres + Kafka (required for ./mvnw test and quarkus:dev)
@@ -104,7 +104,7 @@ If you do not have GraalVM installed, you can build the native executable in a c
 Then run the native executable with:
 
 ```shell script
-./target/api.blockchain-0.3.0-runner
+./target/api.blockchain-0.3.1-runner
 ```
 
 ## Capacity testing (ledger plane)
@@ -126,6 +126,8 @@ Root node (same paths on peer `:8081`):
 
 This project is licensed under the [Apache License, Version 2.0](LICENSE).
 See the [NOTICE](NOTICE) file for copyright attribution.
+
+Author: Cleber Lecheta — https://cleberlecheta.com.br/en/
 
 ## Source of truth and contributions
 

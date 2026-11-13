@@ -1,3 +1,7 @@
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, Switch, Route } from 'react-router-dom';

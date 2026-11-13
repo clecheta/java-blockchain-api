@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  * <p>
  * - An origin that starts with some amount (100)
  * - An destination starting with 0 and receiving the transaction/input amount from origin (20)

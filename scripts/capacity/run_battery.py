@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """JBlock API Phase-1 capacity battery orchestrator."""
 
 from __future__ import annotations

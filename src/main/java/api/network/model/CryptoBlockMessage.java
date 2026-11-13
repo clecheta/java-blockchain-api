@@ -10,7 +10,7 @@ import java.util.List;
  * Incremental cryptochain sync payload: one mined tip block over Kafka.
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @RegisterForReflection
 public class CryptoBlockMessage {

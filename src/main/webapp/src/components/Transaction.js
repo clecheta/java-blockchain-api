@@ -1,3 +1,7 @@
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 import React from 'react';
 
 const Transaction = ({ transaction }) => {

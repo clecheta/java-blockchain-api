@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 # Local harness: Kafka 3.8 KRaft + Postgres 17.
 # Required for `./mvnw test` — %test does not use Dev Services (see application.properties).
 

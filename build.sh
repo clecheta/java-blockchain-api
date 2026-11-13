@@ -1,4 +1,6 @@
 #!/bin/bash
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 ###
 ## https://quarkus.io/guides/building-native-image
 ## ./mvnw package -Pnative -Dquarkus.native.container-build=true -DskipTests=true

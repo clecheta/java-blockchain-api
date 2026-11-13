@@ -25,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Locks api#40 SerDes: Block.data must remain List&lt;Tx&gt; after Kafka ObjectMapper round-trip,
  * and recalculated hash must match the stored hash.
+ *
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public class CryptoBlockMessageSerDesTest {
 

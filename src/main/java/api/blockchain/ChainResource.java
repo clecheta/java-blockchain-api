@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.Response;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @Path("Ch41N")
 public class ChainResource {

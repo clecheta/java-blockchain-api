@@ -2,7 +2,7 @@ package api.repository.model;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public enum ChainTypeEnum {
     GENERIC("blockchain"),

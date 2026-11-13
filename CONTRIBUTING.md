@@ -2,6 +2,8 @@
 
 Thank you for your interest in contributing to this project.
 
+Author: Cleber Lecheta — https://cleberlecheta.com.br/en/
+
 ## Canonical repository
 
 The **canonical source of truth** for this project is GitLab:

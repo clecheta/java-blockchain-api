@@ -7,6 +7,9 @@ import java.util.Map;
 /**
  * Keeps Quarkus profile {@code test} so %test JDBC/Kafka URLs apply.
  * Only toggles bank security — never re-enable Dev Services (CI has no Docker).
+ *
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public class SecurityEnabledTestProfile implements QuarkusTestProfile {
 

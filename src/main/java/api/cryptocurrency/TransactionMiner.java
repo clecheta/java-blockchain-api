@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * for overall the application.
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @Singleton
 public class TransactionMiner {

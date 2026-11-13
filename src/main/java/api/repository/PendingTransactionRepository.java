@@ -26,6 +26,10 @@ import java.util.UUID;
  * PostgreSQL-backed inbox and spend reservation for accepted, unsettled
  * transactions. This is the cross-node correctness boundary for acceptance.
  */
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @ApplicationScoped
 public class PendingTransactionRepository {
 

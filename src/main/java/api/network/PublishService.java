@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @ApplicationScoped
 public class PublishService {

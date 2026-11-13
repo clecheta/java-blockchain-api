@@ -1,3 +1,7 @@
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 import React, { Component } from 'react';
 import { FormGroup, FormControl, Button, ControlLabel, HelpBlock } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

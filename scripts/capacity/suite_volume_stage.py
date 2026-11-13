@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """V5 account-volume stage: keep N accounts present and settle a moved total.
 
 Completion ignores wall-clock time and host saturation. The stage stops only when

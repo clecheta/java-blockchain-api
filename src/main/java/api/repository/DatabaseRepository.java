@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @ApplicationScoped
 public class DatabaseRepository {

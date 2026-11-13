@@ -1,3 +1,5 @@
+-- @author Cleber Lecheta
+-- https://gitlab.com/cleberlecheta/java-blockchain-api
 ALTER TABLE ledger_wallet
     ADD COLUMN reserved_balance NUMERIC NOT NULL DEFAULT 0,
     ADD CONSTRAINT ck_ledger_wallet_reserved_nonnegative

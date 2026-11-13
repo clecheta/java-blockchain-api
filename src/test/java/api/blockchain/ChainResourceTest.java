@@ -9,6 +9,10 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 /**
  * Minimal HTTP coverage for the generic chain endpoints.
  */
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @QuarkusTest
 public class ChainResourceTest {
 

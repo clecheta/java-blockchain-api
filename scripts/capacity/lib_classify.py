@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Map observable capacity failures to architecture / source / infrastructure."""
 
 from __future__ import annotations

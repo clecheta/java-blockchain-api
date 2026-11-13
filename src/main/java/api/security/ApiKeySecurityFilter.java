@@ -14,6 +14,10 @@ import jakarta.ws.rs.ext.Provider;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Provider
 @PreMatching
 @Priority(Priorities.AUTHENTICATION)

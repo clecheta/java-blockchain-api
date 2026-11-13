@@ -26,6 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@code ledger_pending_transaction} still holds accepts. Settlement must
  * gate on the durable pending count and drain Postgres.
  */
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @QuarkusTest
 class SettlementSchedulerTest extends BaseTest {
 

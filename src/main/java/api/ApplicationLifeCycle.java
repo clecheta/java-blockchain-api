@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @ApplicationScoped
 public class ApplicationLifeCycle {

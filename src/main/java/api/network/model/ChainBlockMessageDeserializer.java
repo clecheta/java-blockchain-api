@@ -11,7 +11,7 @@ import java.util.Map;
  * Typed Kafka deserializer for generic chain tip blocks.
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @RegisterForReflection
 public class ChainBlockMessageDeserializer implements Deserializer<ChainBlockMessage> {

@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Suite E — concurrent accepts on two nodes with root-only settlement."""
 
 from __future__ import annotations

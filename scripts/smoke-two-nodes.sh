@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 # Full HTTP multi-node smoke (no UI) — api#41 alternative A / best cost-benefit for api#40.
 #
 # Prerequisites:

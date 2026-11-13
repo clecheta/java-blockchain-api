@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """HTTP client for JBlock API capacity suites."""
 
 from __future__ import annotations

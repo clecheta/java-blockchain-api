@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Bulk-populate ledger_wallet for fat-PostgreSQL volume diagnosis."""
 
 from __future__ import annotations

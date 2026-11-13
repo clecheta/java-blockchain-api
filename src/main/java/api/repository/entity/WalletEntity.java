@@ -13,6 +13,10 @@ import java.math.BigDecimal;
 import java.security.KeyPair;
 import java.time.Instant;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Entity
 @Table(name = "ledger_wallet")
 public class WalletEntity extends PanacheEntityBase {

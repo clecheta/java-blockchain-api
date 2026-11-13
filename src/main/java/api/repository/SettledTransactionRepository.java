@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @ApplicationScoped
 public class SettledTransactionRepository {
 

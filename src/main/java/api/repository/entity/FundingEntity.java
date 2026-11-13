@@ -9,6 +9,10 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Entity
 @Table(name = "funding_record")
 public class FundingEntity extends PanacheEntityBase {

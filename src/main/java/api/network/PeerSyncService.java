@@ -27,7 +27,7 @@ import java.util.Map;
  * On the settler, catch-up reads PostgreSQL; peers call the settler over HTTP.
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @ApplicationScoped
 public class PeerSyncService {

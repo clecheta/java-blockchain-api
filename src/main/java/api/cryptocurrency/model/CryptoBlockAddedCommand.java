@@ -11,7 +11,7 @@ import java.util.List;
  * When {@link #blockAlreadyPersisted} is true, {@code BlockService} only updates wallets.
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public class CryptoBlockAddedCommand {
     public static final ChainTypeEnum chain = ChainTypeEnum.CRYPTO;

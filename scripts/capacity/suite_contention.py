@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Suite D — same-wallet contention and reservation correctness."""
 
 from __future__ import annotations

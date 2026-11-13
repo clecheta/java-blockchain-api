@@ -6,7 +6,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @RegisterForReflection
 public class BlockchainDeserializer extends ObjectMapperDeserializer<NetChain> {

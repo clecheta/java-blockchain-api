@@ -16,6 +16,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Entity
 @Table(name = "ledger_block")
 public class BlockEntity extends PanacheEntityBase {

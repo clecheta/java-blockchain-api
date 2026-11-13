@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public class BaseTest {
     public static final int UUID_LENGTH = 36;

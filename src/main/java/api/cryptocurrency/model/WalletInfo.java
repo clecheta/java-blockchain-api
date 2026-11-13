@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  *
  * Wrapper for Wallet to ensure to not
  * expose any sensetive data in the endpoint.

@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 ####
 # This Dockerfile is used in order to build a container that runs the Quarkus application in native (no JVM) mode
 #

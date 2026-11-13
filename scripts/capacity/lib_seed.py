@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Create and fund wallets through the production API contract."""
 
 from __future__ import annotations

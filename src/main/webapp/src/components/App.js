@@ -1,3 +1,7 @@
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/Israeli_blue_Star_of_David.png';

@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Suite C — max host throughput (multi-wallet transact + periodic mine)."""
 
 from __future__ import annotations

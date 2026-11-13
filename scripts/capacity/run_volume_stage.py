@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Run the V5 account-volume stage to completion on the local machine.
 
 Default targets: 5,000,000 accounts present and 150,000,000,000 units settled.

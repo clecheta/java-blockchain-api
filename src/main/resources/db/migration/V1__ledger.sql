@@ -1,3 +1,5 @@
+-- @author Cleber Lecheta
+-- https://gitlab.com/cleberlecheta/java-blockchain-api
 CREATE TABLE ledger_wallet (
     uid_hash VARCHAR(64) PRIMARY KEY,
     public_key TEXT NOT NULL UNIQUE,

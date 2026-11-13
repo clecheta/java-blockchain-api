@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Capture app / PostgreSQL / Kafka / host signals for failure-layer diagnosis."""
 
 from __future__ import annotations

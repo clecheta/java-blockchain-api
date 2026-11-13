@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 set -euo pipefail
 
 CONTAINER="${POSTGRES_CONTAINER:-java-blockchain-api-postgres-1}"

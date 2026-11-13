@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @Path("M1n3")
 public class MineResource {

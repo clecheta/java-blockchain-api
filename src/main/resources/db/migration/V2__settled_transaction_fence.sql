@@ -1,3 +1,5 @@
+-- @author Cleber Lecheta
+-- https://gitlab.com/cleberlecheta/java-blockchain-api
 CREATE TABLE ledger_settled_transaction (
     transaction_id UUID PRIMARY KEY,
     block_hash VARCHAR(128) NOT NULL REFERENCES ledger_block(hash),

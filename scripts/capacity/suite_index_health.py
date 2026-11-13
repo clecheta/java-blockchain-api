@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """EXPLAIN gate for hot ledger lookups under volume."""
 
 from __future__ import annotations

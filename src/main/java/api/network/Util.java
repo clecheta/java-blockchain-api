@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 /**
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 public class Util {
 

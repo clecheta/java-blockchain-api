@@ -9,6 +9,10 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Entity
 @Table(name = "ledger_settled_transaction")
 public class SettledTransactionEntity extends PanacheEntityBase {

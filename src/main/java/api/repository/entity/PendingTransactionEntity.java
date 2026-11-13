@@ -13,6 +13,10 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @Entity
 @Table(name = "ledger_pending_transaction")
 public class PendingTransactionEntity extends PanacheEntityBase {

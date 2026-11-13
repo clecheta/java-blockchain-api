@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Suite A — max ledger $ volume (single transfer + settled multi-chunk)."""
 
 from __future__ import annotations

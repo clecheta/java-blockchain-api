@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @QuarkusTest
 @TestProfile(PeerNodeTestProfile.class)
 class PeerMineResourceTest {

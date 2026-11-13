@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Isolation matrix: classify volume cliffs as host / PostgreSQL / Kafka / code / architecture."""
 
 from __future__ import annotations

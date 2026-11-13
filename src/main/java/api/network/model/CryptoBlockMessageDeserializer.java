@@ -14,7 +14,7 @@ import java.util.Map;
  * Typed Kafka deserializer preserving {@code Block<List<Tx>>} (not LinkedHashMap).
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @RegisterForReflection
 public class CryptoBlockMessageDeserializer implements Deserializer<CryptoBlockMessage> {

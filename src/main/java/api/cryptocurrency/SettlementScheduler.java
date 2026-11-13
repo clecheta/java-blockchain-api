@@ -16,6 +16,10 @@ import static io.quarkus.scheduler.Scheduled.ConcurrentExecution.SKIP;
  * Gates on durable pending count so a settler restart still drains
  * {@code ledger_pending_transaction} when the in-memory pool is empty.
  */
+/**
+ * @author Cleber Lecheta
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
+ */
 @ApplicationScoped
 public class SettlementScheduler {
 

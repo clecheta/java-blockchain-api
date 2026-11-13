@@ -8,7 +8,7 @@ import jakarta.inject.Singleton;
  * Maintain a unique instance of the blockchain in the node
  *
  * @author Cleber Lecheta
- * https://encontreiJesus.com
+ * https://gitlab.com/cleberlecheta/java-blockchain-api
  */
 @Singleton
 public class Blockchain {

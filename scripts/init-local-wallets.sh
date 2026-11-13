@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 # Seed funded local wallets and print exactly what to paste where.
 #
 # Prerequisites:

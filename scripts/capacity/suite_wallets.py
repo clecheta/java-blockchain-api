@@ -1,3 +1,5 @@
+# @author Cleber Lecheta
+# https://gitlab.com/cleberlecheta/java-blockchain-api
 """Suite B — max wallets/accounts via HTTP create ramp."""
 
 from __future__ import annotations
