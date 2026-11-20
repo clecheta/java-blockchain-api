@@ -4,6 +4,10 @@
 > From June 2021 through August 2023, this API and its surrounding stack were built by hand — software as craft.  
 > From November 2026 onward, evolution continues with AI as a collaborator, without erasing that artisan foundation.
 
+This is a non-commercial study project about software architecture, engineering patterns, design systems, and related topics.
+
+**Acknowledgments.** The blockchain concepts behind this API (mining, transactions, transaction pool, and peer synchronization) are inspired by David Joseph Katz's course *Build a Blockchain & Cryptocurrency | Full-Stack Edition*. This API is a separate implementation on Quarkus, PostgreSQL, and Kafka.
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, visit https://quarkus.io/.
@@ -29,7 +33,7 @@ Needs **Java 25** (SDKMAN interactive shell so `JAVA_HOME` is set), **Docker**, 
 
 ```shell script
 # 0) library — only needed for unpushed java-blockchain changes
-#    (otherwise Maven pulls JBlock 0.2.2 from GitLab Packages)
+#    (otherwise Maven pulls JBlock 0.2.3 from GitLab Packages)
 mvn -f ../java-blockchain/pom.xml install -DskipTests
 
 # 1) Postgres + Kafka (required for ./mvnw test and quarkus:dev)
@@ -104,7 +108,7 @@ If you do not have GraalVM installed, you can build the native executable in a c
 Then run the native executable with:
 
 ```shell script
-./target/api.blockchain-0.3.1-runner
+./target/api.blockchain-0.3.2-runner
 ```
 
 ## Capacity testing (ledger plane)
